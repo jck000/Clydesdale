@@ -1,0 +1,15 @@
+                  <!-- Textarea -->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" 
+                           for="[% ff.dvf_name %]">
+                      [% ff.dvf_label %]
+                    </label>
+                    <div class="col-md-4">                     
+                      <textarea class="form-control" 
+                                id="[% ff.dvf_name %]" 
+                                name="[% ff.dvf_name %]"
+                                [% IF ff.dvf_data_attributes != '' %][% ff.dvf_data_attributes %][% END %]>
+                        [% IF data.$data_col_name != '' %][% data.$data_col_name %][% END %]
+                      </textarea>
+                    </div>       <!-- col-md-4 -->
+                  </div>         <!-- form-group -->

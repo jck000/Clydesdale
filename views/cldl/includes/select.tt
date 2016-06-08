@@ -1,0 +1,20 @@
+                  <!-- Text input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" 
+                           for="[% ff.dvf_name %]">
+                      [% ff.dvf_label %]
+                    </label>  
+                    <div class="col-md-4">
+                      <input type="text" 
+                             id="[% ff.dvf_name %]" 
+                             name="[% ff.dvf_name %]" 
+                             class="form-control input-md" 
+                             [% IF data.$data_col_name != '' %]value="[% data.$data_col_name %]"[% END %]
+                             [% IF ff.dvf_placeholder != '' %]placeholder="[% ff.dvf_placeholder %]"[% END %]
+                             [% IF ff.dvf_data_attributes != '' %][% ff.dvf_data_attributes %][% END %]>
+                      [% IF ff.dvf_help != '' %]
+                        <span class="help-block">[% ff.dvf_help %]</span>  
+                      [% END %]
+                    </div>    <!-- col-md-4 -->
+                  </div>      <!-- form-group -->
+                

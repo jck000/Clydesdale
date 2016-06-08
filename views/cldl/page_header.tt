@@ -1,0 +1,11 @@
+      <div class="row">
+        <div class="col-sm-12">
+          <br> 
+          <h2>
+            <span class="label label-default; text-align: center;">[% INCLUDE cldl/logo.tt %]</span>
+          </h2>
+          <br>
+          <br>
+        </div>
+      </div>
+

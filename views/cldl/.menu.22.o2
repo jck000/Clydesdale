@@ -1,0 +1,80 @@
+[% IF cldl_menu_orientation == 'horizontal' %]
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" 
+              class="navbar-toggle" 
+              data-toggle="collapse" 
+              data-target="#cldlNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+      [% INCLUDE cldl/logo.tt %]
+      </a>
+    </div>  <!-- navbar-header -->
+
+    <div class="collapse navbar-collapse" 
+         id="cldlNavbar">
+      [% FOREACH m IN cldl_menu.nsort('ordr') %]
+        [% IF m.pmenu_id == '' %]
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a class="dropdown-toggle" 
+               data-toggle="dropdown" 
+               href="#">[% m.menu_label %]
+              <span class="caret"></span>
+            </a>
+            [% IF m.children %]
+              [% mchildren = m.children %]
+              <ul class="dropdown-menu">
+              [% FOREACH mc IN mchildren.nsort('ordr]) %]
+                <li> <a href="[% mc.menu_link %]" > [% m.menu_label %] </a> </li>
+              [% END %]
+            [% END %]
+       [% END %]
+
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle" 
+             data-toggle="dropdown" 
+             href="#">ETL Tools<span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="[% app_host_url %]/clientdata/upload" >
+                Import CSV File
+              </a>
+            </li>
+            <li>
+              <a href="[% app_host_url %]/cldl/dv/display/dv_list" >
+                List/Edit DataViews
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="[% app_host_url %]/cldl/changepass"><span class="glyphicon glyphicon-user"></span> Change Password</a></li>
+        <li><a href="[% app_host_url %]/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+    </div>  <!-- collapse -->
+
+  </div>    <!-- container-fluid -->
+</nav>
+[% ELSIF cldl_menu_orientation == 'vertical' %]
+
+[% END %]
+
+
+
+       [% END %]
+          </ul>
+        </li>
+      </ul>
+    </div>  <!-- collapse -->
+  </div>    <!-- container-fluid -->
+</nav>

@@ -1,0 +1,68 @@
+<div class="row">
+
+<form class="form-horizontal" 
+      method="post" 
+      action="[% app_host_url %]/cldl/upload" 
+      enctype="multipart/form-data">
+
+  <fieldset>
+
+    <!-- Form Name -->
+    <legend>Upload File</legend>
+
+    <!-- File Button --> 
+    <div class="form-group">
+      <br>
+      <br>
+      <br>
+      <label class="col-md-4 control-label" 
+             for="filename">
+        Select A File:
+      </label>
+      <div class="col-md-4">
+        <input id="filename" 
+               name="filename" 
+               class="input-file" 
+               type="file">
+      </div>
+    </div>
+    <br><br>
+
+    <!-- Text -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" 
+             for="prependedcheckbox">
+        Save to
+      </label>
+      <div class="col-md-4">
+        <div class="input-group">
+          <input id="path" 
+                 name="path" 
+                 class="form-control" 
+                 type="text" 
+                 placeholder="Save to">
+        </div>
+      </div>
+    </div>
+
+    <br><br>
+
+    <!-- Button -->
+    <div class="form-group">
+
+      <label class="col-md-4 control-label" 
+             for="submit">
+      </label>
+
+      <div class="col-md-4">
+        <button id="submit" 
+                class="btn btn-primary">
+          Upload
+        </button>
+      </div>
+    </div>
+
+  </fieldset>
+</form>
+</div>
+

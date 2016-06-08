@@ -1,0 +1,116 @@
+
+      [%+ INCLUDE cldl/includes/dv_title.tt +%]
+      [%+ INCLUDE cldl/includes/buttons/editmenu_buttons.tt +%]
+
+      <div class="row">
+        <div class="col-sm-1"> </div>
+        <div class="col-sm-10">
+          <div id="messages"> </div>
+          
+          <!-- sortable -->
+          	<ol class="sortable">
+              [% FOREACH menu_id IN edit_menu.keys.nsort() %]
+                [% em = edit_menu.$menu_id %]
+          		  <li id="item_[% em.menu_id %]" 
+                    data-menu_id="[% em.menu_id %]" 
+                    data-pmenu_id="[% em.pmenu_id %]" 
+                    data-company_id="[% em.company_id %]" 
+                    class="main_menu_item [% IF em.company_id == 1 %] company1 [% END %] [% IF em.active == 0 %] inactivemenu [% END %]" >
+                  <div>
+                    [% em.menu_label %]
+                  </div>
+                [% IF em.children %]
+                  [% emchildren = em.children %]
+          			  <ol>
+                    [%# FOREACH emc_id IN emchildren.keys.nsort() #%]
+                    [% FOREACH emc IN emchildren.nsort('ordr') %]
+                      [%# emc = emchildren.$emc_id #%]
+          		         <li id="item_[% emc.menu_id %]" 
+                           data-menu_id="[% emc.menu_id %]" 
+                           data-pmenu_id="[% emc.pmenu_id %]" 
+                           data-company_id=[% emc.company_id %]" 
+                           class="menu_item [% IF emc.company_id == 1 %] company1 [% END %] [% IF emc.active == 0 %] inactivemenu [% END %]" >
+                         <div>
+                           [% emc.menu_label %]
+                         </div>
+                       </li>
+                    [% END %]
+          			  </ol>
+                [% END %]
+                </li>
+              [% END %]
+            </ol>
+          <!-- sortable -->
+
+          <input type="hidden" name="return_to_path" value="[% return_to_path %]">
+
+        </div>
+        <div class="col-sm-1"> </div>
+      </div>        <!-- row -->
+
+      [%+ INCLUDE cldl/includes/buttons/editmenu_buttons.tt +%]
+      <br /><br />
+
+
+
+    <script>
+      $( function () {
+        /* Add Button 
+         *   Open window with no record ID.  No record ID will present a 
+         *   blank window with defaults.
+         */
+        $('.addbutton').click( function() {
+
+          var new_location = '[% app_host_url %]/dv/display/add_edit_cldl_menu?addrecord=1&db_type=1&return_to_path=' + $('#return_to_path').val();
+
+          window.location.replace( new_location );
+        });
+
+/*
+        $('.main_menu_item').on( 'dblclick' , function () {
+        });
+*/
+
+        $('.main_menu_item .menu_item').on( 'dblclick' , function () {
+
+          var new_location = '[% app_host_url %]/dv/display/add_edit_cldl_menu?id=' + $(this).attr('data-menu_id') + '&db_type=1&return_to_path=' + $('#return_to_path').val();
+
+          if ( new_location.indexOf('?') > 0 ) {
+            new_location += '&menu_id=' + $(this).attr('data-menu_id');
+          } else {
+            new_location += '?menu_id=' + $(this).attr('data-menu_id');
+          }
+
+          window.location.replace( new_location );
+        });
+      });         
+      
+      [%+ INCLUDE cldl/includes/js/reload.js +%]
+      [%+ INCLUDE cldl/includes/js/return.js +%]
+
+      $('.savebutton').click( function() {
+
+        var menu_order = $('ol.sortable').nestedSortable('serialize');
+        $.ajax({
+            type: "POST",
+            url: '[% app_host_url %]/admin/editmenu/save/order',
+            data: menu_order,
+            dataType: "json",
+            success: function(json) {
+              if ( json.status == 'success' ) {
+                $("#messages").val("[% cldl_success_save %]");
+              }
+                
+            },
+            error: function(){
+              $("#messages").val("[% cldl_failed_save %]");
+            }
+        });
+
+      });
+
+    </script>
+
+
+
+

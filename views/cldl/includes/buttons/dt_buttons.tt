@@ -1,0 +1,17 @@
+
+            [% IF dv.dt_add == 1 %]
+            <button id="addbutton"
+                    class="btn btn-primary control_button">
+              <i class="glyphicon glyphicon-plus-sign control_icon"></i>
+              Add
+            </button>
+            [% END %]
+
+            [% IF dv.dt_del == 1 %]
+            <button id="delbutton"
+                    class="btn btn-danger control_button">
+              <i class="glyphicon glyphicon-remove-sign control_icon"></i>
+              Delete
+            </button>
+            [% END %]
+

@@ -1,0 +1,18 @@
+
+'session' => {
+
+'cldl_menu' => [
+                 {'menu_data_attributes' => '',
+                  'menu_id' => '1',
+                  'menu_js_functions' => '',
+                  'menu_label' => 'CLDL',
+                  'menu_link' => '',
+                  'menu_notes' => '',
+                  'ordr' => '1'},
+                 {'menu_data_attributes' => '',
+                  'menu_id' => '1',
+                  'menu_js_functions' => '',
+                  'menu_label' => 'Menus',
+                  'menu_link' => 'admin/menu/display',
+                  'menu_notes' => '',
+                  'ordr' => '2'},{'menu_data_attributes' => '','menu_id' => '1','menu_js_functions' => '','menu_label' => 'DataViews','menu_link' => 'admin/dv/display','menu_notes' => '','ordr' => '3'},{'menu_data_attributes' => '','menu_id' => '1','menu_js_functions' => '','menu_label' => 'Roles','menu_link' => 'admin/roles/display','menu_notes' => '','ordr' => '4'},{'menu_data_attributes' => '','menu_id' => '1','menu_js_functions' => '','menu_label' => 'Permissions','menu_link' => 'admin/permissions/display','menu_notes' => '','ordr' => '5'},{'menu_data_attributes' => '','menu_id' => '1','menu_js_functions' => '','menu_label' => 'Users','menu_link' => 'dv/display/users','menu_notes' => '','ordr' => '6'},{'menu_data_attributes' => '','menu_id' => '1','menu_js_functions' => '','menu_label' => 'Company','menu_link' => 'dv/display/company','menu_notes' => '','ordr' => '7'}]

@@ -1,0 +1,26 @@
+                  <!-- Checkbox input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" 
+                           for="[% ff.dvf_name %]">
+                      [% ff.dvf_label %]
+                    </label>  
+                    [% cbx_id = ff.d_id %]
+                    <div class="col-md-4">
+                      [%# dtl = d.$cbx_id.dtl #%]
+                      [% FOREACH cbx IN d.$cbx_id.dtl %]
+                        [% IF cbx.df_default == 1 %]
+                          <label class="checkbox-inline" 
+                                 for="[% ff.dvf_name %]">
+                            <input type="checkbox" 
+                                   id="[% ff.dvf_name %]" 
+                                   name="[% ff.dvf_name %]" 
+                                   value="[% IF data.$data_col_name != '' %][% cbx.df_value %][% END %]"
+                                   [% IF data.$data_col_name == cbx.df_value %]CHECKED[% END %]
+                                   [% IF ff.dvf_data_attributes != '' %][% ff.dvf_data_attributes %][% END %]>
+                            [% cbx.df_label %]
+                          </label>
+                        [% END %]
+                      [% END %]
+                    </div>    <!-- col-md-4 -->
+                  </div>      <!-- form-group -->
+                

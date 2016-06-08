@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>[% title %]</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- bootstrap and jQuery -->
+    <link rel="stylesheet" href="[% bs_url %]/css/bootstrap.min.css">
+    <script src="[% jq_url %]/jquery.min.js"></script>
+    <script src="[% bs_url %]/js/bootstrap.min.js"></script>
+<!-- vvv Nested Sortable vvv -->
+    <script type="text/javascript" src="[% app_host_url %]/libs/jqueryui/jquery-ui-1.11.4.custom.sortable/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="[% app_host_url %]/libs/nestedSortable/jquery.mjs.nestedSortable.js"></script>
+    <!-- <script type="text/javascript" src="jquery.ui.touch-punch.js"></script> -->
+<!-- ^^^ Nested Sortable ^^^ -->
+    
+<!-- Nested Sortable  -->
+<!--
+	<script>
+		(function(){
+			if (!/*@cc_on!@*/0) return;
+			var e = ("abbr article aside audio canvas command datalist details figure figcaption footer "+
+				"header hgroup mark meter nav output progress section summary time video").split(' '),
+			i=e.length;
+			while (i--) {
+			document.createElement(e[i])
+			}
+		})(document.documentElement,'className');
+	</script>
+-->
+
+<!--     Nested Sortable -->
+    <script>
+      $(document).ready(function(){
+
+		    $('ol.sortable').nestedSortable({
+			    forcePlaceholderSize: true,
+			    handle: 'div',
+			    helper:	'clone',
+			    items: 'li',
+			    opacity: .6,
+			    placeholder: 'placeholder',
+			    revert: 250,
+			    tabSize: 25,
+			    tolerance: 'pointer',
+			    toleranceElement: '> div',
+			    maxLevels: 2,
+
+			    isTree: true,
+			    expandOnHover: 700,
+			    startCollapsed: false
+		    });
+
+		    $('.disclose').on('click', function() {
+			    $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+		    });
+
+        [%+ INCLUDE cldl/includes/js/cldl_messages.js +%]
+        [%# INCLUDE js/CLDLAjax.js #%]
+        $('[data-toggle="tooltip"]').tooltip(); 
+
+
+	    });
+
+    </script>
+
+    <style>
+
+      img.displayed {
+          display: block;
+          margin-left: auto;
+          margin-right: auto
+      }
+
+      .icon_text {
+        font-size:   65%;
+        /* display:     block; */
+        display:     inline-block;
+        line-height: 65%;
+        position:    float-right;
+        /* position:    absolute; */
+        margin-top:  5px;
+      }
+
+      /* Make the Stacked Pills Menu 200px wide */
+      .stackedpillsmenu {
+        margin-left: 1px;
+        width:300px;
+      }
+
+      /* Set the button colors */
+      .stackedpillsmenu .nav-stacked > li > a {
+        background-color: #0088cc;
+        color: #ffffff;
+      }
+
+      .stackedpillsmenu .nav-stacked > li > a:hover {
+        background-color: #ff0000;
+      }
+
+/*
+  		html {
+  			background-color: #eee;
+  		}
+  
+  		body {
+  			-webkit-border-radius: 10px;
+  			   -moz-border-radius: 10px;
+  			        border-radius: 10px;
+  			color: #444;
+  			background-color: #fff;
+  			font-size: 13px;
+  			font-family: Freesans, sans-serif;
+  			padding: 2em 4em;
+  			width: 860px;
+  			margin: 15px auto;
+  			box-shadow:				1px 1px 8px #444;
+  			-mox-box-shadow:		1px 1px 8px #444;
+  			-webkit-box-shadow:		1px -1px 8px #444;
+  		}
+ */
+
+  		a, a:visited {
+  			color: #4183C4;
+  			text-decoration: none;
+  		}
+  
+  		a:hover {
+  			text-decoration: underline;
+  		}
+  
+  		pre, code {
+  			font-size: 12px;
+  		}
+  
+  		pre {
+  			width: 100%;
+  			overflow: auto;
+  		}
+  
+  		small {
+  			font-size: 90%;
+  		}
+  
+  		small code {
+  			font-size: 11px;
+  		}
+  
+  		.placeholder {
+  			outline: 1px dashed #4183C4;
+  			/*-webkit-border-radius: 3px;
+  			-moz-border-radius: 3px;
+  			border-radius: 3px;
+  			margin: -1px;*/
+  		}
+  
+  		.mjs-nestedSortable-error {
+  			background: #fbe3e4;
+  			border-color: transparent;
+  		}
+  
+  		ol {
+  			margin: 0;
+  			padding: 0;
+  			padding-left: 30px;
+  		}
+  
+  		ol.sortable, ol.sortable ol {
+  			margin: 0 0 0 25px;
+  			padding: 0;
+  			list-style-type: none;
+  		}
+  
+  		ol.sortable {
+  			margin: 4em 0;
+  		}
+  
+  		.sortable li {
+  			margin: 5px 0 0 0;
+  			padding: 0;
+  		}
+  
+  		.sortable li div  {
+  			border: 1px solid #d4d4d4;
+  			-webkit-border-radius: 3px;
+  			-moz-border-radius: 3px;
+  			border-radius: 3px;
+  			border-color: #D4D4D4 #D4D4D4 #BCBCBC;
+  			padding: 6px;
+  			margin: 0;
+  			cursor: move;
+  			background: #f6f6f6;
+  			background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+  			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
+  			background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+  			background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+  			background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+  			background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+  			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
+  		}
+  
+  		.sortable li.mjs-nestedSortable-branch div {
+  			background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #f0ece9 100%);
+  			background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#f0ece9 100%);
+  
+  		}
+  
+  		.sortable li.mjs-nestedSortable-leaf div {
+  			background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #bcccbc 100%);
+  			background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#bcccbc 100%);
+  
+  		}
+  
+  		li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
+  			border-color: #999;
+  			background: #fafafa;
+  		}
+  
+  		.disclose {
+  			cursor: pointer;
+  			width: 10px;
+  			display: none;
+  		}
+  
+  		.sortable li.mjs-nestedSortable-collapsed > ol {
+  			display: none;
+  		}
+  
+  		.sortable li.mjs-nestedSortable-branch > div > .disclose {
+  			display: inline-block;
+  		}
+  
+  		.sortable li.mjs-nestedSortable-collapsed > div > .disclose > span:before {
+  			content: '+ ';
+  		}
+  
+  		.sortable li.mjs-nestedSortable-expanded > div > .disclose > span:before {
+  			content: '- ';
+  		}
+  
+  		h1 {
+  			font-size: 2em;
+  			margin-bottom: 0;
+  		}
+  
+  		h2 {
+  			font-size: 1.2em;
+  			font-weight: normal;
+  			font-style: italic;
+  			margin-top: .2em;
+  			margin-bottom: 1.5em;
+  		}
+  
+  		h3 {
+  			font-size: 1em;
+  			margin: 1em 0 .3em;;
+  		}
+  
+  		p, ol, ul, pre, form {
+  			margin-top: 0;
+  			margin-bottom: 1em;
+  		}
+  
+  		dl {
+  			margin: 0;
+  		}
+  
+  		dd {
+  			margin: 0;
+  			padding: 0 0 0 1.5em;
+  		}
+  
+  		code {
+  			background: #e5e5e5;
+  		}
+  
+  		input {
+  			vertical-align: text-bottom;
+  		}
+  
+  		.notice {
+  			color: #c33;
+  		}
+
+      .company1 {
+        /* background-color: #ffff00; */
+        text-color: #000000;
+      }
+  
+      .inactivemenu {
+        /* color: #A9A9A9; */
+        color: #808080;
+      }
+  
+  	</style>
+  </head>
+  <body>
+    [%+ INCLUDE cldl/includes/menu.tt +%]
+    <div class="container">
+    [%+ content +%]
+    </div> <!-- container -->
+  </body>
+</html>
+

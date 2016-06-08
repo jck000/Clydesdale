@@ -1,0 +1,164 @@
+[% IF cldl_menu == 'horizontal' %]
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" 
+              class="navbar-toggle" 
+              data-toggle="collapse" 
+              data-target="#cldlNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+
+      <a class="navbar-brand" href="#">
+      [% INCLUDE logo_menu.tt %]
+      </a>
+
+    </div>  <!-- navbar-header -->
+
+    <div class="collapse navbar-collapse" 
+         id="cldlNavbar">
+      [% FOREACH menu IN m %]
+        [% IF m.pmenu_id == '' %]
+
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a class="dropdown-toggle" 
+               data-toggle="dropdown" 
+               href="#">[% m.menu_label %]
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+
+         [% ELSE %]
+              <li>
+                <a href="[% IF m.link matches 'http://' %][% m.link %][% ELSE %][% app_host_url %][% m.link %]" >
+                  [% m.menu_label %]
+                </a>
+              </li>
+         [% END %]
+       [% END %]
+          </ul>
+        </li>
+      </ul>
+
+
+
+<!--
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle" 
+             data-toggle="dropdown" 
+             href="#">ETL Tools
+            <span class="caret"></span>
+          </a>
+
+          <ul class="dropdown-menu">
+            <li>
+              <a href="[% app_host_url %]/clientdata/upload" >
+                Import CSV File, Create Table and Load it
+              </a>
+            </li>
+
+            <li>
+              <a href="[% app_host_url %]/cldl/dvfromtable" >
+                Create A DataView from Existing Table
+              </a>
+            </li>
+
+            <li>
+              <a href="[% app_host_url %]/datafromschema" >
+                Create Data from Schema Table/Column
+              </a>
+            </li>
+
+            <li>
+              <a href="[% app_host_url %]/matchfields/table" >
+                Build Match List
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+-->
+
+<!--
+      <ul class="nav navbar-nav"> 
+        <li class="dropdown">
+          <a class="dropdown-toggle" 
+             data-toggle="dropdown" 
+             href="#">Settings<span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">  
+            <li>
+              <a href="[% app_host_url %]/cldl/dv/display/dv_list" >
+                Categories
+              </a>
+            </li>
+            <li>
+              <a href="[% app_host_url %]/cldl/dv/display/bdas_fields?cond_table_name=requisitions" >
+                Requisition Fields
+              </a>
+            </li>
+            <li>
+              <a href="[% app_host_url %]/cldl/dv/display/bdas_fields_candidates?cond_table_name=candidate" >
+                Candidate Fields
+              </a>
+            </li>
+            <li>
+              <a href="[% app_host_url %]/cldl/dv/display/dv_list" >
+                Clients
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+-->
+
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle" 
+             data-toggle="dropdown" 
+             href="#">CLDL<span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="[% app_host_url %]/cldl/dv/display/dv_list" >
+                List/Edit/Create DataViews
+              </a>
+            </li>
+            <li>
+              <a href="[% app_host_url %]/cldl/dv/display/cldl_users" >
+                List/Edit/Create Users
+              </a>
+            </li>
+            <li>
+              <a href="[% app_host_url %]/cldl/dvfromtable" >
+                Create A DataView from a Table
+              </a>
+            </li>
+            <li>
+              <a href="[% app_host_url %]/cldl/upload" >Upload a file</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+
+<!--
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="[% app_host_url %]/cldl/register"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+        <li><a href="[% app_host_url %]/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+-->
+
+
+    </div>  <!-- collapse -->
+
+  </div>    <!-- container-fluid -->
+</nav>
+[% ELSIF cldl_menu == 'vertical' %]
+
+[% END %]

@@ -1,0 +1,11 @@
+
+{ 0 => { display => 'text', 
+  1 => { display => 'textarea', 
+  2 => { display => 'date', 
+  3 => { display => 'hidden', 
+  4 => { display => 'checkbox', 
+  5 => { display => 'radio', 
+  6 => { display => 'select',  
+  7 => { display => 'password', 
+  8 => { display => 'span', 
+  9 => { display => 'paragraph' }

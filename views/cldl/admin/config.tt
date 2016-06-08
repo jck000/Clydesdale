@@ -1,0 +1,67 @@
+<style>
+
+.config_textarea {
+  left-margin: 0px;
+  border:1px solid #999999;
+  font-color: #000000;
+  background-color: #ffffff;
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}
+
+</style>
+
+
+
+<form class="form-horizontal"
+      id="dbcopy_config_form"
+      name="dbcopy_config_form"
+      action="/dbcopy/config/save">
+<fieldset>
+
+<div>[% status %]</div>
+
+<!-- Form Name -->
+<legend>Edit Configuration</legend>
+
+<!-- Textarea -->
+<div class="form-group">
+  <label class="col-md-2 control-label" for="textarea">[% label %]</label>
+  <div class="col-md-8">
+    <textarea class="form-control config_textarea"
+              id="config_file"
+              name="config_file"
+              rows="20"
+              cols="80">[% config_file %]</textarea>
+  </div>
+</div>
+
+
+<div class="form-group">
+  <label class="col-md-2 control-label" for="resetbutton"></label>
+  <div class="col-md-8">
+    <button id="resetbutton" name="resetbutton" class="btn btn-success">
+      Reset
+    </button>
+    <button id="savebutton" name="savebutton" class="btn btn-danger">
+      Save
+    </button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+<script>
+
+    $('.resetbutton').click( function() {
+      e.preventDefault(); // preventing default click action
+      window.location.assign("[% app_rt.this_page %]");
+    });
+
+    $('.savebutton').click( function() {
+      e.preventDefault(); // preventing default click action
+      $('#dbcopy_config_form').submit();
+
+    });
+
+</script>

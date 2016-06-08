@@ -1,0 +1,21 @@
+
+Packages used in this application:
+
+jQuery                http://jquery.com/
+jQuery UI             http://jqueryui.com/
+jQuery UI Bootstrap   http://gustavohenke.github.io/jquery-ui-bootstrap/#
+Bootstrap             http://getbootstrap.com/
+Bootstrap-Table       https://github.com/wenzhixin/bootstrap-table
+CSS-Loaders           https://github.com/lukehaas/css-loaders
+
+Dancer2
+Dancer2::Plugin::Database
+Dancer2::Plugin::Email
+DBI
+Template::Toolkit
+
+
+
+
+
+

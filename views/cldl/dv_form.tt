@@ -1,0 +1,66 @@
+[%# ff.dvf_type: 0=text, 1=textarea, 2=password, 3=hidden, 4=checkbox,  #%]
+[%#              5=radio, 6=select, 7=span, 8=paragraph,                #%] 
+[%#              *9=submit, *10=button                                  #%]
+[%#  *color, *date *datetime, *datetime-local *email *month *number     #%]
+[%#  *range *search *tel *time url week                                 #%]
+[%# *=Future                                                            #%]
+
+
+      <div class="row">
+        <div class="col-sm-1"></div> 
+        <div class="col-sm-11">
+            <fieldset>
+            
+              <!-- Form Name -->
+              <legend>[% dv.dv_title %]</legend>
+
+              
+              <div class="form-group">
+                [%+ INCLUDE cldl/includes/buttons/form_buttons.tt +%]
+              </div>
+          <form class="form-horizontal" 
+                id="cldl_form" 
+                method="post"
+                action="[% app_host_url %]/dv/[% IF addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]">
+              [% FOREACH ff IN dvf.nsort('ordr') %]
+                [% data_col_name = ff.dvf_name %]
+
+                [% IF ff.dvf_type == 0 %]
+                  [% INCLUDE "cldl/includes/text.tt" %]
+                [% ELSIF ff.dvf_type == 1 %]
+                  [% INCLUDE "cldl/includes/textarea.tt" %]
+                [% ELSIF ff.dvf_type == 2 %]
+                  [% INCLUDE "cldl/includes/password.tt" %]
+                [% ELSIF ff.dvf_type == 3 %]
+                  [% INCLUDE "cldl/includes/hidden.tt" %]
+                [% ELSIF ff.dvf_type == 4 %]
+                  [% INCLUDE "cldl/includes/checkbox.tt" %]
+                [% ELSIF ff.dvf_type == 5 %]
+                  [% INCLUDE "cldl/includes/radio.tt" %]
+                [% ELSIF ff.dvf_type == 6 %]
+                  [% INCLUDE "cldl/includes/select.tt" %]
+                [% END %]
+              [% END %]
+
+          </form>
+              <div class="form-group">
+                [%+ INCLUDE cldl/includes/buttons/form_buttons.tt +%]
+              </div>
+            </fieldset>
+        </div>
+      </div>
+
+      <script>
+        [%+ INCLUDE cldl/includes/js/return.js +%]
+        [%+ INCLUDE cldl/includes/js/reload.js +%]
+
+        $('.savebutton').click( function() {
+          $('#cldl_form').submit();
+        });
+      </script>
+
+
+
+
+
+

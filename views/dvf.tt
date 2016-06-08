@@ -1,0 +1,54 @@
+
+    <div id="container">
+      [% INCLUDE cldl/page_header.tt %]
+      <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+          <h1>[% dv.dv_title %]</h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-1"> </div>
+        <div class="col-sm-10">
+          <div class="btn btn-primary">
+            <i class="glyphicon glyphicon-list"> 
+              <span class="icon_text">Lst</span>
+            </i>
+          </div>
+          <div class="btn btn-success">
+            <i class="glyphicon glyphicon-edit"> 
+              <span class="icon_text">Upd</span>
+            </i>
+          </div>
+          <div class="btn btn-danger" >
+            <i class="glyphicon glyphicon-log-in" > 
+              <span class="icon_text">Ins</span>
+            </i>
+          </div>
+        </div>
+        <div class="col-sm-1"> </div>
+      </div>
+      [% FOREACH column IN column_list %]
+      <div class="row">
+        <form action="/"> 
+          <div class="col-sm-1"> </div>
+          <div class="col-sm-10">
+            <input type="checkbox" 
+                   name="[% field %]_list"   
+                   id="[% field %]_list"   
+                   value="1" CHECKED>
+            <input type="checkbox" 
+                   name="[% field %]_edit"   
+                   id="[% field %]_edit"   
+                   value="1" CHECKED>
+            <input type="checkbox" 
+                   name="[% field %]_insert" 
+                   id="[% field %]_insert" 
+                   value="1" CHECKED>
+          </div>
+          <div class="col-sm-1"> </div>
+        </form> 
+      </div>          <!-- row -->
+      [% END %]
+    </div>            <!-- container -->

@@ -1,0 +1,67 @@
+
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
+          <div class="" id="error_message">
+            [% error_message %]
+          </div>
+          <form class="form-horizontal" method="POST" action="login">
+            <fieldset>
+              <!-- Form Name -->
+              <legend>Login</legend>
+      
+              <!-- Text input-->
+              <div class="control-group">
+                <label class="control-label" for="user_name">ID:</label>
+                <div class="controls">
+                  <input id="user_name" 
+                         name="user_name" 
+                         placeholder="" 
+                         class="input-xlarge" 
+                         required="" 
+                         type="text">
+                </div>
+              </div>            <!-- control group -->
+              <!-- Text input -->
+      
+              <!-- Password input-->
+              <div class="control-group">
+                <label class="control-label" for="user_pass">Password:</label>
+                <div class="controls">
+                  <input id="user_pass" 
+                         name="user_pass" 
+                         placeholder="" 
+                         class="input-xlarge" 
+                         required="" 
+                         type="password">
+                </div>
+              </div>           <!-- control group -->
+              <!-- Password input-->
+
+              <input type="hidden" name="req_path" value="[% req_path %]">
+      
+              <!-- Button -->
+              <div class="control-group">
+                <label class="control-label" for="login"></label>
+                <div class="controls">
+                  <button id="login" name="login" class="btn btn-primary">Login</button>
+                </div>
+              </div>           <!-- control group -->
+              <!-- Button -->
+      
+            </fieldset>
+          </form>
+        </div> <!-- col-sm-9 -->
+      </div> <!-- row -->
+      <div class="row">
+        <div class="col-sm-12"><br><br><br></div>
+      </div> <!-- row -->
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-1">
+          <a href="#">Register</a>
+        </div>
+        <div class="col-sm-8">
+          <a href="#">Forgot my ID/Password</a>
+        </div>
+      </div> <!-- row -->

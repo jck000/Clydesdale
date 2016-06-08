@@ -1,0 +1,45 @@
+
+<!-- Multiple Radios -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="radios">Multiple Radios</label>
+  <div class="col-md-4">
+  <div class="radio">
+    <label for="radios-0">
+      <input name="radios" id="radios-0" value="1" checked="checked" type="radio">
+      Option one
+    </label>
+  </div>
+  <div class="radio">
+    <label for="radios-1">
+      <input name="radios" id="radios-1" value="2" type="radio">
+      Option two
+    </label>
+  </div>
+  </div>
+</div>
+
+
+
+
+<!-- Multiple Radios (inline) -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="radios">Inline Radios</label>
+  <div class="col-md-4"> 
+    <label class="radio-inline" for="radios-0">
+      <input name="radios" id="radios-0" value="1" checked="checked" type="radio">
+      1
+    </label> 
+    <label class="radio-inline" for="radios-1">
+      <input name="radios" id="radios-1" value="2" type="radio">
+      2
+    </label> 
+    <label class="radio-inline" for="radios-2">
+      <input name="radios" id="radios-2" value="3" type="radio">
+      3
+    </label> 
+    <label class="radio-inline" for="radios-3">
+      <input name="radios" id="radios-3" value="4" type="radio">
+      4
+    </label>
+  </div>
+</div>

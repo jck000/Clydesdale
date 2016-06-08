@@ -1,0 +1,74 @@
+      <form class="form-horizontal" 
+            method="post" 
+            action="[% app_host_url %]/admin/dvfromtable/insert" 
+            id="create_dv_from_table" 
+            name="create_dv_from_table">
+
+        <fieldset>
+
+          <legend>Name</legend>
+
+          <br><br>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label" 
+                   for="dv_db_table">DB Table</label>
+
+            <div class="col-md-4">
+              <select id="dv_db_table" name="dv_db_table" class="form-control">
+                <option value="Select A Table">Select A Table</option>
+                [% FOREACH table IN tbl_list.sort %]
+                  <option value="[% table %]">[% table %]</option>
+                [% END %]
+              </select>
+            </div>
+          </div>
+
+          <br><br>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label" 
+                   for="dv_name">DataView Name:</label>
+            <div class="col-md-4">
+              <input id="dv_name" 
+                     name="dv_name" 
+                     type="text" 
+                     placeholder="" 
+                     required="1" 
+                     value="[% dv.dv_name %]"
+                     class="form-control input-xlarge">
+            </div>
+          </div>
+
+          <br><br>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label" 
+                   for="textinput">DataView Title</label>  
+            <div class="col-md-4">
+              <input id="dv_title"
+                     name="dv_title" 
+                     value="[% dv.dv_title %]"
+                     placeholder=""             
+                     type="text" 
+                     class="form-control input-xlarge">
+            </div>
+          </div>
+
+          <br><br>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label" 
+                   for="submitbutton">
+            </label>
+            <div class="col-md-4">
+              <button id="submit"
+                      class="btn btn-primary">
+                Create DataView
+              </button>
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+

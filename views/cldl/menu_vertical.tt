@@ -1,0 +1,25 @@
+
+
+<ul class="nav nav-pills">
+  [% IF app_rt.logged_in %]
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+      DataViews <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+      <li>
+        <a href="[% web_host_url %]/cldl/dv/create" >Create A DataView</a>
+      </li>
+      <li>
+        <a href="[% web_host_url %]/cldl/dv/display/dv_list" >List/Edit DataViews</a>
+      </li>
+    </ul>
+  </li>
+  [% ELSE %]
+  <li>
+    <a href="[% web_host_url %]/login">login</a>
+  </li>
+  [% END %]
+</ul>
+
+

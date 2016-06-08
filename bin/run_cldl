@@ -1,0 +1,98 @@
+#!/bin/bash
+
+#
+# cldl - this script starts and stops Clydesdale
+#
+# description:  cldl2.fairandshowvendor.com
+
+# Add these to crontab for user fasv
+### HOME=/home/fasv/apps
+### @reboot $HOME/apps/CLDL/bin/run_cldl start >> $HOME/apps/CLDL/logs/crontab_run.log 2>&1
+
+#
+# Set Environment variables
+#
+
+### if [ "$LOGNAME" != "cldl" ] ; then
+###   echo "This application can only be run by 'cldl'.\n"
+###   exit
+### fi
+
+PATH=/home/jbilemjian/perl5/perlbrew/bin:/home/jbilemjian/perl5/perlbrew/perls/perl-5.16.3/bin:/usr/lib64/qt-3.3/  bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/jbilemjian/bin;export PATH
+
+# Source perlbrew
+. /home/jbilemjian/perl5/perlbrew/etc/bashrc
+
+perlbrew switch perl-5.16.3
+
+APPLICATION="cldl"
+PORT=30056
+WORKERS=5
+DANCER_DIR="/home/fasv/apps/CLDL"
+DANCER_APP="$DANCER_DIR/bin/app.pl"
+PID="$DANCER_DIR/tmp/plackup.cldl.pid"    ## PID of plack
+LOCK="$DANCER_DIR/tmp/plackup.cldl.lck"
+PLACKUP="/usr/local/bin/plackup"
+PLACKUP_ARGS="-E CLDL -p $PORT -s Starman --pid=$PID --workers $WORKERS -D"
+PLACKUP_OUT="/dev/null"
+SLEEP_CHECK="15"
+
+# Execute cleanup on these signals
+trap 'cleanup' 1 2 3 6 9 15
+
+cleanup() {
+  echo "Cleaning up...."
+  if [ -f $PID ] ; then
+    kill `cat $PID` > /dev/null
+  fi
+  echo "done\n\n";
+}
+
+start() {
+    [ -x $plackup ] || exit 5
+    [ -f $DANCER_APP ] || exit 6
+        echo "Starting $APPLICATION on port $PORT: "
+        $PLACKUP $PLACKUP_ARGS -a $DANCER_APP 0<&- &> $PLACKUP_OUT 
+        retval=$?
+        if [ $retval -eq 0 ]; then
+          echo "$APPLICATION Started\n"
+        else
+          echo "Unable to start $APPLICATION\n"
+          exit 7
+        fi
+}
+
+stop() {
+    echo "Stopping $APPLICATION on port $PORT: "
+    if [ -f $PID ]; then
+        kill `cat $PID` > /dev/null
+        retval=$?
+        [ $retval -eq 0 ] && rm -f $LOCK
+        echo "\n"
+        return $retval
+    fi
+    echo "pid $PID not found\n\n"
+    return 1
+}
+
+restart() {
+    stop
+    start
+}
+
+case "$1" in
+    start)
+        $1
+        ;;
+    stop)
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}\n\n"
+        exit 2
+esac
+
+

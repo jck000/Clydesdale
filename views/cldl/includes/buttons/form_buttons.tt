@@ -1,0 +1,19 @@
+
+              <div class="form-group">
+                [% IF session.cldl_return_to_page != '' %]
+                <button class="btn btn-primary returnbutton">
+                  <i class="glyphicon glyphicon-circle-arrow-left"></i> 
+                  Return
+                </button>
+                [% END %]
+
+                <button class="btn btn-default resetbutton">
+                  <i class="glyphicon glyphicon-refresh"></i> 
+                  Reset
+                </button>
+
+                <button class="btn btn-danger savebutton">
+                  <i class="glyphicon glyphicon-save"></i>
+                  Save
+                </button>
+              </div>
