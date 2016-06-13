@@ -51,7 +51,8 @@ get '/select/:dv_name_id' => sub {
                           checkbox => 'true' } );
   }
 
-  foreach my $ref ( @{$dvf} ) {
+# from get_dvf  $dvf->{dvf_fields} = \@dvf_fields;
+  foreach my $ref ( @{$dvf->{dvf_fields}} ) {
 
     ### Must be set in order to edit
     $dv->{idField} = $ref->{dvf_db_column} if ( $ref->{dvf_key} == 1 );
@@ -190,9 +191,15 @@ get '/select/:dv_name_id' => sub {
       }
 
       while ( $ref = $sth_data->fetchrow_hashref ) {
+        foreach my $key ( keys $ref ) {
+          if (    ref($dvf->{ $key }->{dvf_values}) eq 'HASH' 
+               && $ref->{$key} ne "" ) {
+
+            $ref->{$key} = $dvf->{$key}->{dvf_values}->{$ref->{$key}};
+          }
+        }
         push( @data_values, $ref);
       }
-
 
       $data = to_json( \@data_values );
 
@@ -251,7 +258,7 @@ post '/update/:dv_name_id' => sub {
   ### DataView Fields
   $dvf = get_dvf( $dv->{dv_id} );
 
-  foreach my $ref ( @{$dvf} ) {
+  foreach my $ref ( @{$dvf->{dvf_fields}} ) {
     # If it's a key, save it to add to the end of the column list
     if ( $ref->{dvf_key} == 1 ) {
 
@@ -311,7 +318,7 @@ post '/insert/:dv_name_id' => sub {
   ### DataView Fields
   $dvf = get_dvf( $dv->{dv_id} );
 
-  foreach my $ref ( @{$dvf} ) {
+  foreach my $ref ( @{$dvf->{dvf_fields}} ) {
     if ( params->{ $ref->{dvf_db_column} } ) {
       # add it to the column list
       push( @insert_columns, $ref->{dvf_db_column}) ;
@@ -445,9 +452,9 @@ sub get_dv {
 
 sub get_dvf {
   my $dv           = shift;
-  my $cldl_dv_type = shift;
 
   my @dvf_fields;
+  my $dvf;
 
   # DataView Fields
   my $sth_dvf = database->prepare( 
@@ -477,10 +484,21 @@ sub get_dvf {
   $sth_dvf->execute( $dv );
 
   while ( my $ref = $sth_dvf->fetchrow_hashref ) {
+    ### If there's a hash that's used to lookup values
+    if (    defined $ref->{dvf_values} 
+         && $ref->{dvf_values} ne '' ) {
+      my $dvf_values_hash=eval($ref->{dvf_values});
+      $ref->{dvf_values} = $dvf_values_hash;
+    }
+
+    $dvf->{ $ref->{dvf_db_column} } = $ref;
     push( @dvf_fields, $ref);
+
   }  ### While
 
-  return \@dvf_fields;
+  $dvf->{dvf_fields} = \@dvf_fields;
+
+  return $dvf;
 }
 
 

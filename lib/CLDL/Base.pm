@@ -1,6 +1,6 @@
 package CLDL::Base;
 
-use Dancer2 ':syntax';
+use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 
 our $VERSION = '0.00001';
