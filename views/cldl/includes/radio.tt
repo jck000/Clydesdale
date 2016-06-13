@@ -4,21 +4,25 @@
                            for="[% ff.dvf_name %]">
                       [% ff.dvf_label %]
                     </label>  
-                    [% cbx_id = ff.d_id %]
                     <div class="col-md-4">
-                      [%# dtl = d.$cbx_id.dtl #%]
-                      [% FOREACH cbx IN d.$cbx_id.dtl.nsort('ordr') %]
+
+                      [% FOREACH cbx_key IN ff.dvf_values.keys.nsort %]
+<!-- cbx_key: [% cbx_key %] -->
                         <div class="radio">
-                          <label for="[% ff.dvf_name %]-[% cbx.ordr %]">
+                          <label for="[% ff.dvf_name %]-[% cbx_key %]">
                             <input type="radio" 
                                    name="[% ff.dvf_name %]" 
-                                   id="[% ff.dvf_name %]-[% cbx.ordr %]" 
-                                   value="[% IF data.$data_col_name != '' %][% cbx.df_value %][% END %]"
-                                   [% IF data.$data_col_name == cbx.df_value %]CHECKED[% END %]>
-                            [% cbx.df_label %]
+                                   id="[% ff.dvf_name %]-[% cbx_key %]" 
+                                   value="[% cbx_key %]"
+                                   [% IF addrecord == 1 && cbx_key == ff.dvf_default_value %] CHECKED [% END %]
+                                   [% IF addrecord != 1 && data.$data_col_name != '' && cbx_key == data.$data_col_name %] CHECKED [% END %]>
+                            [% ff.dvf_values.$cbx_key %]
                           </label>
                         </div>
                       [% END %]
+
+
+
                     </div>    <!-- col-md-4 -->
                   </div>      <!-- form-group -->
                 
