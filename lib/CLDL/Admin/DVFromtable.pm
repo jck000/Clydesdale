@@ -6,6 +6,8 @@ use Dancer2::Plugin::Database;
 use base qw( CLDL::Helpers::Defaults );
 use base qw( CLDL::Base );
 
+my $DVF = $CLDL::Helpers::Defaults::DVF;
+
 our $VERSION = '0.00001';
 
 prefix '/admin/dvfromtable';
@@ -64,9 +66,10 @@ post '/insert' => sub {
   my @sorted_column_list;
   my $sth_idvf = database->prepare( 
             'INSERT INTO cldl_dvf 
-               ( dv_id, dvf_db_column, dvf_key, dvf_label, dvf_name, ordr )
+               ( dv_id, dvf_db_column, dvf_key, dvf_label, dvf_name, ordr, 
+                 dvf_values, dvf_default_value )
                  VALUES 
-               ( ?, ?, ?, ?, ?, ? )'
+               ( ?, ?, ?, ?, ?, ?, ?, ? )'
   );
   my $cnt = 0;
   foreach my $column ( @{$column_list} ) {
@@ -79,7 +82,10 @@ post '/insert' => sub {
                         $column->{mysql_is_pri_key}, 
                         $column->{COLUMN_NAME},
                         $column->{COLUMN_NAME}, 
-                        $column->{ORDINAL_POSITION} );
+                        $column->{ORDINAL_POSITION},
+                        $DVF->{$column->{COLUMN_NAME}}->{dvf_values},
+                        $DVF->{$column->{COLUMN_NAME}}->{dvf_default_value}
+                        );
   }
 
   redirect '/dv/select/' .  params->{dv_name};
