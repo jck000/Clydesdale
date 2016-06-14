@@ -191,7 +191,7 @@ get '/select/:dv_name_id' => sub {
       }
 
       while ( $ref = $sth_data->fetchrow_hashref ) {
-        foreach my $key ( keys $ref ) {
+        foreach my $key ( keys %{$ref} ) {
           if (    ref($dvf->{ $key }->{dvf_values}) eq 'HASH' 
                && $ref->{$key} ne "" ) {
 
