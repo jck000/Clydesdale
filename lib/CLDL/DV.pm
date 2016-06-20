@@ -3,13 +3,6 @@ package CLDL::DV;
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 
-#use Moo;
-
-
-#use CLDL::DV::Core;
-
-use Data::Dumper;
-
 our $VERSION = '0.00001';
 
 prefix '/dv' ;
@@ -29,6 +22,10 @@ get '/select/:dv_name_id' => sub {
   my $cldl_sql_order  = params->{order}      ||= "ASC";
   my $cldl_addrecord  = params->{addrecord}  ||= 0;
   my $cldl_dv_name    = params->{dv_name_id} ||= params->{dv_name_override} ;
+
+  debug "ADDRECORD: " . $cldl_addrecord;
+
+
 
   ### DataView
   $dv = get_dv( $cldl_dv_name, session('company_id') );
@@ -206,8 +203,13 @@ get '/select/:dv_name_id' => sub {
     } ### If/ELSIF cldl_dv_type
   }   ### NOT Add Record
 
+  debug "dv_type: " . $cldl_dv_type;
+  debug "DATA:";
+  debug $data;
+
   ### Form
   if ( $cldl_dv_type == 1 ) {
+
   
     $cldl_template = 'cldl/dv_form.tt' if ( $cldl_template eq 'dv_form' ) ;
 
@@ -223,8 +225,6 @@ get '/select/:dv_name_id' => sub {
   } elsif (    $cldl_dv_type == 0 
             || $cldl_dv_type == 2 
             || $cldl_dv_type == 3 ) {
-
-    #debug "dv_dt.tt";
 
     # Datatable is always 'dv_dt'
     return template 'cldl/dv_dt.tt', { 
