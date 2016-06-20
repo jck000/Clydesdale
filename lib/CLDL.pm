@@ -16,10 +16,9 @@ use CLDL::Menu;
 ### use CLDL::Admin::Crontab;  
 use CLDL::Admin::EditMenu;  
 use CLDL::Admin::DVFromtable;  
+use CLDL::Admin::Generic;  
 
-#use CLDL::Admin::Company;  
 # use CLDL::Admin::Logs;  
-# use CLDL::Admin::Users;
 
 use Digest::MD5 qw( md5_hex );
 
@@ -46,7 +45,8 @@ hook 'before' => sub {
   }
 
   #  Setup Basic Navigation  
-  if ( session('cldl_return_t_page') eq '' ) { 
+  if (    ! defined session('cldl_return_to_page') 
+       || session('cldl_return_to_page') eq '' ) { 
   # if ( session('cldl_return_t_page') eq request->path_info ) { 
     session cldl_return_to_page => request->path_info;
     session cldl_reload_page    => '';
@@ -59,6 +59,7 @@ hook 'before' => sub {
   #  Delete is_cldl_menu=1
 #  request->path_info =~ s/is_cldl_menu=1//g;
 #  request->path_info =~ s/&&/&/g;
+
 
 };
 
