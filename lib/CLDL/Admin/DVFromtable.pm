@@ -39,7 +39,7 @@ use base qw( CLDL::Base );
 
 our $VERSION = '0.00001';
 
-prefix '/admin/dvfromtable';
+prefix '/cldl/admin/dvfromtable';
 
 get '/select' => sub {
   debug "IN DVFromtable";

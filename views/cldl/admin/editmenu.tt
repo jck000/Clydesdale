@@ -40,6 +40,7 @@
           		  <li id="item_[% em.menu_id %]" 
                     data-menu_id="[% em.menu_id %]" 
                     data-pmenu_id="[% em.pmenu_id %]" 
+                    data-item_type="top"
                     class="main_menu_item [% IF em.company_id == 1 %] company1 [% END %] [% IF em.active == 0 %] inactivemenu [% END %]" >
                   <div>
                     [% em.menu_label %]
@@ -51,6 +52,7 @@
           		         <li id="item_[% emc.menu_id %]" 
                            data-menu_id="[% emc.menu_id %]" 
                            data-pmenu_id="[% emc.pmenu_id %]" 
+                           data-item_type="child"
                            class="menu_item [% IF emc.company_id == 1 %] company1 [% END %] [% IF emc.active == 0 %] inactivemenu [% END %]" >
                          <div>
                            [% emc.menu_label %]
@@ -102,19 +104,15 @@
          */
         $('.addbutton').click( function() {
 
-          var new_location = '[% app_host_url %]/dv/select/add_edit_cldl_menu?addrecord=1&db_type=1&return_to_path=' + $('#return_to_path').val();
+          var new_location = '[% app_host_url %]/dv/select/menu?addrecord=1&db_type=1&return_to_path=[% session.cldl_return_to_page %]';
 
           window.location.replace( new_location );
         });
 
-/*
-        $('.main_menu_item').on( 'dblclick' , function () {
-        });
-*/
 
         $('.main_menu_item .menu_item').on( 'dblclick' , function () {
 
-          var new_location = '[% app_host_url %]/dv/select/add_edit_cldl_menu?id=' + $(this).attr('data-menu_id') + '&db_type=1&return_to_path=' + $('#return_to_path').val();
+          var new_location = '[% app_host_url %]/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&db_type=1&return_to_path=[% session.cldl_return_to_page %]';
 
           if ( new_location.indexOf('?') > 0 ) {
             new_location += '&menu_id=' + $(this).attr('data-menu_id');
@@ -131,7 +129,7 @@
       });
 
       $('.returnbutton').click( function() {
-        window.location.assign("[% session.cldl_return_to %]");
+        window.location.assign("[% session.cldl_return_to_page %]");
       });
 
       $('.savebutton').click( function() {

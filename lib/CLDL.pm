@@ -9,7 +9,7 @@ use Data::Dumper;
 #use CLDL::Account;
 use CLDL::DV;
 use CLDL::Menu;
-#use CLDL::Upload;
+use CLDL::Upload;
 
 ### Admin
 ### use CLDL::Admin::Config;  
@@ -36,9 +36,9 @@ hook 'before' => sub {
  
   # If there's no company_id and it's not login, then send to login page
   if (     ! session('company_id') 
-        && ( request->path_info !~ m{^/login} 
-             && request->path_info !~ m{^/account/register} 
-             && request->path_info !~ m{^/account/forgotpassword} ) ) {
+        && (    request->path_info !~ m{^/login} 
+             && request->path_info !~ m{^/cldl/account/register} 
+             && request->path_info !~ m{^/cldl/account/forgotpassword} ) ) {
     redirect config->{cldl}->{base_url} 
                . config->{cldl}->{login_url} 
                . '?req_path=' . request->path_info;
@@ -80,41 +80,18 @@ hook 'before_template_render' => sub {
   $tokens->{cldl_reload_page} = session('cldl_reload_page');    # Reload form
   $tokens->{cldl_logged_in}   = session('company_id');
 
-  open(my $LOG, ">>", "/tmp/tokens.log");
-  print $LOG "BEFORE TEMPLATE RENDER: " . request->path_info . "\n";
-  print $LOG Dumper( $tokens );
-  close($LOG);
-};
-
-#hook after_template_render => sub {
-#  my $ref_content = shift;
-# 
 #  open(my $LOG, ">>", "/tmp/tokens.log");
-#  print $LOG "AFTER TEMPLATE RENDER: " . request->path_info . "\n";
-#  print $LOG $$ref_content;
+#  print $LOG "BEFORE TEMPLATE RENDER: " . request->path_info . "\n";
+#  print $LOG Dumper( $tokens );
 #  close($LOG);
-#;
-
-### hook before_layout_render => sub {
-###   my ($tokens, $ref_content) = @_;
-### 
-###   $tokens->{cldl_menu}        = session('cldl_menu');        # Application menu
-###   $tokens->{cldl_return_to}   = session('cldl_return_to');   # Return to main level
-###   $tokens->{cldl_reload_page} = session('cldl_reload_page'); # Reload form
-### 
-###   open(my $LOG, ">>", "/tmp/layout.log");
-###   print $LOG "BEFORE LAYOUT RENDER: " . request->path_info . "\n";
-###   print $LOG Dumper($tokens) . "\n\n";
-###   print $LOG $$ref_content;
-###   close($LOG);
-### 
-### };
+};
 
 #
 # Show template
 #
 get '/' => sub {
-  template 'index.tt';
+  #template 'index.tt';
+  template 'cldl/splash.tt';
 };
 
 
@@ -131,8 +108,9 @@ any '/splash' => sub {
 #
 get '/login' => sub {
   template 'cldl/login.tt', { 
-                               'title'  => 'Login',
-                               req_path => params->{req_path}  };
+                               title    => 'Login',
+                               req_path => params->{req_path}  
+                            };
 
 };
 

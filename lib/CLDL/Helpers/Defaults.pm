@@ -1,11 +1,8 @@
 package CLDL::Helpers::Defaults;
 
-use Dancer2 appname => 'CLDL';
-use Dancer2::Plugin::Database;
-
 our $VERSION = '0.00001';
 
-my $DV_DATA_ATTRIBURES = qq(
+my $DV = { data_attribures => qq(
                  buttonAlign: 'left',
                  cache: true, 
                  cardView: false,
@@ -31,8 +28,11 @@ my $DV_DATA_ATTRIBURES = qq(
                  smartDisplay: true,
                  striped: true,
                  search: true',
-            );
+            )};
 my $DVF = { 
+#                        $DVF->{ $column->{COLUMN_NAME} }->{dvf_values},
+#                        $DVF->{ $column->{COLUMN_NAME} }->{dvf_default_value}
+
             global => qq(
                           'dvf_db_column' => '',
                           'dvf_key'       => '0',

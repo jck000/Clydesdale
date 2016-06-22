@@ -18,10 +18,13 @@
               <div class="form-group">
                 [%+ INCLUDE cldl/includes/buttons/form_buttons.tt +%]
               </div>
+<!-- 
+Addrecord: [% data.addrecord %] 
+-->
           <form class="form-horizontal" 
                 id="cldl_form" 
                 method="post"
-                action="[% app_host_url %]/dv/[% IF addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]">
+                action="[% app_host_url %]/dv/[% IF data.addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]">
               [% FOREACH ff IN dvf.nsort('ordr') %]
                 [% data_col_name = ff.dvf_name %]
 

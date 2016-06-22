@@ -1,8 +1,13 @@
 
       <div class="row">
         <div class="col-sm-12">
-          <br>
-          <br>
           [% INCLUDE cldl/logo_large.tt %]
+          <div class="jumbotron text-center">
+            <h1>CLYDESDALE</h1>
+          </div>
+          <div class="text-center">
+            The workhorse for web applications
+          </div>
+          <br><br><br>
         </div>
       </div>

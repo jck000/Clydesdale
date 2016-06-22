@@ -4,7 +4,7 @@ use Dancer2 appname => 'CLDL';
 
 our $VERSION = '0.00001';
 
-prefix '/admin';
+prefix '/cldl/admin';
 
 any ['get','post'] => '/:dv_name_id/:action' => sub {
   debug "IN admin/" . params->{'dv_dv'};
