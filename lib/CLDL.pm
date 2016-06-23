@@ -80,10 +80,6 @@ hook 'before_template_render' => sub {
   $tokens->{cldl_reload_page} = session('cldl_reload_page');    # Reload form
   $tokens->{cldl_logged_in}   = session('company_id');
 
-#  open(my $LOG, ">>", "/tmp/tokens.log");
-#  print $LOG "BEFORE TEMPLATE RENDER: " . request->path_info . "\n";
-#  print $LOG Dumper( $tokens );
-#  close($LOG);
 };
 
 #
@@ -243,73 +239,6 @@ get '/logout' => sub {
   redirect config->{cldl}->{base_url} . '/splash';
   # redirect config->{cldl}->{base_url} . config->{cldl}->{login_url};
 };
-
-
-#
-# Get menu for user at login and store in session for faster access
-#
-### sub old_get_menu {
-### 
-###   debug "GET_MENU";
-### 
-###   my $sth_menu = database->prepare( 
-###              qq( 
-###                 SELECT m.menu_id,
-###                        m.pmenu_id,
-###                        m.ordr,
-###                        m.menu_label,
-###                        m.menu_link,
-###                        m.menu_js_functions,
-###                        m.menu_data_attributes,
-###                        m.menu_notes
-###                   FROM cldl_menu m,
-###                        cldl_role_permission_menu rpm
-###                     WHERE (    m.company_id = ?
-###                             OR m.company_id = 1 )
-###                           AND m.pmenu_id    = m.menu_id
-###                           AND m.active      = 1
-### 
-###                           AND rpm.role_id   = ?
-###                           AND rpm.menu_id   = m.menu_id
-###                   UNION
-###                 SELECT m.menu_id AS menu_id,
-###                        m.pmenu_id,
-###                        m.ordr,
-###                        m.menu_label,
-###                        m.menu_link,
-###                        m.menu_js_functions,
-###                        m.menu_data_attributes,
-###                        m.menu_notes
-###                   FROM cldl_menu m,
-###                        cldl_role_permission_menu rpm
-###                     WHERE (    m.company_id = ?
-###                             OR m.company_id = 1 )
-###                           AND m.pmenu_id   != m.menu_id
-###                           AND m.active      = 1
-### 
-###                           AND rpm.role_id   = ?
-###                           AND rpm.menu_id   = m.menu_id
-###                    ORDER BY 2, 3 )
-###           );
-### 
-###   $sth_menu->execute( session('company_id'), session('role_id'), 
-###                       session('company_id'), session('role_id') );
-### 
-###   my $menu;
-###   my $is_cldl_menu;
-###   while ( my $ref = $sth_menu->fetchrow_hashref ) {
-###     if ( ( defined $ref->{pmenu_id} && $ref->{pmenu_id} eq '' ) 
-###            || ! defined $ref->{pmenu_id} ) {
-###       $menu->{ $ref->{menu_id} } = $ref;
-###     } elsif ( $ref->{pmenu_id} ne '' ) {
-###       $menu->{ $ref->{pmenu_id} }->{children}->{ $ref->{menu_id} } = $ref;
-###     }
-###     $is_cldl_menu->{ $ref->{menu_link} } = 1;
-###   }  
-### 
-###   return ($menu, $is_cldl_menu);
-### 
-### }
 
 true;
 
