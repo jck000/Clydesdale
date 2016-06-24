@@ -2,9 +2,85 @@ package CLDL::Account;
 
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
-use Dancer2::Plugin::Email;
+#use Dancer2::Plugin::Email;
 
 prefix '/cldl/account';
+
+
+# 
+# Preset register user form
+#
+get '/register' => sub {
+
+  template 'cldl/account/register.tt';
+
+};
+
+post '/register' => sub {
+ 
+  debug "IN REGISTER POST ";
+
+  my $sth_insert_user = database->prepare(
+    qq( 
+         INSERT INTO cldl_user 
+             ( company_id, user_name, user_pass, first_name, last_name, user_email )
+           VALUES
+             ( ?, ?, ?, ?, ?, ? )
+    )
+  );
+
+  $sth_insert_user->execute( 
+    1,
+    params->{user_name},
+    params->{user_pass}, 
+    params->{first_name}, 
+    params->{last_name},
+    params->{email}
+  );
+
+#
+#    email {
+#        from    => 'sf@signedforms.com',
+#        to      => $page->{params}->{register_email},
+#        subject => 'SignedForms.com App Registration',
+#        body    => 'Your device has been registered with our demo server.  '
+#                     . 'You must enter the following activation code into '
+#                     . 'the app in order to activate it.  '
+#                     . "\n\n" . 'ACTIVATION CODE:   ' 
+#                     . $page->{results}->{activation_code}
+#                     . "\n\n\nSignedForms.com\nActivation System\n\n"
+#                     . 'http://www.signedforms.com'
+# 
+#    };
+
+#  template 'index.html', $page;
+};
+
+post '/registration/check' => sub {
+
+  debug "IN REGISTRATION CHECK " . params->{user_name};
+
+  my $sth_select_user = database->prepare(
+    qq( 
+        SELECT user_name
+          FROM cldl_user
+            WHERE user_name = ?
+    )
+  );
+
+  $sth_select_user->execute( params->{user_name} );
+  my $user_exists = $sth_select_user->fetchrow_hashref ;
+
+  header( 'Content-Type'  => 'text/json' );
+  header( 'Cache-Control' =>  'no-store, no-cache, must-revalidate' );
+
+  if (    defined $user_exists->{user_name} 
+       && $user_exists->{user_name} eq params->{user_name} ) {
+    to_json({ 'exists' => 1 });
+  } else {
+    to_json({ 'exists' => 0 });
+  }
+};
 
 
 #
@@ -25,64 +101,6 @@ post '/forgotpassword' => sub {
 };
 
 
-# 
-# Preset register user form
-#
-get '/register' => sub {
-
-  template 'cldl/register.tt';
-
-
-};
-
-get '/registration/check/:user_name' => sub {
-
-  my $SQL = 
-    qq( 
-        SELECT user_name 
-          FROM cldl_user
-            WHERE user_name = ?
-    );
-
-#    my $sth_user_check->prepare( $SQL );
-#    $sth_user_check->execue( $user_name );
-
-};
-
-post '/register' => sub {
- 
-#  my $SQL = 
-#    qq( 
-#         INSERT INTO cldl_user 
-#             ( company_id, user_name, user_pass, first_name, last_name, user_email )
-#           VALUES
-#             ( ?, ?, ?, ?, ?, ? )
-#    );
-#
-#    email {
-#        from    => 'sf@signedforms.com',
-#        to      => $page->{params}->{register_email},
-#        subject => 'SignedForms.com App Registration',
-#        body    => 'Your device has been registered with our demo server.  '
-#                     . 'You must enter the following activation code into '
-#                     . 'the app in order to activate it.  '
-#                     . "\n\n" . 'ACTIVATION CODE:   ' 
-#                     . $page->{results}->{activation_code}
-#                     . "\n\n\nSignedForms.com\nActivation System\n\n"
-#                     . 'http://www.signedforms.com'
-# 
-#    };
-
-#  template 'index.html', $page;
-};
-
-
-#
-# Accept registration information
-#
-post '/register' => sub {
-
-};
 
 
 #
