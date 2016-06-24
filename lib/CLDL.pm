@@ -6,7 +6,7 @@ use Dancer2::Plugin::Database;
 use Data::Dumper;
 
 ### Base
-#use CLDL::Account;
+use CLDL::Account;
 use CLDL::DV;
 use CLDL::Menu;
 use CLDL::Upload;
@@ -38,7 +38,9 @@ hook 'before' => sub {
   if (     ! session('company_id') 
         && (    request->path_info !~ m{^/login} 
              && request->path_info !~ m{^/cldl/account/register} 
-             && request->path_info !~ m{^/cldl/account/forgotpassword} ) ) {
+             && request->path_info !~ m{^/cldl/account/forgotpassword} 
+             && request->path_info !~ m{^/cldl/account/registration/check} ) ) {
+
     redirect config->{cldl}->{base_url} 
                . config->{cldl}->{login_url} 
                . '?req_path=' . request->path_info;
