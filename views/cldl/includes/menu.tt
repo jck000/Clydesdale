@@ -52,12 +52,12 @@
 
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <a href="[% app_host_url %]/account/register">
+          <a href="[% app_host_url %]/cldl/account/register">
             <span class="glyphicon glyphicon-user"></span> Register
           </a>
         </li>
         <li>
-          <a href="[% app_host_url %]/account/changepassword">
+          <a href="[% app_host_url %]/cldl/account/changepassword">
             <span class="glyphicon glyphicon-user"> </span> My Account
           </a>
         </li>
