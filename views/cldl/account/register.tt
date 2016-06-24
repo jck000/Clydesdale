@@ -1,0 +1,199 @@
+
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-9">
+          <div class="" id="error_message">
+            [% error_message %]
+          </div>
+          <form name="register_form" 
+                class="form-horizontal" 
+                method="POST" 
+                action="register">
+            <fieldset>
+              <!-- Form Name -->
+              <legend>Register</legend>
+      
+              <!-- Text input-->
+              <div class="control-group">
+                <label class="control-label" for="user_name">ID:</label>
+                <div class="controls">
+                  <input id="user_name" 
+                         name="user_name" 
+                         placeholder="user name" 
+                         class="input-xlarge" 
+                         required="y" 
+                         type="text">
+                <span id="verified_user_name_message"></span>
+                </div>
+              </div>            <!-- control group -->
+              <!-- Text input -->
+      
+              <!-- Text input-->
+              <div class="control-group">
+                <label class="control-label" for="first_name">First Name:</label>
+                <div class="controls">
+                  <input id="first_name" 
+                         name="first_name" 
+                         placeholder="" 
+                         class="input-xlarge" 
+                         required="y" 
+                         type="text">
+                </div>
+              </div>            <!-- control group -->
+              <!-- Text input -->
+      
+              <!-- Text input-->
+              <div class="control-group">
+                <label class="control-label" for="last_name">Last Name:</label>
+                <div class="controls">
+                  <input id="last_name" 
+                         name="last_name" 
+                         placeholder="" 
+                         class="input-xlarge" 
+                         required="y" 
+                         type="text">
+                </div>
+              </div>            <!-- control group -->
+              <!-- Text input -->
+
+              <!-- Text input-->
+              <div class="control-group">
+                <label class="control-label" for="email">Email:</label>
+                <div class="controls">
+                  <input id="email" 
+                         name="email" 
+                         placeholder="email@example.com" 
+                         class="input-xlarge email" 
+                         required="y" 
+                         type="email">
+                </div>
+              </div>            <!-- control group -->
+              <!-- Text input -->
+      
+              <!-- Text input-->
+              <div class="control-group">
+                <label class="control-label" for="confirm_email">Confirm Email:</label>
+                <div class="controls">
+                  <input id="confirm_email" 
+                         name="confirm_email" 
+                         placeholder="email@example.com" 
+                         class="input-xlarge email" 
+                         required="y" 
+                         type="email">
+                  <span id="email_match_message"></span>
+                </div>
+              </div>            <!-- control group -->
+              <!-- Text input -->
+      
+      
+              <!-- Password input-->
+              <div class="control-group">
+                <label class="control-label" for="user_pass">Password:</label>
+                <div class="controls">
+                  <input id="user_pass" 
+                         name="user_pass" 
+                         placeholder="" 
+                         class="input-xlarge password" 
+                         required="y" 
+                         type="password">
+                  <span id="password_strength_message"></span>
+                </div>
+              </div>           <!-- control group -->
+              <!-- Password input-->
+
+              <!-- Password input-->
+              <div class="control-group">
+                <label class="control-label" for="confirm_user_pass">Confirm Password:</label>
+                <div class="controls">
+                  <input id="confirm_user_pass" 
+                         name="confirm_user_pass" 
+                         placeholder="" 
+                         class="input-xlarge password" 
+                         required="y" 
+                         type="password">
+                  <span id="password_match_message"></span>
+                </div>
+              </div>           <!-- control group -->
+              <!-- Password input-->
+
+
+              <!-- Button -->
+              <div class="control-group">
+                <label class="control-label" for="register"></label>
+                <div class="controls">
+                  <button class="btn btn-primary registerbutton">Register</button>
+                </div>
+              </div>           <!-- control group -->
+              <!-- Button -->
+      
+            </fieldset>
+          </form>
+        </div> <!-- col-sm-9 -->
+      </div> <!-- row -->
+      <div class="row">
+        <div class="col-sm-12"><br><br><br></div>
+      </div> <!-- row -->
+
+
+
+      <script>
+        $( "#user_name" ).change(function() {
+          var data = new Object();
+          data['user_name'] = $(this).val();
+          cldl_ajax('/cldl/account/registration/check', 
+                    data, 
+                    'post',
+                    function(json) { 
+                      if ( json['exists'] == 1 ) {
+                        $('#verified_user_name_message').text('This user ID is not available');
+                      } else {
+                        $('#verified_user_name_message').text('');
+                      }
+                    }, 
+                    function() {
+                      alert("Failure cldl_ajax");
+                    } 
+          ); // cldl_ajax
+        });  // change
+
+        $(".registerbutton").click(function () {
+          validate_email();
+          validate_password();
+          $('#registerform').submit();
+        });
+
+        $( '.email' ).change(function() {
+          validate_email();
+        });
+
+        $( '.password' ).change(function() {
+          validate_password();
+        });
+
+        function validate_password() {
+          var user_pass = $("#user_pass").val();
+          var confirm_user_pass = $("#confirm_user_pass").val();
+          if (user_pass != confirm_user_pass) {
+            $("#password_match_message").text('Passwords do not match.');
+            return false;
+          }
+          $("#password_match_message").text('');
+          return true;
+        }
+
+        function validate_email() {
+          var email = $("#email").val();
+          var confirm_email = $("#confirm_email").val();
+          if (user_pass != confirm_user_pass) {
+            $("#email_match_message").text('Emails do not match.');
+            return false;
+          }
+          $("#email_match_message").text('');
+          return true;
+        }
+
+      </script>
+
+
+
+
