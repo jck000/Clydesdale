@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- cldl.tt -->
     <title>[% title %]</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,9 +49,9 @@
 
     <script>
       $(document).ready(function(){
-        [% INCLUDE js/CLDLAjax.js %] 
         $('[data-toggle="tooltip"]').tooltip(); 
       });
+      [% INCLUDE cldl/includes/js/cldl_ajax.js %] 
     </script>
 
 
