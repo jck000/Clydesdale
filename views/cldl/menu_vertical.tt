@@ -8,16 +8,16 @@
     </a>
     <ul class="dropdown-menu" role="menu">
       <li>
-        <a href="[% web_host_url %]/cldl/dv/create" >Create A DataView</a>
+        <a href="[% app_host_url %]/cldl/dv/create" >Create A DataView</a>
       </li>
       <li>
-        <a href="[% web_host_url %]/cldl/dv/display/dv_list" >List/Edit DataViews</a>
+        <a href="[% app_host_url %]/cldl/dv/display/dv_list" >List/Edit DataViews</a>
       </li>
     </ul>
   </li>
   [% ELSE %]
   <li>
-    <a href="[% web_host_url %]/login">login</a>
+    <a href="[% app_host_url %]/login">login</a>
   </li>
   [% END %]
 </ul>
