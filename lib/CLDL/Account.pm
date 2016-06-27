@@ -4,6 +4,8 @@ use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 #use Dancer2::Plugin::Email;
 
+use Digest::MD5 qw( md5_hex );
+
 prefix '/cldl/account';
 
 
@@ -29,10 +31,12 @@ post '/register' => sub {
     )
   );
 
+  my $enc_pass = md5_hex( params->{user_name} . params->{user_pass} );
+
   $sth_insert_user->execute( 
     1,
     params->{user_name},
-    params->{user_pass}, 
+    $enc_pass,
     params->{first_name}, 
     params->{last_name},
     params->{email}
