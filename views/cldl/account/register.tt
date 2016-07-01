@@ -184,7 +184,7 @@
         function validate_email() {
           var email = $("#email").val();
           var confirm_email = $("#confirm_email").val();
-          if (user_pass != confirm_user_pass) {
+          if (email != confirm_email) {
             $("#email_match_message").text('Emails do not match.');
             return false;
           }
