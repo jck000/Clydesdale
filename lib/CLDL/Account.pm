@@ -8,7 +8,6 @@ use Digest::MD5 qw( md5_hex );
 
 prefix '/cldl/account';
 
-
 # 
 # Preset register user form
 #
@@ -31,16 +30,21 @@ post '/register' => sub {
     )
   );
 
-  my $enc_pass = md5_hex( params->{user_name} . params->{user_pass} );
+  my $encrypted_pass = md5_hex( params->{user_name} . params->{user_pass} );
 
   $sth_insert_user->execute( 
     1,
     params->{user_name},
-    $enc_pass,
+    $encrypted_pass,
     params->{first_name}, 
     params->{last_name},
     params->{email}
   );
+
+    redirect config->{cldl}->{base_url}
+               . config->{cldl}->{login_url}
+               . '?user_name=' . params->{user_name};
+
 
 #
 #    email {
