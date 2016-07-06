@@ -41,55 +41,99 @@ post '/register' => sub {
     params->{email}
   );
 
-    redirect config->{cldl}->{base_url}
+  my $sender  = 
+  my $from    = 
+  my $subject = 
+  my $body    = 
+
+  email {
+    sender  => 'bounces-here@foo.com', # optional
+    from    => 'bob@foo.com',
+    to      => 'sue@foo.com, jane@foo.com',
+    subject => 'allo',
+    body    => 'Dear Sue, ...<img src="cid:blabla">',
+    type    => 'html', # can be 'html' or 'plain'
+  };
+
+  redirect config->{cldl}->{base_url}
                . config->{cldl}->{login_url}
                . '?user_name=' . params->{user_name};
 
-
-#
-#    email {
-#        from    => 'sf@signedforms.com',
-#        to      => $page->{params}->{register_email},
-#        subject => 'SignedForms.com App Registration',
-#        body    => 'Your device has been registered with our demo server.  '
-#                     . 'You must enter the following activation code into '
-#                     . 'the app in order to activate it.  '
-#                     . "\n\n" . 'ACTIVATION CODE:   ' 
-#                     . $page->{results}->{activation_code}
-#                     . "\n\n\nSignedForms.com\nActivation System\n\n"
-#                     . 'http://www.signedforms.com'
-# 
-#    };
-
-#  template 'index.html', $page;
 };
 
-post '/registration/check' => sub {
+post '/registration/check/id' => sub {
 
   debug "IN REGISTRATION CHECK " . params->{user_name};
 
-  my $sth_select_user = database->prepare(
-    qq( 
-        SELECT user_name
-          FROM cldl_user
-            WHERE user_name = ?
-    )
-  );
-
-  $sth_select_user->execute( params->{user_name} );
-  my $user_exists = $sth_select_user->fetchrow_hashref ;
+  my $exists = check_id( params->{user_name} ) || 0 ;
 
   header( 'Content-Type'  => 'text/json' );
   header( 'Cache-Control' =>  'no-store, no-cache, must-revalidate' );
 
-  if (    defined $user_exists->{user_name} 
-       && $user_exists->{user_name} eq params->{user_name} ) {
-    to_json({ 'exists' => 1 });
-  } else {
-    to_json({ 'exists' => 0 });
-  }
+  to_json({ 'exists' => $exists });
 };
 
+post '/registration/check/email' => sub {
+
+  debug "IN REGISTRATION CHECK " . params->{user_name};
+
+  my $exists = check_email( params->{email} ) || 0 ;
+
+  header( 'Content-Type'  => 'text/json' );
+  header( 'Cache-Control' =>  'no-store, no-cache, must-revalidate' );
+
+  to_json( { 'exists' => $exists } );
+};
+
+get '/activate' => sub {
+
+  template 'cldl/account/activate.tt';
+
+};
+
+post '/activate' => sub {
+ 
+  debug "IN ACTIVATE POST ";
+
+  my $sth_insert_user = database->prepare(
+    qq( 
+         INSERT INTO cldl_user 
+             ( company_id, user_name, user_pass, first_name, last_name, user_email )
+           VALUES
+             ( ?, ?, ?, ?, ?, ? )
+    )
+  );
+
+  my $encrypted_pass = md5_hex( params->{user_name} . params->{user_pass} );
+
+  $sth_insert_user->execute( 
+    1,
+    params->{user_name},
+    $encrypted_pass,
+    params->{first_name}, 
+    params->{last_name},
+    params->{email}
+  );
+
+  my $sender  = 
+  my $from    = 
+  my $subject = 
+  my $body    = 
+
+  email {
+    sender  => 'bounces-here@foo.com', # optional
+    from    => 'bob@foo.com',
+    to      => 'sue@foo.com, jane@foo.com',
+    subject => 'allo',
+    body    => 'Dear Sue, ...<img src="cid:blabla">',
+    type    => 'html', # can be 'html' or 'plain'
+  };
+
+  redirect config->{cldl}->{base_url}
+               . config->{cldl}->{login_url}
+               . '?user_name=' . params->{user_name};
+
+};
 
 #
 # Present forgot password form
@@ -134,4 +178,43 @@ post '/changepassword' => sub {
 };
 
 
+sub check_id {
+  my $user_id = shift;
+
+  debug "IN check_id " . $user_id;
+
+  my $sth_select_user = database->prepare(
+    qq( 
+        SELECT 1
+          FROM cldl_user
+            WHERE user_name = ?
+    )
+  );
+
+  $sth_select_user->execute( $user_id );
+  my $exists = $sth_select_user->fetchrow_hashref || 0;
+
+  return $exists;
+}
+
+sub check_email {
+  my $email = shift;
+
+  debug "IN CHECK_EMAIL " . $email;
+
+  my $sth_select_email = database->prepare(
+    qq( 
+        SELECT 1
+          FROM cldl_user
+            WHERE email = ?
+    )
+  );
+
+  $sth_select_email->execute( $email );
+  my $exists = $sth_select_email->fetchrow_hashref || 0;
+
+  return $exists;
+}
+
 1;
+
