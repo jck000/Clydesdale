@@ -14,6 +14,12 @@
     <script type="text/javascript" src="[% app_host_url %]/libs/nestedSortable/jquery.mjs.nestedSortable.js"></script>
     <!-- <script type="text/javascript" src="jquery.ui.touch-punch.js"></script> -->
 <!-- ^^^ Nested Sortable ^^^ -->
+
+    <!-- bootbox code -->
+    <script src="[% app_host_lib %]/bootbox/bootbox.min.js"></script>
+    
+
+
     
 <!-- Nested Sortable  -->
 <!--

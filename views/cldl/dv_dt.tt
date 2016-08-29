@@ -28,80 +28,98 @@
         </div>
         <div class="col-sm-1"> </div>
       </div>        <!-- row -->
-    <script>
-      $( function () {
-        /* Initialize the table with column definitions and data */
-        $('#cldl_table').bootstrapTable({
-          [% dv.dv_data_attributes %],
-          [%+ IF dv.dt_del == 1 +%]
-            checkboxHeader: true,
-            clickToSelect: true,
+      <script>
+        $( function () {
+          /* Initialize the table with column definitions and data */
+          $('#cldl_table').bootstrapTable({
+            [% dv.dv_data_attributes %],
+            [%+ IF dv.dt_del == 1 +%]
+              checkboxHeader: true,
+              clickToSelect: true,
+            [%+ END +%]
+            columns: [%+ dvf +%],
+            data:    [%+ data +%]
+          });       
+  
+          [%+ IF dv.dt_edit > 0 && dv.idField %]
+            /* Edit Button 
+             *   Open window with a record ID.  A record ID is used to 
+             *   retrieve and present an existing record.
+             */
+            $('#cldl_table').on('[% IF dv.dt_edit == 1 %]click[% ELSIF dv.dt_edit == 2 %]dbl-click[% END %]-row.bs.table', function (e, row, $element) {
+         
+              var id = row['[% dv.idField %]'];
+              var new_location = '[% app_rt.this_page %]';
+  
+              if ( new_location.indexOf('?') > 0 ) {
+                new_location += '&id=' + id;
+              } else {
+                new_location += '?id=' + id;
+              }
+  
+            [% IF dv.dv_name_edit != '' %]
+              new_location += '&dv_name_override=[% dv.dv_name_edit %]';
+            [% ELSE %]
+              new_location += '&dv_type=1';
+            [% END %]
+  
+              window.location.replace( new_location );
+            });
           [%+ END +%]
-          columns: [%+ dvf +%],
-          data:    [%+ data +%]
-        });       
-
-        [%+ IF dv.dt_edit > 0 && dv.idField %]
-          /* Edit Button 
-           *   Open window with a record ID.  A record ID is used to 
-           *   retrieve and present an existing record.
-           */
-          $('#cldl_table').on('[% IF dv.dt_edit == 1 %]click[% ELSIF dv.dt_edit == 2 %]dbl-click[% END %]-row.bs.table', function (e, row, $element) {
-       
-            var id = row['[% dv.idField %]'];
-            var new_location = '[% app_rt.this_page %]';
-
-            if ( new_location.indexOf('?') > 0 ) {
-              new_location += '&id=' + id;
-            } else {
-              new_location += '?id=' + id;
-            }
-
-          [% IF dv.dv_name_edit != '' %]
-            new_location += '&dv_name_override=[% dv.dv_name_edit %]';
-          [% ELSE %]
-            new_location += '&dv_type=1';
-          [% END %]
-
-            window.location.replace( new_location );
-          });
-        [%+ END +%]
-
-
-        [%+ IF dv.dt_del == 1 %]
-          /* Delete Button 
-           */
-          $('#delButton').click( function() {
-            //var new_location = '[% app_rt.this_page %]'
-            //                 + '?addrecord=1';
-
-          });
-        [%+ END +%]
-
-        [%+ IF dv.dt_add == 1 +%]
-          /* Add Button 
-           *   Open window with no record ID.  No record ID will present a 
-           *   blank window with defaults.
-           */
-          $('#addButton').click( function() {
-            var new_location = '[% app_rt.this_page %]'
-                             + '?addrecord=1';
-
-          [%+ IF dv.dv_name_add != '' +%]
-            new_location += '&dv_name_override=[% dv.dv_name_add %]';
-          [%+ ELSE +%]
-            new_location += '&dv_type=1';
+  
+  
+          [%+ IF dv.dt_del == 1 %]
+            /* Delete Button */
+            $('#delButton').click( function() {
+              //var new_location = '[% app_rt.this_page %]'
+              //                 + '?addrecord=1';
+  
+            });
           [%+ END +%]
+  
+          [%+ IF dv.dt_add == 1 +%]
+            /* Add Button 
+             *   Open window with no record ID.  No record ID will present a 
+             *   blank window with defaults.
+             */
+            $('#addButton').click( function() {
+              var new_location = '[% app_rt.this_page %]'
+                               + '?addrecord=1';
+  
+            [%+ IF dv.dv_name_add != '' +%]
+              new_location += '&dv_name_override=[% dv.dv_name_add %]';
+            [%+ ELSE +%]
+              new_location += '&dv_type=1';
+            [%+ END +%]
+  
+              window.location.replace( new_location );
+            });
+          [%+ END +%]
+  
+          [%+ IF dv.dv_js_functions != '' +%]
+            [%+ dv.dv_js_functions +%]
+          [%+ END +%]
+  
+        });         
 
-            window.location.replace( new_location );
-          });
-        [%+ END +%]
+/*
+   window.operateEvents = {
+        'click .like': function (e, value, row, index) {
+            alert('You click like action, row: ' + JSON.stringify(row));
+        },
+        'click .remove': function (e, value, row, index) {
+            $table.bootstrapTable('remove', {
+                field: 'id',
+                values: [row.id]
+            });
+        }
+    };
+*/
+    function actionFormatter(value, row, index) {
+      return '[% INCLUDE cldl/includes/action_menu.tt %]';
+    }
 
-        [%+ IF dv.dv_js_functions != '' +%]
-          [%+ dv.dv_js_functions +%]
-        [%+ END +%]
 
-      });         
-
-    </script>
+  
+      </script>
 

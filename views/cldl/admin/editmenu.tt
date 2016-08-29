@@ -44,6 +44,15 @@
                     class="main_menu_item [% IF em.company_id == 1 %] company1 [% END %] [% IF em.active == 0 %] inactivemenu [% END %]" >
                   <div>
                     [% em.menu_label %]
+                    <!-- Menu -->
+                    <span class="btn-group btn-xs pull-right ">
+                      <button class="btn btn-default btn-xs dropdown-    toggle pull-right" type="button" data-toggle="dropdown" aria-haspopup="true"    aria-expanded="false">
+                        <i class="glyphicon glyphicon-option-vertical"></i>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="#" class="permissionmenu">  <i      class="glyphicon glyphicon-lock"></i>Permissions</a></li>
+                      </ul>
+                    </span>
                   </div>
                 [% IF em.children %]
                   [% emchildren = em.children %]
@@ -56,6 +65,16 @@
                            class="menu_item [% IF emc.company_id == 1 %] company1 [% END %] [% IF emc.active == 0 %] inactivemenu [% END %]" >
                          <div>
                            [% emc.menu_label %]
+                           <!-- Menu -->
+                           <span class="btn-group btn-xs pull-right ">
+                             <button class="btn btn-default btn-xs dropdown-toggle pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               <i class="glyphicon glyphicon-option-vertical"></i> 
+                             </button>
+                             <ul class="dropdown-menu">
+                               <li><a href="#" class="permissionmenu">  <i class="glyphicon glyphicon-lock"></i>Permissions</a></li>
+                               <li><a href="#" class="openinwindowmenu"><i class="glyphicon glyphicon-link"></i>Open In Window</a></li>
+                             </ul>
+                           </span>
                          </div>
                        </li>
                     [% END %]
@@ -104,7 +123,7 @@
          */
         $('.addbutton').click( function() {
 
-          var new_location = '[% app_host_url %]/dv/select/menu?addrecord=1&db_type=1&return_to_path=[% session.cldl_return_to_page %]';
+          var new_location = '[% app_host_url %]/cldl/dv/select/menu?addrecord=1&dv_type=1';
 
           window.location.replace( new_location );
         });
@@ -112,7 +131,7 @@
 
         $('.main_menu_item .menu_item').on( 'dblclick' , function () {
 
-          var new_location = '[% app_host_url %]/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&db_type=1&return_to_path=[% session.cldl_return_to_page %]';
+          var new_location = '[% app_host_url %]/cldl/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
 
           if ( new_location.indexOf('?') > 0 ) {
             new_location += '&menu_id=' + $(this).attr('data-menu_id');
@@ -124,6 +143,7 @@
         });
       });         
       
+/*
       $('.resetbutton').click( function() {
         window.location.assign("[% session.cldl_reload_page %]");
       });
@@ -151,9 +171,55 @@
         });
 
       });
+*/
 
     </script>
 
+
+      <script>
+        [%+ INCLUDE cldl/includes/js/return.js +%]
+        [%+ INCLUDE cldl/includes/js/reload.js +%]
+
+        $('.permissionbutton').click( function() {
+          var new_location = '[% app_host_url %]/cldl/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
+
+          if ( new_location.indexOf('?') > 0 ) {
+            new_location += '&menu_id=' + $(this).attr('data-menu_id');
+          } else {
+            new_location += '?menu_id=' + $(this).attr('data-menu_id');
+          }
+
+          window.location.replace( new_location );
+        });
+
+        });
+
+        $('.savebutton').click( function() {
+          var data = $('ol.sortable').nestedSortable('serialize');
+
+          cldl_ajax('[% app_host_url %]/admin/editmenu/update/order',
+                    data,
+                    'get',
+                    function(json) {
+                      if ( json['status'] == 0 ) {
+                        bootbox.alert("Sort order has been saved.", function() {
+                          // Do nothing
+                        });
+                      } else {
+                        bootbox.alert("There was an error while saving your changes.", 
+                          function() {
+                          // Do nothing
+                        });
+                      }
+                    },
+                    function() {
+                      bootbox.alert("Failed to contact server.", function() {
+                        //
+                      });
+                    }
+          ); // cldl_ajax
+        });
+      </script>
 
 
 

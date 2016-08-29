@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- cldl.tt -->
     <title>[% title %]</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- bootstrap and jQuery -->
     <link rel="stylesheet" href="[% bs_url %]/css/bootstrap.min.css">
+    
+
     <script src="[% jq_url %]/jquery.min.js"></script>
     <script src="[% bs_url %]/js/bootstrap.min.js"></script>
 
-    <!-- bootbox code -->
-    <script src="[% app_host_lib %]/bootbox/bootbox.min.js"></script>
     
     <style>
-
       img.displayed {
           display: block;
           margin-left: auto;
           margin-right: auto
+      }
+
+      .control_button {
+        margin-left: 3px;
+        width:       100px;
+      }
+
+      .control_icon {
+        position:    float-left;
+        margin-left: 5px;
+        margin-right: 5px;
       }
 
       .icon_text {
@@ -54,13 +63,10 @@
       $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip(); 
       });
-      [% INCLUDE cldl/includes/js/cldl_ajax.js %] 
     </script>
-
 
   </head>
   <body>
-    [%+ INCLUDE cldl/includes/menu.tt +%]
     <div class="container">
     [%+ content +%]
     </div> <!-- container -->

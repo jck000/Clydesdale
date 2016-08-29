@@ -18,9 +18,6 @@
               <div class="form-group">
                 [%+ INCLUDE cldl/includes/buttons/form_buttons.tt +%]
               </div>
-<!-- 
-Addrecord: [% data.addrecord %] 
--->
           <form class="form-horizontal" 
                 id="cldl_form" 
                 method="post"
@@ -44,7 +41,6 @@ Addrecord: [% data.addrecord %]
                   [% INCLUDE "cldl/includes/select.tt" %]
                 [% END %]
               [% END %]
-
           </form>
               <div class="form-group">
                 [%+ INCLUDE cldl/includes/buttons/form_buttons.tt +%]
@@ -59,7 +55,29 @@ Addrecord: [% data.addrecord %]
         [%+ INCLUDE cldl/includes/js/reload.js +%]
 
         $('.savebutton').click( function() {
-          $('#cldl_form').submit();
+          var data = $('#cldl_form').serializeArray();
+
+          cldl_ajax('/cldl/dv/[% IF data.addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]',
+                    data,
+                    'post',
+                    function(json) {
+                      if ( json['status'] == 0 ) {
+                        bootbox.alert("Your changes have been saved.", function() {
+                          window.location.assign(json['cldl_next_page']);
+                        });
+                      } else {
+                        bootbox.alert("There was an error while saving your changes.", 
+                          function() {
+                          // Do nothing
+                        });
+                      }
+                    },
+                    function() {
+                      bootbox.alert("Failed to contact server.", function() {
+                        //
+                      });
+                    }
+          ); // cldl_ajax
         });
       </script>
 

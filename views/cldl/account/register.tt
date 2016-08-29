@@ -176,7 +176,7 @@
           ); // cldl_ajax
         });  // change
 
-        $(".registerbutton").click(function () {
+        //$(".registerbutton").click(function () {
 
         $(".registerbutton").click(function () {
           validate_email();
