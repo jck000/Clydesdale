@@ -1,26 +1,42 @@
+use 5.006;
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
-# Normalize version strings like 6.30_02 to 6.3002,
-# so that we can do numerical comparisons on it.
-my $eumm_version = $ExtUtils::MakeMaker::VERSION;
-$eumm_version =~ s/_//;
-
 WriteMakefile(
-    NAME                => 'CLDL::App',
-    AUTHOR              => q{YOUR NAME <youremail@example.com>},
-    VERSION_FROM        => 'lib/CLDL/App.pm',
-    ABSTRACT            => 'YOUR APPLICATION ABSTRACT',
-    ($eumm_version >= 6.3001
-      ? ('LICENSE'=> 'perl')
-      : ()),
-    PL_FILES            => {},
-    PREREQ_PM => {
-        'Test::More' => 0,
-        'YAML'       => 0,
-        'Dancer2'     => 0.162000,
+    NAME             => 'Clydesdale',
+    AUTHOR           => q{Hagop "Jack" Bilemjian <jck000@gmail.com>},
+    VERSION_FROM     => 'lib/CLDL.pm',
+    ABSTRACT_FROM    => 'lib/CLDL.pod',
+    LICENSE          => 'artistic_2',
+    PL_FILES         => {},
+    MIN_PERL_VERSION => 5.006,
+    CONFIGURE_REQUIRES => {
+        'ExtUtils::MakeMaker' => 0,
     },
-    dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean               => { FILES => 'CLDL-App-*' },
+    BUILD_REQUIRES => {
+        'Test::More' => 0,
+    },
+    PREREQ_PM => {
+        'Carp'                      => 0,
+        'Dancer2'                   => 0,
+        'Dancer2::Plugin'           => 0,
+        'Dancer2::Plugin::Database' => 0,
+        'Dancer2::Plugin::Tail'     => 0,
+        'Moo'                       => 0,
+        'Moo::Role'                 => 0,
+        'YAML'                      => 0, 
+        'Session::Token'            => 0,
+        'Try::Tiny'                 => 0,
+    },
+    dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
+    clean => { FILES => 'CLDL-*' },
+    META_MERGE => {
+        resources => {
+            repository => 'https://github.com/jck000/Clydesdale',
+            bugtracker => 'https://github.com/jck000/Clydesdale/issues',
+            homepage   => 'https://github.com/jck000/Clydesdale/',
+        },
+    },
 );
+
