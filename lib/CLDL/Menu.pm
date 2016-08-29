@@ -65,6 +65,14 @@ sub get_menu {
   my @child_menu_keys;
 
   while ( my $ref = $sth_menu->fetchrow_hashref ) {
+
+    ### Assumption is that every url is local. Need to fix later
+    if ( $ref->{menu_link} =~ m{\?} ) {
+      $ref->{menu_link} .= '&is_cldl_menu=1';
+    } else {
+      $ref->{menu_link} .= '?is_cldl_menu=1';
+    }
+
     if ( $ref->{menu_id} == $ref->{pmenu_id} ) { 
       # Main Menu
       push( @{$menu->{main_menu_keys}}, $ref->{menu_id});
