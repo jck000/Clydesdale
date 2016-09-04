@@ -1,0 +1,82 @@
+#!/bin/sh
+#
+# cldl - this script starts and stops CLDL
+#
+# chkconfig:   2345 85 15
+# description:  cldl.example.com 
+
+# pidfile:     /var/run/plackup.cldl.pid
+
+PID=/var/run/plackup.cldl.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ "$NETWORKING" = "no" ] && exit 0
+
+APPLICATION="CLDL"
+PORT=30134
+WORKERS=10
+DANCER_DIR="/home/cldl/CLDL"
+DANCER_APP="$DANCER_DIR/bin/app.pl"
+
+plackup="/usr/local/bin/plackup"
+plackup_args="-E production -p $PORT -s Starman --pid=$PID --workers $WORKERS -D"
+
+lockfile=/var/lock/subsys/plackup.cldl
+
+start() {
+    [ -x $plackup ] || exit 5
+    [ -f $DANCER_APP ] || exit 6
+    echo -n $"Starting $APPLICATION on port $PORT: "
+    $plackup $plackup_args -a $DANCER_APP 2>&1 > /dev/null
+    retval=$?
+    if [ $retval -eq 0 ]; then
+        success $"$APPLICATION started"
+        touch $lockfile
+    else
+        failure $"Unable to start"
+    fi
+    echo
+    return $retval
+}
+
+stop() {
+    echo -n $"Stopping $APPLICATION on port $PORT: "
+    if [ -f $PID ]; then
+        kill `cat $PID` 2>&1> /dev/null
+        retval=$?
+        [ $retval -eq 0 ] && success && rm -f $lockfile
+        echo
+        return $retval
+    fi
+    failure $"pid $PID not found"
+    echo
+    return 1
+}
+
+restart() {
+    stop
+    start
+}
+
+case "$1" in
+    start)
+        $1
+        ;;
+    stop)
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 2
+esac
+
+
