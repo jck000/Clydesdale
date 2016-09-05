@@ -42,7 +42,7 @@ CREATE TABLE `cldl_company` (
   `time_zone` tinyint(4) DEFAULT NULL,
   `language` smallint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = English, 1 = Spanish',
   `unit_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = US, 1 = Metric',
-  `user_needs_approval` smallint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Manually approve new users',
+  `user_needs_approval` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Manually approve new users',
   `activation_email` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'send email to supplied email',
   `registration_source_url` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'save registration source url',
   PRIMARY KEY (`company_id`)
@@ -89,7 +89,7 @@ CREATE TABLE `cldl_dv` (
   `dv_insert_sql` text,
   `dv_update_sql` text,
   `dv_search_sql` text COMMENT 'Regex where clause',
-  `next_page` text,
+  `dv_next` text,
   `dv_template` varchar(100) DEFAULT NULL,
   `dv_js_functions` text,
   `dv_data_attributes` text,
@@ -159,7 +159,7 @@ CREATE TABLE `cldl_menu` (
   KEY `company_id` (`company_id`),
   CONSTRAINT `cldl_menu_ibfk_1` FOREIGN KEY (`pmenu_id`) REFERENCES `cldl_menu` (`menu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `cldl_menu_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `cldl_company` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,4 +308,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-06 17:26:45
+-- Dump completed on 2016-09-05  1:00:34
