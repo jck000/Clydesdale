@@ -1,10 +1,1 @@
-INSERT INTO cldl_menu VALUES 
-(1,1,1,1,1,'CLDL','','','',''),
-(2,1,1,1,2,'Menus','/admin/editmenu/select','','',''),
-(9,1,1,1,9,'Create DataView from Table','/admin/dvfromtable/select','','','');
-(3,1,1,1,3,'DataViews','/dv/select/dv_list','','',''),
-(4,1,0,1,4,'Roles','/admin/roles/select','','',''),
-(5,1,1,1,5,'Permissions','/admin/permissions/select','','',''),
-(6,1,1,1,6,'Users','/dv/select/users','','',''),
-(7,1,1,1,7,'Company','/dv/select/company','','',''),
-(8,1,1,1,8,'Edit Configuration','/admin/config/edit','','',''),
+INSERT INTO `cldl_menu` VALUES (1,1,1,1,0,'CLDL','','','',''),(2,1,1,1,1,'Menus','/cldl/admin/editmenu/select','','',''),(3,1,1,1,2,'DataViews List','/cldl/dv/select/dv_list','','',''),(4,1,0,1,4,'Roles','/cldl/admin/roles/select','','',''),(5,1,1,1,5,'Permissions','/cldl/admin/permissions/select','','',''),(6,1,1,1,6,'Users','/cldl/dv/select/users','','',''),(7,1,1,1,7,'Company','/cldl/dv/select/company','','',''),(8,1,1,1,8,'Edit Configuration','/cldl/admin/config/edit','','',''),(9,1,1,9,11,'ETL','','','',''),(12,1,1,9,12,'Copy Data From MySQL to Pg','','','',''),(13,1,1,9,13,'Copy Procedures from MySQL to Pg','','','',''),(14,1,1,1,9,'Create DataView from Table','/cldl/admin/dvfromtable/select','','',''),(15,1,1,1,3,'DataView Field List','/cldl/dv/select/dvf_list',NULL,NULL,NULL),(16,1,1,1,10,'Uploads','/cldl/upload/file',NULL,NULL,NULL),(17,1,1,NULL,1000,'Pentaho','Pentaho',NULL,NULL,NULL),(18,1,1,1,12121,'Pentaho2','Pentaho2',NULL,NULL,NULL),(19,1,1,1,2000,'xxx','xxx',NULL,NULL,NULL),(20,1,1,1,2000,'xxx','xxx',NULL,NULL,NULL),(21,1,1,1,65535,'xx1','xx3','','',''),(22,1,1,1,65535,'xxx2','xxx3',NULL,NULL,NULL),(23,1,1,1,65535,'xxx2','xxx3',NULL,NULL,NULL),(24,1,1,1,65535,'xxx3','xxx3',NULL,NULL,NULL),(25,1,1,1,65535,'xxx4','xxxx4',NULL,NULL,NULL);

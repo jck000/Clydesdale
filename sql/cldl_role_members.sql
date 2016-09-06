@@ -1,2 +1,1 @@
-INSERT INTO cldl_role_members VALUES 
-(5,1);
+INSERT INTO `cldl_role_members` VALUES (5,1);
