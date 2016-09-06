@@ -21,7 +21,7 @@ read create_db
 
 create_db2=${create_db^^} # convert to uppercase
 
-if [ "$create_db2" -eq "Y" ] ; then
+if [ "$create_db2" == "Y" ] ; then
   echo "
 
     Name of DB to create: "
@@ -50,22 +50,24 @@ if [ -z "$dbname" -o -z "$cldl_password" ] ; then
 fi
 
 
-if [ "$create_db2" -eq "Y" ] ; then 
+if [ "$create_db2" == "Y" ] ; then 
   CR_DB="CREATE DATABASE $dbname;"
   echo "
 Creating DB $dbname 
 "
-  mysql -u"$1" -p"$2" < $CR_DB
+  mysql -u"$1" -p"$2" -e "$CR_DB"
   echo " DONE
 "
 fi
 
-CR_USER="CREATE USER 'cldl'@'localhost' IDENTIFIED BY '$cldl_password';
-GRANT ALL PRIVILEGES ON $dbname.* TO 'cldl'@'localhost' WITH GRANT OPTION;"
+CR_USER="USE $dbname;
+CREATE USER 'cldl'@'localhost' IDENTIFIED BY '$cldl_password';
+GRANT ALL PRIVILEGES ON *.* TO 'cldl'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;"
 echo "
 Create user cldl 
 "
-mysql -u"$1" -p"$2" $dbname < $CR_USER
+mysql -u"$1" -p"$2" -e "$CR_USER"
 echo " DONE"
 
 echo "
