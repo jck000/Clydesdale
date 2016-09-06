@@ -19,9 +19,7 @@ echo "
 Create database? [Y/N]"
 read create_db
 
-create_db2=${create_db^^} # convert to uppercase
-
-if [ "$create_db2" == "Y" ] ; then
+if [ "$create_db" = "Y" -o "$create_db" = "y" ] ; then
   echo "
 
     Name of DB to create: "
@@ -50,7 +48,7 @@ if [ -z "$dbname" -o -z "$cldl_password" ] ; then
 fi
 
 
-if [ "$create_db2" == "Y" ] ; then 
+if [ "$create_db" = "Y" -o "$create_db" = "y" ] ; then
   CR_DB="CREATE DATABASE $dbname;"
   echo "
 Creating DB $dbname 
