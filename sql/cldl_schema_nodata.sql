@@ -57,7 +57,7 @@ CREATE TABLE `cldl_company` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`cldl`@`localhost`*/ /*!50003 TRIGGER `tr_ins_cldl_company` BEFORE INSERT ON `cldl_company`
+/*!50003 CREATE TRIGGER `tr_ins_cldl_company` BEFORE INSERT ON `cldl_company`
  FOR EACH ROW SET NEW.created = CURRENT_TIMESTAMP */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -95,7 +95,7 @@ CREATE TABLE `cldl_device` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`cldl`@`localhost`*/ /*!50003 TRIGGER `tr_ins_cldl_device` BEFORE INSERT ON `cldl_device`
+/*!50003 CREATE TRIGGER `tr_ins_cldl_device` BEFORE INSERT ON `cldl_device`
  FOR EACH ROW SET NEW.created = CURRENT_TIMESTAMP */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -329,7 +329,7 @@ CREATE TABLE `cldl_user` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`cldl`@`localhost`*/ /*!50003 TRIGGER `tr_ins_cldl_user` BEFORE INSERT ON `cldl_user`
+/*!50003 CREATE TRIGGER `tr_ins_cldl_user` BEFORE INSERT ON `cldl_user`
  FOR EACH ROW SET NEW.created = CURRENT_TIMESTAMP */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -346,4 +346,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-09-05 22:53:17
+-- Dump completed on 2016-09-27 15:45:19
