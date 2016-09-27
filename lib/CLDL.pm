@@ -25,6 +25,17 @@ use Digest::MD5 qw( md5_hex );
 
 our $VERSION = '0.00001';
 
+# require class if defined
+if ( config->{cldl}->{appclass} ) {
+  my $app_class = config->{cldl}->{appclass};
+  my $package   = $app_class;
+
+  $package      =~ s{::}{/}g;
+  $package      .= '.pm';
+  require $package;
+}
+
+
 # Every request runs through here
 prefix undef;
 
