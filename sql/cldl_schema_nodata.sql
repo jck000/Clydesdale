@@ -66,44 +66,6 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Table structure for table `cldl_device`
---
-
-DROP TABLE IF EXISTS `cldl_device`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cldl_device` (
-  `device_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `company_id` int(11) unsigned NOT NULL,
-  `active` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `uuid` varchar(50) DEFAULT NULL COMMENT 'UUID of this device.  Used to identify the device when submitting requests.',
-  `description` varchar(500) DEFAULT NULL,
-  `activation_code` text COMMENT 'Emailed activation to validate user email',
-  PRIMARY KEY (`device_id`),
-  KEY `company_id` (`company_id`),
-  CONSTRAINT `cldl_device_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `cldl_company` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
-DELIMITER ;;
-/*!50003 CREATE TRIGGER `tr_ins_cldl_device` BEFORE INSERT ON `cldl_device`
- FOR EACH ROW SET NEW.created = CURRENT_TIMESTAMP */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-
---
 -- Table structure for table `cldl_dv`
 --
 
@@ -316,6 +278,7 @@ CREATE TABLE `cldl_user` (
   `activation_code` text COMMENT 'Emailed activation to validate user email',
   `signup_url` text COMMENT 'Record source of signup',
   PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_id` (`user_id`),
   KEY `company_id` (`company_id`),
   CONSTRAINT `cldl_user_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `cldl_company` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
@@ -336,6 +299,44 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `cldl_user_device`
+--
+
+DROP TABLE IF EXISTS `cldl_user_device`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cldl_user_device` (
+  `device_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `active` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `uuid` varchar(50) DEFAULT NULL COMMENT 'UUID of this device.  Used to identify the device when submitting requests.',
+  `description` varchar(500) DEFAULT NULL,
+  `activation_code` text COMMENT 'Emailed activation to validate user email',
+  PRIMARY KEY (`device_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `cldl_user_device_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `cldl_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE TRIGGER `tr_ins_cldl_user_device` BEFORE INSERT ON `cldl_user_device`
+ FOR EACH ROW SET NEW.created = CURRENT_TIMESTAMP */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -346,4 +347,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-09-27 15:45:19
+-- Dump completed on 2016-09-28 15:54:56
