@@ -173,10 +173,6 @@
       });
 */
 
-    </script>
-
-
-      <script>
         [%+ INCLUDE cldl/includes/js/return.js +%]
         [%+ INCLUDE cldl/includes/js/reload.js +%]
 
@@ -190,8 +186,6 @@
           }
 
           window.location.replace( new_location );
-        });
-
         });
 
         $('.savebutton').click( function() {
