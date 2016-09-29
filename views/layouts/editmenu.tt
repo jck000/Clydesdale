@@ -62,7 +62,7 @@
 			    $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
 		    });
 
-        [% INCLUDE cldl/includes/js/cldl_ajax.js %] 
+        [%+ INCLUDE cldl/includes/js/cldl_ajax.js +%] 
         [%+ INCLUDE cldl/includes/js/cldl_messages.js +%]
         $('[data-toggle="tooltip"]').tooltip(); 
 

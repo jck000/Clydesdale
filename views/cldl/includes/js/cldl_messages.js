@@ -8,6 +8,8 @@ function cldl_set_message(mess) {
   }
 }
 
+
+
 function cldl_clear_message() {
   try {
     $("#message").val("");
@@ -15,3 +17,5 @@ function cldl_clear_message() {
     // do nothing
   }
 }
+
+
