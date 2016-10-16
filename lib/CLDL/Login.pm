@@ -18,6 +18,7 @@ prefix undef;
 # Present login form
 #
 get '/login' => sub {
+  debug "Send cldl/login.tt template";
   template 'cldl/login.tt', { 
                                title    => 'Login',
                                req_path => params->{req_path}  

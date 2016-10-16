@@ -30,6 +30,7 @@ get '/select' => sub {
                        m.pmenu_id,
                        m.ordr,
                        m.menu_label,
+                       m.menu_link,
                        m.active
                   FROM cldl_menu m,
                        cldl_role_permission_menu rpm
@@ -43,6 +44,7 @@ get '/select' => sub {
                        m.pmenu_id,
                        m.ordr,
                        m.menu_label,
+                       m.menu_link,
                        m.active
                   FROM cldl_menu m,
                        cldl_role_permission_menu rpm
@@ -56,30 +58,18 @@ get '/select' => sub {
 
   $sth_edit_menu->execute( session('company_id'), session('company_id') );
 
+  # Put Child records under parent
   while ( my $ref = $sth_edit_menu->fetchrow_hashref ) {
     if ( $ref->{menu_id} == $ref->{pmenu_id} ) {
       $edit_menu->{ $ref->{menu_id} } = $ref;
     } else {
-#      $edit_menu->{ $ref->{pmenu_id} }->{children}->{ $ref->{menu_id} } = $ref;
       push  @{ $edit_menu->{ $ref->{pmenu_id} }->{children}}, $ref;
     }
   }
 
-#  warn "Edit Menu:";
-#  warn Dumper($edit_menu);
-
   return template 'cldl/admin/editmenu.tt',
                        {
                          edit_menu        => $edit_menu,
-#                         cldl_menu        => session('cldl_menu'),
-#                         cldl_return_to   => session('cldl_return_to'),
-#                         cldl_reload_page => session('cldl_reload_page'),
-#                         app_rt => {
-#                                      uri       => request->uri,
-#                                      referer   => request->referer,
-#                                      path_info => request->path_info,
-#                                      logged_in => session('company_id')
-#                                    },
                        },
                        { layout  => 'editmenu.tt' };  
 
