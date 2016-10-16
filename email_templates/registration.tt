@@ -1,0 +1,13 @@
+
+Hello [% first_name %] [% last_name %],
+
+Your account has been registered with [% %].  You must click on the following link in order to activate it:
+
+[% app_host_url %]/activate/[% activation_code %]
+
+if the link fails to take you to our activation page, you may copy and paste the following code [% activation_code %] to [% app_host_url %].
+
+
+Clydesdale Activation System,
+[% site_url %]
+
