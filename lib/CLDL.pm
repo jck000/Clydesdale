@@ -38,6 +38,7 @@ if ( config->{cldl}->{appclass} ) {
 
 # Every request runs through here
 prefix undef;
+# prefix config->{cldl_base_prefix};
 
 #
 # Check that there is a session
@@ -508,4 +509,5 @@ L<Dancer2>
 =cut
 
 1; # End of CLDL
+
 
