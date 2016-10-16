@@ -39,7 +39,8 @@
           [% IF mm > 0 %] </ul> [% END %]
            
               <li>
-                <a href="[% IF m.menu_link.match('^http://') %][% m.menu_link %][% ELSE %][% app_host_url %][% m.menu_link %]" >
+                <!-- <a href="[% IF m.menu_link.match('^http://') %][% m.menu_link %][% ELSE %][% app_host_url %][% m.menu_link %]" > -->
+                <a href="[% m.menu_link %]" >
                   [% m.menu_label %]
                 </a>
               </li>

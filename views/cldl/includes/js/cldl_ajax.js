@@ -3,7 +3,8 @@
     method    = method        || 'get';
     onsuccess = onsuccess     || {};
     onfailure = onfailure     || {};
-    http_url  = '[% app_host_url %]' + to_path;
+    http_url  = to_path;
+//    http_url  = '[% app_host_url %]' + to_path;
     $.ajax({
              url:         http_url,
              type:        method,

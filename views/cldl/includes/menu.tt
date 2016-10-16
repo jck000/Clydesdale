@@ -59,12 +59,14 @@
         </li>
 -->
         <li>
-          <a href="[% app_host_url %]/cldl/account/changepassword">
+<!--          <a href="[% app_host_url %]/cldl/account/changepassword"> -->
+          <a href="cldl/account/changepassword">
             <span class="glyphicon glyphicon-user"> </span> My Account
           </a>
         </li>
         <li>
-          <a href="[% app_host_url %]/logout">
+<!--          <a href="[% app_host_url %]/logout"> -->
+          <a href="logout">
             <span class="glyphicon glyphicon-log-in"> </span> Logout
           </a>
         </li>

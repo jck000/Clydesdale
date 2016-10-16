@@ -2,7 +2,8 @@
   <form id="upload_form" 
         class="form-horizontal" 
         method="post" 
-        action="[% app_host_url %]/cldl/upload/file" 
+<!--        action="[% app_host_url %]/cldl/upload/file"  -->
+        action="cldl/upload/file" 
         enctype="multipart/form-data">
   
     <fieldset>

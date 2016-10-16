@@ -43,16 +43,16 @@
                     data-item_type="top"
                     class="main_menu_item [% IF em.company_id == 1 %] company1 [% END %] [% IF em.active == 0 %] inactivemenu [% END %]" >
                   <div>
-                    [% em.menu_label %]
-                    <!-- Menu -->
                     <span class="btn-group btn-xs pull-right ">
-                      <button class="btn btn-default btn-xs dropdown-    toggle pull-right" type="button" data-toggle="dropdown" aria-haspopup="true"    aria-expanded="false">
-                        <i class="glyphicon glyphicon-option-vertical"></i>
+                      <button class="btn btn-default btn-xs dropdown-toggle pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="glyphicon glyphicon-option-vertical"></i> 
                       </button>
-                      <ul class="dropdown-menu">
-                        <li><a href="#" class="permissionmenu">  <i      class="glyphicon glyphicon-lock"></i>Permissions</a></li>
-                      </ul>
+                      <span class="dropdown-menu">
+                        <div class="permissionmenu">  <i class="glyphicon glyphicon-lock"></i>Permissions</div>
+                        <div class="openinwindowmenu"><i class="glyphicon glyphicon-link"></i>Open In Window</div>
+                      </span>
                     </span>
+                    [% em.menu_label %]
                   </div>
                 [% IF em.children %]
                   [% emchildren = em.children %]
@@ -63,18 +63,17 @@
                            data-pmenu_id="[% emc.pmenu_id %]" 
                            data-item_type="child"
                            class="menu_item [% IF emc.company_id == 1 %] company1 [% END %] [% IF emc.active == 0 %] inactivemenu [% END %]" >
-                         <div>
-                           [% emc.menu_label %]
-                           <!-- Menu -->
+                         <div> 
                            <span class="btn-group btn-xs pull-right ">
                              <button class="btn btn-default btn-xs dropdown-toggle pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                <i class="glyphicon glyphicon-option-vertical"></i> 
                              </button>
-                             <ul class="dropdown-menu">
-                               <li><a href="#" class="permissionmenu">  <i class="glyphicon glyphicon-lock"></i>Permissions</a></li>
-                               <li><a href="#" class="openinwindowmenu"><i class="glyphicon glyphicon-link"></i>Open In Window</a></li>
-                             </ul>
+                             <span class="dropdown-menu">
+                               <div class="permissionmenu">  <i class="glyphicon glyphicon-lock"></i>Permissions</div>
+                               <div class="openinwindowmenu"><i class="glyphicon glyphicon-link"></i>Open In Window</div>
+                             </span>
                            </span>
+                           [% emc.menu_label %]
                          </div>
                        </li>
                     [% END %]
@@ -123,7 +122,8 @@
          */
         $('.addbutton').click( function() {
 
-          var new_location = '[% app_host_url %]/cldl/dv/select/menu?addrecord=1&dv_type=1';
+//          var new_location = '[% app_host_url %]/cldl/dv/select/menu?addrecord=1&dv_type=1';
+          var new_location = 'cldl/dv/select/menu?addrecord=1&dv_type=1';
 
           window.location.replace( new_location );
         });
@@ -131,7 +131,8 @@
 
         $('.main_menu_item .menu_item').on( 'dblclick' , function () {
 
-          var new_location = '[% app_host_url %]/cldl/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
+//          var new_location = '[% app_host_url %]/cldl/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
+          var new_location = 'cldl/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
 
           if ( new_location.indexOf('?') > 0 ) {
             new_location += '&menu_id=' + $(this).attr('data-menu_id');
@@ -142,7 +143,8 @@
           window.location.replace( new_location );
         });
       });         
-      
+
+
 /*
       $('.resetbutton').click( function() {
         window.location.assign("[% session.cldl_reload_page %]");
@@ -176,13 +178,14 @@
         [%+ INCLUDE cldl/includes/js/return.js +%]
         [%+ INCLUDE cldl/includes/js/reload.js +%]
 
-        $('.permissionbutton').click( function() {
-          var new_location = '[% app_host_url %]/cldl/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
+        $('.permissionmenu').click( function() {
+//          var new_location = '[% app_host_url %]/cldl/dv/select/menu?id=' + $(this).closest('li').attr('data-menu_id') + '&dv_type=1';
+          var new_location = 'cldl/dv/select/menu?id=' + $(this).closest('li').attr('data-menu_id') + '&dv_type=1';
 
           if ( new_location.indexOf('?') > 0 ) {
-            new_location += '&menu_id=' + $(this).attr('data-menu_id');
+            new_location += '&menu_id=' + $(this).closest('li').attr('data-menu_id');
           } else {
-            new_location += '?menu_id=' + $(this).attr('data-menu_id');
+            new_location += '?menu_id=' + $(this).closest('li').attr('data-menu_id');
           }
 
           window.location.replace( new_location );
