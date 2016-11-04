@@ -39,6 +39,7 @@
                 [% em = edit_menu.$menu_id %]
           		  <li id="item_[% em.menu_id %]" 
                     data-menu_id="[% em.menu_id %]" 
+                    data-menu_label="[% em.menu_label %]" 
                     data-pmenu_id="[% em.pmenu_id %]" 
                     data-item_type="top"
                     class="main_menu_item [% IF em.company_id == 1 %] company1 [% END %] [% IF em.active == 0 %] inactivemenu [% END %]" >
@@ -48,8 +49,8 @@
                         <i class="glyphicon glyphicon-option-vertical"></i> 
                       </button>
                       <span class="dropdown-menu">
-                        <div class="permissionmenu">  <i class="glyphicon glyphicon-lock"></i>Permissions</div>
-                        <div class="openinwindowmenu"><i class="glyphicon glyphicon-link"></i>Open In Window</div>
+                        <div class="permissionmenu"   style="cursor: pointer;"><i class="glyphicon glyphicon-list"></i>&nbsp;&nbsp;Permissions</div>
+                        <div class="openinwindowmenu" style="cursor: pointer;"><i class="glyphicon glyphicon-new-window"></i>&nbsp;&nbsp;Open In Window</div>
                       </span>
                     </span>
                     [% em.menu_label %]
@@ -57,26 +58,27 @@
                 [% IF em.children %]
                   [% emchildren = em.children %]
           			  <ol>
-                    [% FOREACH emc IN emchildren.nsort('ordr') %]
-          		         <li id="item_[% emc.menu_id %]" 
-                           data-menu_id="[% emc.menu_id %]" 
-                           data-pmenu_id="[% emc.pmenu_id %]" 
-                           data-item_type="child"
-                           class="menu_item [% IF emc.company_id == 1 %] company1 [% END %] [% IF emc.active == 0 %] inactivemenu [% END %]" >
-                         <div> 
-                           <span class="btn-group btn-xs pull-right ">
-                             <button class="btn btn-default btn-xs dropdown-toggle pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               <i class="glyphicon glyphicon-option-vertical"></i> 
-                             </button>
-                             <span class="dropdown-menu">
-                               <div class="permissionmenu">  <i class="glyphicon glyphicon-lock"></i>Permissions</div>
-                               <div class="openinwindowmenu"><i class="glyphicon glyphicon-link"></i>Open In Window</div>
-                             </span>
-                           </span>
-                           [% emc.menu_label %]
-                         </div>
-                       </li>
-                    [% END %]
+                  [% FOREACH emc IN emchildren.nsort('ordr') %]
+          		      <li id="item_[% emc.menu_id %]" 
+                        data-menu_id="[% emc.menu_id %]" 
+                        data-menu_label="[% emc.menu_label %]" 
+                        data-pmenu_id="[% emc.pmenu_id %]" 
+                        data-item_type="child"
+                        class="menu_item [% IF emc.company_id == 1 %] company1 [% END %] [% IF emc.active == 0 %] inactivemenu [% END %]" >
+                      <div> 
+                        <span class="btn-group btn-xs pull-right ">
+                          <button class="btn btn-default btn-xs dropdown-toggle pull-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="glyphicon glyphicon-option-vertical"></i> 
+                          </button>
+                          <span class="dropdown-menu">
+                            <div class="permissionmenu"   style="cursor: pointer;"><i class="glyphicon glyphicon-list"></i>&nbsp;&nbsp;Permissions</div>
+                            <div class="openinwindowmenu" style="cursor: pointer;"><i class="glyphicon glyphicon-new-window"></i>&nbsp;&nbsp;Open In Window</div>
+                          </span>
+                        </span>
+                        [% emc.menu_label %]
+                      </div>
+                    </li>
+                  [% END %]
           			  </ol>
                 [% END %]
                 </li>
@@ -84,7 +86,9 @@
             </ol>
           <!-- sortable -->
 
-          <input type="hidden" name="return_to_path" value="[% return_to_path %]">
+          <input type="hidden" 
+                 name="return_to_path" 
+                 value="[% return_to_path %]">
 
         </div>
         <div class="col-sm-1"> </div>
@@ -122,7 +126,6 @@
          */
         $('.addbutton').click( function() {
 
-//          var new_location = '[% app_host_url %]/cldl/dv/select/menu?addrecord=1&dv_type=1';
           var new_location = 'cldl/dv/select/menu?addrecord=1&dv_type=1';
 
           window.location.replace( new_location );
@@ -131,7 +134,6 @@
 
         $('.main_menu_item .menu_item').on( 'dblclick' , function () {
 
-//          var new_location = '[% app_host_url %]/cldl/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
           var new_location = 'cldl/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
 
           if ( new_location.indexOf('?') > 0 ) {
@@ -144,79 +146,157 @@
         });
       });         
 
+      [%+ INCLUDE cldl/includes/js/return.js +%]
+      [%+ INCLUDE cldl/includes/js/reload.js +%]
 
-/*
-      $('.resetbutton').click( function() {
-        window.location.assign("[% session.cldl_reload_page %]");
+
+      $('.openinwindowmenu').on( 'click',  function() {
+        var new_location = 'cldl/admin/editmenu/permissions?menu_id=' + $(this).closest('li').attr('data-menu_id') + '&dv_type=1';
+
+        window.location.replace( new_location );
       });
 
-      $('.returnbutton').click( function() {
-        window.location.assign("[% session.cldl_return_to_page %]");
-      });
 
-      $('.savebutton').click( function() {
+      $('.permissionmenu').click( function() {
+        var menu_label = $(this).closest('li').attr('data-menu_label');
+        var menu_id    = $(this).closest('li').attr('data-menu_id');
+        var this_menu  = menu_id + '-' + menu_label;
+        var data       = 'menu_id=' + menu_id;
 
-        var menu_order = $('ol.sortable').nestedSortable('serialize');
-        $.ajax({
-            type: "GET",
-            url: '[% app_host_url %]/admin/editmenu/update/order',
-            data: menu_order,
-            dataType: "json",
-            success: function(json) {
-              if ( json.status == 'success' ) {
-                $("#messages").val("[% cldl_success_save %]");
-              }
-            },
-            error: function(){
-              $("#messages").val("[% cldl_failed_save %]");
-            }
-        });
-
-      });
-*/
-
-        [%+ INCLUDE cldl/includes/js/return.js +%]
-        [%+ INCLUDE cldl/includes/js/reload.js +%]
-
-        $('.permissionmenu').click( function() {
-//          var new_location = '[% app_host_url %]/cldl/dv/select/menu?id=' + $(this).closest('li').attr('data-menu_id') + '&dv_type=1';
-          var new_location = 'cldl/dv/select/menu?id=' + $(this).closest('li').attr('data-menu_id') + '&dv_type=1';
-
-          if ( new_location.indexOf('?') > 0 ) {
-            new_location += '&menu_id=' + $(this).closest('li').attr('data-menu_id');
-          } else {
-            new_location += '?menu_id=' + $(this).closest('li').attr('data-menu_id');
-          }
-
-          window.location.replace( new_location );
-        });
-
-        $('.savebutton').click( function() {
-          var data = $('ol.sortable').nestedSortable('serialize');
-
-          cldl_ajax('[% app_host_url %]/admin/editmenu/update/order',
-                    data,
-                    'get',
-                    function(json) {
-                      if ( json['status'] == 0 ) {
-                        bootbox.alert("Sort order has been saved.", function() {
-                          // Do nothing
-                        });
+        cldl_ajax('cldl/admin/editmenu/permissions',
+                  data,
+                  'get',
+                  function(json) {
+                    $('#menu_permissions_form_body').html('');  // Empty
+                    $.each( json, function( key, value ) {
+                      var field_name = value.role_id + '-' + menu_id;
+                      var tmpl_data = {
+                                        cbx_name:    field_name,
+                                        cbx_id:      field_name,
+                                        cbx_label:   value.role_name
+                                      };
+                      var new_cbx = '';
+                      if ( typeof value.role_checked != "undefined") { 
+                        if ( value.role_checked == "1" ) {
+                          field_checked = ' checked ';
+                          new_cbx = Mustache.render( $('#menu_permissions_form_checkox_checked').html(), tmpl_data); 
+                        }
                       } else {
-                        bootbox.alert("There was an error while saving your changes.", 
-                          function() {
-                          // Do nothing
-                        });
+                        new_cbx = Mustache.render( $('#menu_permissions_form_checkox').html(), tmpl_data); 
+                        field_checked = '';
                       }
-                    },
-                    function() {
-                      bootbox.alert("Failed to contact server.", function() {
+                      $('#menu_permissions_form_body').append( new_cbx ); 
+
+                    }); // each
+                    permission_menu(menu_label);
+
+                  },
+                  function() {
+                    bootbox.alert("Failed to contact server.", 
+                      function() {
                         //
                       });
+                  }
+        ); // cldl_ajax
+      });  // click
+
+
+      $('.savebutton').click( function() {
+        var data = $('ol.sortable').nestedSortable('serialize');
+
+        cldl_ajax('cldl/admin/editmenu/update/order',
+                  data,
+                  'get',
+                  function(json) {
+                    if ( json['status'] == 0 ) {
+                      bootbox.alert("Sort order has been saved.", function() {
+                        // Do nothing
+                      });
+                    } else {
+                      bootbox.alert("There was an error while saving your changes.", 
+                        function() {
+                        // Do nothing
+                      });
                     }
+                  },
+                  function() {
+                    bootbox.alert("Failed to contact server.", 
+                      function() {
+                        //
+                      });
+                  }
           ); // cldl_ajax
         });
+
+        function permission_menu( menu_label ) {
+          var modal = bootbox.dialog({
+              message: $("#menu_permissions_div").html(),
+              title: "Permission for menu '" + menu_label + "'",
+              buttons: [
+                {
+                  label: "Save", // "btn btn-danger pull-right",
+                  className: "glyphicon icon-ok-sign btn btn-danger pull-right",
+                  callback: function() {
+      
+                    alert($('form #email').val());
+                   
+                    return false;
+                  }
+                },
+                {
+                  label: "Cancel", // "btn btn-default pull-left",
+                  className: "glyphicon icon-remove-sign btn btn-default pull-right",
+                  callback: function() {
+                    console.log("just do something on close");
+                  }
+                }
+              ],
+              show: false,
+              onEscape: function() {
+                modal.modal("hide");
+              }
+          });
+          
+          modal.modal("show");
+        }
       </script>
+
+
+<div id="menu_permissions_div" style="display: none;"> <!-- disable viewing -->
+  <p>
+    The following is a list of the available user types.  The user types checed have access to this menu.
+  </p>
+  <div class="form-content">
+    <form class="form" role="form" id="menu_permissions_form">
+      <div class="form-content" id="menu_permissions_form_body">
+ 
+
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<div style="display: none;">
+
+    <div id="menu_permissions_form_checkox" class="checkbox">
+      <dev class="checkbox">
+        <label>
+          <input type="checkbox" name="{{cbx_id}}" id="{{cbx_id}}" value="1"> {{cbx_label}}
+        </label>
+      </div>
+    </div>
+
+    <div id="menu_permissions_form_checkox_checked" class="checkbox">
+      <dev class="checkbox">
+        <label>
+          <input type="checkbox" name="{{cbx_id}}" id="{{cbx_id}}" value="1" checked> {{cbx_label}}
+        </label>
+      </div>
+    </div>
+
+
+</div>
 
 
 
