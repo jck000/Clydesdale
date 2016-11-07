@@ -118,6 +118,72 @@
           
       <br /><br />
 
+  <!-- Modal -->
+  <div class="modal fade" id="menu_permissions_modal" role="dialog">
+    <div class="modal-dialog">   <!-- modal-dialog -->
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Permission for menu <em>'<span id="modal_menu_label"></span>'</em>: </h4>
+        </div>
+        <div class="modal-body">
+          <p>
+            The following is a list of the available user types.  The user types checked have access to this menu.
+          </p>
+        </div>
+        <div class="form-content">  <!-- form-content -->
+          <form class="form" role="form" id="menu_permissions_form">
+            <input type="hidden" name="menu_id" id="permissions_menu_id" value="">
+            <div id="menu_permissions_form_body">
+ 
+
+
+            </div>                 <!-- menu_permissions_form_body -->
+          </form>
+        </div>                     <!-- form-content -->
+        <div class="modal-footer">
+        
+          <button class="btn btn-default" data-dismiss="modal">
+            <i class="glyphicon glyphicoe-remove-sign"></i>
+            Close
+          </button>
+          
+          <button class="btn btn-danger savemodalbutton">
+            <i class="glyphicon glyphicon-save"></i>
+            Save
+          </button>
+
+        </div>
+      </div>  <!-- modem-content -->
+    </div>    <!-- modal-dialog -->
+  </div>      <!-- menu_permissions_modal -->
+
+<!-- vvv Template vvv -->
+<div style="display: none;">
+
+    <div id="menu_permissions_form_checkox">
+      <div style="margin-left: 20px;">
+        <div clas="checkbox">
+          <label for="{{cbx_id}}">
+            <input type="checkbox" name="{{cbx_id}}" id="{{cbx_id}}" value="1"> {{cbx_label}}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div id="menu_permissions_form_checkox_checked">
+      <div style="margin-left: 20px;">
+        <div clas="checkbox">
+          <label for="{{cbx_id}}">
+            <input type="checkbox" name="{{cbx_id}}" id="{{cbx_id}}" value="1" checked> {{cbx_label}}
+          </label>
+        </div>
+      </div>
+    </div>
+
+</div>
+<!-- ^^^ Template ^^^ -->
+
     <script>
       $( function () {
         /* Add Button 
@@ -160,16 +226,17 @@
       $('.permissionmenu').click( function() {
         var menu_label = $(this).closest('li').attr('data-menu_label');
         var menu_id    = $(this).closest('li').attr('data-menu_id');
-        var this_menu  = menu_id + '-' + menu_label;
         var data       = 'menu_id=' + menu_id;
+        $("#permissions_menu_id").val(menu_id);
+        $("#modal_menu_label").text(menu_label);
 
-        cldl_ajax('cldl/admin/editmenu/permissions',
+        cldl_ajax('cldl/admin/editmenu/select/permissions',
                   data,
                   'get',
                   function(json) {
                     $('#menu_permissions_form_body').html('');  // Empty
                     $.each( json, function( key, value ) {
-                      var field_name = value.role_id + '-' + menu_id;
+                      var field_name = value.role_id + '_role_id';
                       var tmpl_data = {
                                         cbx_name:    field_name,
                                         cbx_id:      field_name,
@@ -188,7 +255,8 @@
                       $('#menu_permissions_form_body').append( new_cbx ); 
 
                     }); // each
-                    permission_menu(menu_label);
+
+                    $('#menu_permissions_modal').modal("show");
 
                   },
                   function() {
@@ -226,77 +294,34 @@
                       });
                   }
           ); // cldl_ajax
-        });
+        });  // click
 
-        function permission_menu( menu_label ) {
-          var modal = bootbox.dialog({
-              message: $("#menu_permissions_div").html(),
-              title: "Permission for menu '" + menu_label + "'",
-              buttons: [
-                {
-                  label: "Save", // "btn btn-danger pull-right",
-                  className: "glyphicon icon-ok-sign btn btn-danger pull-right",
-                  callback: function() {
-      
-                    alert($('form #email').val());
-                   
-                    return false;
+      $('.savemodalbutton').click( function() {
+        var data = $( "#menu_permissions_form" ).serialize();
+
+        cldl_ajax('cldl/admin/editmenu/update/permissions',
+                  data,
+                  'get',
+                  function(json) {
+                    if ( json['status'] == 0 ) {
+                      bootbox.alert("Permissions have been saved.", function() {
+                        $('#menu_permissions_modal').modal("hide");
+                      });
+                    } else {
+                      bootbox.alert("There was an error while saving your changes.", 
+                        function() {
+                        // Do nothing
+                      });
+                    }
+                  },
+                  function() {
+                    bootbox.alert("Failed to contact server.", 
+                      function() {
+                        //
+                      });
                   }
-                },
-                {
-                  label: "Cancel", // "btn btn-default pull-left",
-                  className: "glyphicon icon-remove-sign btn btn-default pull-right",
-                  callback: function() {
-                    console.log("just do something on close");
-                  }
-                }
-              ],
-              show: false,
-              onEscape: function() {
-                modal.modal("hide");
-              }
-          });
-          
-          modal.modal("show");
-        }
+          ); // cldl_ajax
+        });  // click
+
       </script>
-
-
-<div id="menu_permissions_div" style="display: none;"> <!-- disable viewing -->
-  <p>
-    The following is a list of the available user types.  The user types checed have access to this menu.
-  </p>
-  <div class="form-content">
-    <form class="form" role="form" id="menu_permissions_form">
-      <div class="form-content" id="menu_permissions_form_body">
- 
-
-
-      </div>
-    </form>
-  </div>
-</div>
-
-<div style="display: none;">
-
-    <div id="menu_permissions_form_checkox" class="checkbox">
-      <dev class="checkbox">
-        <label>
-          <input type="checkbox" name="{{cbx_id}}" id="{{cbx_id}}" value="1"> {{cbx_label}}
-        </label>
-      </div>
-    </div>
-
-    <div id="menu_permissions_form_checkox_checked" class="checkbox">
-      <dev class="checkbox">
-        <label>
-          <input type="checkbox" name="{{cbx_id}}" id="{{cbx_id}}" value="1" checked> {{cbx_label}}
-        </label>
-      </div>
-    </div>
-
-
-</div>
-
-
 
