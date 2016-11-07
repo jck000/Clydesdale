@@ -11,19 +11,6 @@ prefix '/cldl/admin/editmenu';
 
 get '/select' => sub {
 
-  debug "In admin-menu-dislay";
-
-#               'SELECT menu_id,
-#                       ordr,
-#                       pmenu_id,
-#                       menu_label,
-#                       company_id,
-#                       active
-#                  FROM cldl_menu
-#                    WHERE (    company_id = ?
-#                            OR company_id = 1 )
-#                      ORDER BY menu_id, ordr');
- 
   my $sth_edit_menu = database->prepare(
              qq( 
                 SELECT m.menu_id,
@@ -69,9 +56,9 @@ get '/select' => sub {
 
   return template 'cldl/admin/editmenu.tt',
                        {
-                         edit_menu        => $edit_menu,
+                         edit_menu => $edit_menu,
                        },
-                       { layout  => 'editmenu.tt' };  
+                       { layout    => 'editmenu.tt' };  
 
 };
 
@@ -110,11 +97,9 @@ get '/update/order' => sub {
     ($menu_id, my $item_value) = split(/=/, $item);
     $menu_id =~ s/[\D..]//g;
     if ( $item_value eq 'null' || $item_value eq '' ) {
-#      $pmenu_id = undef;
       $pmenu_id = $menu_id;
     }  
     
-    warn "UPDATE cldl_menu SET pmenu_id = $pmenu_id, ordr = $ordr WHERE menu_id = $menu_id";
     $sth_save_menu_order->execute( $pmenu_id, $ordr, $menu_id);
 
     $pmenu_id = $menu_id if ( $item_value eq 'null' ) ; ### Save for sub-menu items
@@ -122,8 +107,154 @@ get '/update/order' => sub {
     $ordr++;
   }
 
-  return to_json({ status => 'success' });
+  return to_json({ status => 0 });
 };
+
+get '/select/permissions' => sub {
+
+  my $menu_id = params->{menu_id};
+
+  my $sql_select_role = undef;
+
+  if ( session('role_id') == 5 ) {
+    $sql_select_role = q( 
+          SELECT role_id,
+                 role_name
+            FROM cldl_role
+              WHERE (    company_id = ?
+                      OR company_id = 1 )
+                    AND active = 1  );
+  } else {
+    $sql_select_role = q( 
+          SELECT role_id,
+                 role_name
+            FROM cldl_role
+              WHERE     company_id = ?
+                    AND active     = 1  );
+
+  }
+
+  my $sth_select_roles = database->prepare( $sql_select_role );
+
+  my $edit_menu_perms;
+
+  $sth_select_roles->execute( session('company_id') );
+  while ( my $ref = $sth_select_roles->fetchrow_hashref ) {
+    $edit_menu_perms->{ $ref->{role_id} } = $ref;
+  }
+
+  my $sth_select_roles_for_menu = database->prepare(
+         'SELECT role_permission_id,
+                 role_id,
+                 menu_id
+            FROM cldl_role_permission_menu
+              WHERE menu_id = ?'
+  );
+
+  $sth_select_roles_for_menu->execute( $menu_id );
+  while ( my $ref = $sth_select_roles_for_menu->fetchrow_hashref ) {
+    $edit_menu_perms->{ $ref->{role_id} }->{role_checked} = 1 ;
+  }
+
+  my @ret_array_perms;
+
+  foreach my $menu_key ( sort keys $edit_menu_perms ) {
+    push( @ret_array_perms, $edit_menu_perms->{$menu_key} );
+  }
+
+  return to_json( \@ret_array_perms );
+
+};
+
+# Save permissions
+get '/update/permissions' => sub {
+
+  my $sql_delete_permissions = undef;
+  if ( session('role_id') == 5 ) {
+    $sql_delete_permissions = q(
+                DELETE FROM cldl_role_permission_menu
+                  WHERE     menu_id = ?
+                        AND role_id IN 
+                            ( SELECT role_id
+                                FROM cldl_role
+                                  WHERE (    company_id = ?
+                                          OR company_id = 1 )
+                                        AND active = 1  ));
+  } else {
+    $sql_delete_permissions = q(
+                DELETE FROM cldl_role_permission_menu
+                  WHERE     menu_id = ?
+                        AND role_id IN 
+                            ( SELECT role_id
+                                FROM cldl_role
+                                  WHERE     company_id = ?
+                                        AND active     = 1  ));
+
+  }
+  my $sth_delete_permissions = database->prepare( $sql_delete_permissions );
+
+  my $sth_insert_role_permission = database->prepare(
+    'INSERT INTO cldl_role_permission_menu ( role_id, menu_id) VALUES ( ?, ?)'
+  );
+
+  my $menu_id  = params->{menu_id};
+  $sth_delete_permissions->execute( $menu_id, session('company_id') );
+
+  my $role_ids = params;
+
+  delete $role_ids->{menu_id};
+  foreach my $key ( keys %{$role_ids} ) {
+#    debug $key;
+    $key =~ m/(\d+)_.*/;
+#    debug $1;
+    $sth_insert_role_permission->execute( $1, $menu_id );
+  }
+
+  return to_json({ status => 0 });
+
+};
+
+# cldl_role
+# ---------
+# role_id,
+# company_id,
+# active,
+# role_name
+# 
+# cldl_role_members
+# -----------------
+# role_id,
+# user_id
+# 
+# cldl_role_permission_menu
+# -------------------------
+# role_permission_id,
+# role_id,
+# menu_id,
+# 
+# role_list = qq(
+# SELECT role_id,
+#        role_name
+#   FROM cldl_role
+#     WHERE ( company_id = ? OR company_id = 1) 
+#           AND active = 1
+# );
+# 
+# ## Loop into a hash
+#   { role_id => { role_name => xxxx } };
+# 
+# menu_role_perm = qq(
+# SELECT role_permission_id,
+#        role_id,
+#        menu_id, 
+#   FROM cldl_role_permission_menu
+#     WHERE menu_id = ?
+# );
+# 
+# while role_list {
+#   menu_role_perm->execute( menu_id ) 
+# 
+# }
 
 
 1;
