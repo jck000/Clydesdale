@@ -9,20 +9,19 @@
       <div class="row">
         <div class="col-sm-1"></div> 
         <div class="col-sm-11">
-            <fieldset>
+          <fieldset>
             
-              <!-- Form Name -->
-              <legend>[% dv.dv_title %]</legend>
+            <!-- Form Name -->
+            <legend>[% dv.dv_title %]</legend>
 
               
-              <div class="form-group">
-                [%+ INCLUDE cldl/includes/buttons/form_buttons.tt +%]
-              </div>
-          <form class="form-horizontal" 
-                id="cldl_form" 
-                method="post"
-<!--                action="[% app_host_url %]/dv/[% IF data.addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]"> -->
-                action="dv/[% IF data.addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]">
+            <div class="form-group">
+              [%+ INCLUDE cldl/includes/buttons/form_buttons.tt +%]
+            </div>
+            <form class="form-horizontal" 
+                  id="cldl_form" 
+                  method="post"
+                  action="dv/[% IF data.addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]">
               [% FOREACH ff IN dvf.nsort('ordr') %]
                 [% data_col_name = ff.dvf_name %]
 
@@ -42,11 +41,11 @@
                   [% INCLUDE "cldl/includes/select.tt" %]
                 [% END %]
               [% END %]
-          </form>
-              <div class="form-group">
-                [%+ INCLUDE cldl/includes/buttons/form_buttons.tt +%]
-              </div>
-            </fieldset>
+            </form>
+            <div class="form-group">
+              [%+ INCLUDE cldl/includes/buttons/form_buttons.tt +%]
+            </div>
+          </fieldset>
         </div>
       </div>
       <br><br><br>
