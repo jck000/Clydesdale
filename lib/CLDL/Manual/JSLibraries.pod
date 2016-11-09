@@ -1,0 +1,18 @@
+package CLDL::Manual::JSLibraries;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+CLDL::Manual::JSLibaries - Javascript libraries used in Clydesdale
+
+=head1 VERSION
+
+=cut
+
+
+

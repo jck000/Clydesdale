@@ -1,0 +1,18 @@
+package CLDL::Manual::Starman;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+CLDL::Manual::Starman - Configuring Starman for CLCL
+
+=head1 VERSION
+
+=cut
+
+
+
