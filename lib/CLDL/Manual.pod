@@ -1,0 +1,18 @@
+package CLDL::Manual;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+CLDL::mANUAL - An introduction to CLDL
+
+=head1 VERSION
+
+=cut
+
+
+
