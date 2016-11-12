@@ -99,7 +99,7 @@ CREATE TABLE `cldl_dv` (
   KEY `table_name` (`dv_db_table`),
   KEY `company_id` (`company_id`),
   CONSTRAINT `cldl_dv_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `cldl_company` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE `cldl_dvf` (
   `dvf_notes` tinytext,
   PRIMARY KEY (`dvf_id`),
   KEY `dv_id` (`dv_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=101485 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=101500 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,7 +159,7 @@ CREATE TABLE `cldl_menu` (
   KEY `company_id` (`company_id`),
   CONSTRAINT `cldl_menu_ibfk_1` FOREIGN KEY (`pmenu_id`) REFERENCES `cldl_menu` (`menu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `cldl_menu_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `cldl_company` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -234,7 +234,7 @@ CREATE TABLE `cldl_role_permission_menu` (
   KEY `menu_id` (`menu_id`),
   CONSTRAINT `cldl_role_permission_menu_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `cldl_role` (`role_id`),
   CONSTRAINT `cldl_role_permission_menu_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `cldl_menu` (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=200011 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=200018 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,7 +319,7 @@ CREATE TABLE `cldl_user_device` (
   PRIMARY KEY (`device_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `cldl_user_device_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `cldl_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -347,4 +347,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-09-28 15:54:56
+-- Dump completed on 2016-11-12  1:10:32
