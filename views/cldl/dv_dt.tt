@@ -32,7 +32,7 @@
         $( function () {
           /* Initialize the table with column definitions and data */
           $('#cldl_table').bootstrapTable({
-            [% dv.dv_data_attributes %],
+            [%+ dv.dv_data_attributes +%],
             [%+ IF dv.dt_del == 1 +%]
               checkboxHeader: true,
               clickToSelect: true,
@@ -42,14 +42,10 @@
           });       
   
           [%+ IF dv.dt_edit > 0 && dv.idField %]
-            /* Edit Button 
-             *   Open window with a record ID.  A record ID is used to 
-             *   retrieve and present an existing record.
-             */
             $('#cldl_table').on('[% IF dv.dt_edit == 1 %]click[% ELSIF dv.dt_edit == 2 %]dbl-click[% END %]-row.bs.table', function (e, row, $element) {
          
               var id = row['[% dv.idField %]'];
-              var new_location = '[% app_rt.this_page %]';
+              var new_location = window.location.pathname; 
   
               if ( new_location.indexOf('?') > 0 ) {
                 new_location += '&id=' + id;
@@ -71,7 +67,7 @@
           [%+ IF dv.dt_del == 1 %]
             /* Delete Button */
             $('#delButton').click( function() {
-              //var new_location = '[% app_rt.this_page %]'
+              // var new_location = window.location.pathname; 
               //                 + '?addrecord=1';
   
             });
@@ -83,7 +79,7 @@
              *   blank window with defaults.
              */
             $('#addButton').click( function() {
-              var new_location = '[% app_rt.this_page %]'
+              var new_location = window.location.pathname
                                + '?addrecord=1';
   
             [%+ IF dv.dv_name_add != '' +%]
