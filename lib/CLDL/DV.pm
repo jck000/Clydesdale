@@ -5,7 +5,7 @@ use Dancer2::Plugin::Database;
 
 our $VERSION = '0.00001';
 
-prefix '/cldl/dv' ;
+prefix '/dv' ;
 
 #
 # Display DataView

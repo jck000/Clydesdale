@@ -10,7 +10,7 @@ use Digest::MD5 qw( md5_hex );
 
 my $random = String::Random->new;
 
-prefix '/cldl/account';
+prefix '/account';
 
 # 
 # Preset register user form

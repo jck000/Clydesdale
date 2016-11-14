@@ -6,7 +6,7 @@ use File::Path qw(make_path);
  
 our $VERSION = '0.001';
 
-prefix '/cldl/upload';
+prefix '/upload';
 
 get '/file' => sub {
   debug "IN get upload";

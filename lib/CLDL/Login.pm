@@ -88,7 +88,7 @@ post '/login' => sub {
       redirect config->{cldl}->{base_url} . params->{req_path};
     } else {
       debug "Redirect to splash";
-      redirect config->{cldl}->{base_url} . '/splash';
+      redirect config->{cldl}->{splash_url} ;
     }
 
   } else {
@@ -107,7 +107,7 @@ post '/login' => sub {
 # Logout
 #
 get '/logout' => sub {
-  context->destroy_session;
+  app->destroy_session;
   redirect config->{cldl}->{base_url} . '/splash';
   # redirect config->{cldl}->{base_url} . config->{cldl}->{login_url};
 };

@@ -7,7 +7,7 @@ use Data::Dumper;
 
 our $VERSION = '0.00001';
 
-prefix '/cldl/admin/editmenu';
+prefix '/admin/editmenu';
 
 get '/select' => sub {
 
