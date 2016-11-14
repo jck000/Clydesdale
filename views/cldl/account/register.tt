@@ -141,7 +141,7 @@
         $( "#user_name" ).change(function() {
           var data = new Object();
           data['user_name'] = $(this).val();
-          cldl_ajax('/cldl/account/registration/check/id', 
+          cldl_ajax('cldl/account/registration/check/id', 
                     data, 
                     'post',
                     function(json) { 
@@ -160,7 +160,7 @@
         $( "#email" ).change(function() {
           var data = new Object();
           data['email'] = $(this).val();
-          cldl_ajax('/cldl/account/registration/check/email', 
+          cldl_ajax('cldl/account/registration/check/email', 
                     data, 
                     'post',
                     function(json) { 

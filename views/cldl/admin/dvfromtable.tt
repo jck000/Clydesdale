@@ -1,6 +1,6 @@
       <form class="form-horizontal" 
             method="post" 
-            action="[% app_host_url %]/admin/dvfromtable/insert" 
+            action="admin/dvfromtable/insert" 
             id="create_dv_from_table" 
             name="create_dv_from_table">
 

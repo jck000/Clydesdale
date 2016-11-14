@@ -18,25 +18,14 @@
 
     <!-- bootbox code -->
     <script src="[% app_host_lib %]/bootbox/bootbox.min.js"></script>
+
+    <!-- Mustache -->
+    <!-- <script type="text/javascript" src="libs/jqmustache/jquery.mustache.js"></script> -->
+ 
+    <!-- jquery Mustache  -->
+    <script type="text/javascript" src="[% mustache_url %]/mustache.min.js"></script>
+
     
-
-
-    
-<!-- Nested Sortable  -->
-<!--
-	<script>
-		(function(){
-			if (!/*@cc_on!@*/0) return;
-			var e = ("abbr article aside audio canvas command datalist details figure figcaption footer "+
-				"header hgroup mark meter nav output progress section summary time video").split(' '),
-			i=e.length;
-			while (i--) {
-			document.createElement(e[i])
-			}
-		})(document.documentElement,'className');
-	</script>
--->
-
 <!--     Nested Sortable -->
     <script>
       $(document).ready(function(){
@@ -63,12 +52,13 @@
 			    $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
 		    });
 
-        [%+ INCLUDE cldl/includes/js/cldl_ajax.js +%] 
-        [%+ INCLUDE cldl/includes/js/cldl_messages.js +%]
-        $('[data-toggle="tooltip"]').tooltip(); 
+        //$('[data-toggle="tooltip"]').tooltip(); 
 
 
 	    });
+
+      [%+ INCLUDE cldl/includes/js/cldl_ajax.js +%] 
+      [%+ INCLUDE cldl/includes/js/cldl_messages.js +%]
 
     </script>
 
@@ -298,6 +288,10 @@
       .inactivemenu {
         /* color: #A9A9A9; */
         color: #808080;
+      }
+
+  		.sortable li.mjs-nestedSortable-branch > div > .permissionmenu {
+        cursor: pointer;
       }
   
   	</style>

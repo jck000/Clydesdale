@@ -192,7 +192,7 @@
          */
         $('.addbutton').click( function() {
 
-          var new_location = 'cldl/dv/select/menu?addrecord=1&dv_type=1';
+          var new_location = 'dv/select/menu?addrecord=1&dv_type=1';
 
           window.location.replace( new_location );
         });
@@ -200,7 +200,7 @@
 
         $('.main_menu_item .menu_item').on( 'dblclick' , function () {
 
-          var new_location = 'cldl/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
+          var new_location = 'dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
 
           if ( new_location.indexOf('?') > 0 ) {
             new_location += '&menu_id=' + $(this).attr('data-menu_id');
@@ -217,7 +217,7 @@
 
 
       $('.openinwindowmenu').on( 'click',  function() {
-        var new_location = 'cldl/admin/editmenu/permissions?menu_id=' + $(this).closest('li').attr('data-menu_id') + '&dv_type=1';
+        var new_location = 'admin/editmenu/permissions?menu_id=' + $(this).closest('li').attr('data-menu_id') + '&dv_type=1';
 
         window.location.replace( new_location );
       });
@@ -230,7 +230,7 @@
         $("#permissions_menu_id").val(menu_id);
         $("#modal_menu_label").text(menu_label);
 
-        cldl_ajax('cldl/admin/editmenu/select/permissions',
+        cldl_ajax('admin/editmenu/select/permissions',
                   data,
                   'get',
                   function(json) {
@@ -272,7 +272,7 @@
       $('.savebutton').click( function() {
         var data = $('ol.sortable').nestedSortable('serialize');
 
-        cldl_ajax('cldl/admin/editmenu/update/order',
+        cldl_ajax('admin/editmenu/update/order',
                   data,
                   'get',
                   function(json) {
@@ -299,7 +299,7 @@
       $('.savemodalbutton').click( function() {
         var data = $( "#menu_permissions_form" ).serialize();
 
-        cldl_ajax('cldl/admin/editmenu/update/permissions',
+        cldl_ajax('admin/editmenu/update/permissions',
                   data,
                   'get',
                   function(json) {

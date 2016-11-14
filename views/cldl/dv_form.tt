@@ -57,7 +57,7 @@
         $('.savebutton').click( function() {
           var data = $('#cldl_form').serializeArray();
 
-          cldl_ajax('/cldl/dv/[% IF data.addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]',
+          cldl_ajax('dv/[% IF data.addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]',
                     data,
                     'post',
                     function(json) {

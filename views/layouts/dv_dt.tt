@@ -49,8 +49,9 @@
     </style>
 
     <script>
-      $(document).ready(function(){
-        [% INCLUDE cldl/includes/js/cldl_ajax.js %]
+      $(document).ready( function() {
+        [%+ INCLUDE cldl/includes/js/cldl_ajax.js +%]
+
         $('[data-toggle="tooltip"]').tooltip();
 
       });

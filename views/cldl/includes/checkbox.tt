@@ -6,19 +6,19 @@
                     </label>  
                     <div class="col-md-4">
 
-                      [% FOREACH cbx_key IN ff.dvf_values.keys.nsort %]
+                    [% FOREACH cbx_key IN ff.dvf_values.keys.nsort %]
 <!-- cbx_key: [% cbx_key %] -->
-                        <div class="checkbox-inline">
-                          <label for="[% ff.dvf_name %]-[% cbx_key %]">
-                            <input type="chekbox" 
-                                   name="[% ff.dvf_name %]" 
-                                   id="[% ff.dvf_name %]-[% cbx_key %]" 
-                                   value="[% cbx_key %]"
-                                   [% IF data.$data_col_name != '' && cbx_key == data.$data_col_name %] CHECKED [% END %]>
-                            [% ff.dvf_values.$cbx_key %]
-                          </label>
-                        </div>
-                      [% END %]
+                      <div class="checkbox-inline">
+                        <label for="[% ff.dvf_name %]-[% cbx_key %]">
+                          <input type="chekbox" 
+                                 name="[% ff.dvf_name %]" 
+                                 id="[% ff.dvf_name %]-[% cbx_key %]" 
+                                 value="[% cbx_key %]"
+                                 [% IF data.$data_col_name != '' && cbx_key == data.$data_col_name %] CHECKED [% END %]>
+                          [% ff.dvf_values.$cbx_key %]
+                        </label>
+                      </div>
+                    [% END %]
 
                     </div>    <!-- col-md-4 -->
                   </div>      <!-- form-group -->
