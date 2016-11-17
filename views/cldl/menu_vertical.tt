@@ -1,25 +1,54 @@
+<div class="navbar navbar-inverse navbar-fixed-left">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" 
+              class="navbar-toggle" 
+              data-toggle="collapse" 
+              data-target="#cldlNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
 
 
-<ul class="nav nav-pills">
-  [% IF app_rt.logged_in %]
-  <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-      DataViews <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu" role="menu">
-      <li>
-        <a href="[% app_host_url %]/cldl/dv/create" >Create A DataView</a>
-      </li>
-      <li>
-        <a href="[% app_host_url %]/cldl/dv/display/dv_list" >List/Edit DataViews</a>
-      </li>
-    </ul>
-  </li>
-  [% ELSE %]
-  <li>
-    <a href="[% app_host_url %]/login">login</a>
-  </li>
-  [% END %]
-</ul>
+      <a class="navbar-brand" href="#">
+      [% INCLUDE logo_menu.tt %]
+      </a>
 
+    </div>  <!-- navbar-header -->
 
+    <div class="collapse navbar-collapse" 
+         id="cldlNavbar">
+      [% mm = 0 %]
+      [% sm = 0 %]
+      [% FOREACH m IN menu %]
+        [% IF m.menu_link == '' %]
+          [% IF mm > 0 %]</li> </ul> [% END %]
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a class="dropdown-toggle" 
+               data-toggle="dropdown" 
+               href="#">[% m.menu_label %]
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+
+          [% mm = mm + 1 %]
+          [% sm = 0 %]
+        [% ELSE %]
+          [% IF mm > 0 %] </ul> [% END %]
+           
+              <li>
+                <!-- <a href="[% IF m.menu_link.match('^http://') %][% m.menu_link %][% ELSE %][% app_host_url %][% m.menu_link %]" > -->
+                <a href="[% m.menu_link %]" >
+                  [% m.menu_label %]
+                </a>
+              </li>
+         [% END %]
+       [% END %]
+         </li>
+       </ul>
+    </div>  <!-- collapse -->
+
+  </div>    <!-- container-fluid -->
+</nav>
