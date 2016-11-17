@@ -40,7 +40,8 @@ post '/login' => sub {
                                 u.language, 
                                 CONCAT(u.first_name, " ", u.last_name) AS full_name,
                                 u.pass_change,
-                                rm.role_id
+                                rm.role_id,
+                                u.company_default_values AS company_defaults
                            FROM cldl_user u,
                                 cldl_company c,
                                 cldl_role_members rm,
@@ -68,13 +69,14 @@ post '/login' => sub {
 
     debug "GOT A COMPANY ID";
 
-    session company_id => $ret->{company_id};
-    session language   => $ret->{language};
-    session user_type  => $ret->{user_type};
-    session user_id    => $ret->{user_id};
-    session user_name  => $ret->{user_name};
-    session full_name  => $ret->{full_name};
-    session role_id    => $ret->{role_id};
+    session company_id       => $ret->{company_id};
+    session language         => $ret->{language};
+    session user_type        => $ret->{user_type};
+    session user_id          => $ret->{user_id};
+    session user_name        => $ret->{user_name};
+    session full_name        => $ret->{full_name};
+    session role_id          => $ret->{role_id};
+    session company_defaults => $ref->{company_defaults};
 
     session cldl_menu  => CLDL::Menu::get_menu;
 

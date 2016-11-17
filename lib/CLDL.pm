@@ -84,8 +84,12 @@ hook 'before_template_render' => sub {
   $tokens->{cldl_return_to_page} = session('cldl_return_to_page'); # Return 
                                                                    # to main 
                                                                    # level
-  $tokens->{cldl_reload_page} = session('cldl_reload_page');    # Reload form
-  $tokens->{cldl_logged_in}   = session('company_id');
+  $tokens->{cldl_reload_page}    = session('cldl_reload_page');    # Reload form
+  $tokens->{cldl_logged_in}      = session('company_id');
+  my $company_defaults = session('company_defaults');
+  foreach my $key ( keys %{$company_defaults} ) {
+    $tokens->{$key} = $company_defaults->{$key};
+  }
 
 };
 
@@ -105,5 +109,6 @@ any '/splash' => sub {
 };
   
 1; # End of CLDL
+
 
 
