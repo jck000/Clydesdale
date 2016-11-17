@@ -45,6 +45,7 @@ CREATE TABLE `cldl_company` (
   `user_needs_approval` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Manually approve new users',
   `activation_email` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'send email to supplied email',
   `registration_source_url` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'save registration source url',
+  `company_default_values` text COMMENT 'Default values for this company',
   PRIMARY KEY (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='indexes done';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -99,7 +100,7 @@ CREATE TABLE `cldl_dv` (
   KEY `table_name` (`dv_db_table`),
   KEY `company_id` (`company_id`),
   CONSTRAINT `cldl_dv_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `cldl_company` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +134,7 @@ CREATE TABLE `cldl_dvf` (
   `dvf_notes` tinytext,
   PRIMARY KEY (`dvf_id`),
   KEY `dv_id` (`dv_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=101500 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=101544 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,6 +161,25 @@ CREATE TABLE `cldl_menu` (
   CONSTRAINT `cldl_menu_ibfk_1` FOREIGN KEY (`pmenu_id`) REFERENCES `cldl_menu` (`menu_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `cldl_menu_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `cldl_company` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `cldl_path`
+--
+
+DROP TABLE IF EXISTS `cldl_path`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cldl_path` (
+  `path_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL,
+  `active` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `action` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = deny; 1 = allow; 2 = allow if logged-in',
+  `path_regex` tinytext NOT NULL COMMENT 'Regular expressin ',
+  PRIMARY KEY (`path_id`),
+  KEY `company_id` (`company_id`),
+  CONSTRAINT `cldl_path_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `cldl_company` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -347,4 +367,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-12  1:10:32
+-- Dump completed on 2016-11-17 10:50:45
