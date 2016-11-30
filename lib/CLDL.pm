@@ -2,9 +2,8 @@ package CLDL;
 
 # Dancer2
 use Dancer2 appname => 'CLDL';
-
 use Dancer2::Plugin::Database;
-
+use Dancer2::Plugin::JWT;
 use Dancer2::Plugin::Tail;
 #use Dancer2::Plugin::EditFile;
 
@@ -38,7 +37,6 @@ if ( config->{cldl}->{appclass} ) {
 
 # Every request runs through here
 prefix undef;
-# prefix config->{cldl_base_prefix};
 
 #
 # Check that there is a session
@@ -60,6 +58,8 @@ hook 'before' => sub {
                . config->{cldl}->{login_url} 
                . '?req_path=' . request->path_info;
   }
+
+  debug "Session ID: " . session->{id};
 
   if (  defined params->{is_cldl_menu} && params->{is_cldl_menu} == 1 ) {
     my $req_path = request->path_info;
@@ -86,10 +86,8 @@ hook 'before_template_render' => sub {
                                                                    # level
   $tokens->{cldl_reload_page}    = session('cldl_reload_page');    # Reload form
   $tokens->{cldl_logged_in}      = session('company_id');
-  my $company_defaults = session('company_defaults');
-  foreach my $key ( keys %{$company_defaults} ) {
-    $tokens->{$key} = $company_defaults->{$key};
-  }
+  $tokens->{cldl_company_defaults} 
+                                 = session('company_defaults');
 
 };
 
@@ -109,6 +107,5 @@ any '/splash' => sub {
 };
   
 1; # End of CLDL
-
 
 

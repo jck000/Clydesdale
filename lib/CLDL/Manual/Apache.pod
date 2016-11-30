@@ -12,7 +12,7 @@ CLDL::Manual::Apache - Configuring Apache for Clydesdale
 
 =head1 VERSION
 
-Version 00001
+VERSION 0.00001
 
 =head1 Sample
 

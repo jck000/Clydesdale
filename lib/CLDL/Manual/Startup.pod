@@ -12,7 +12,7 @@ CLDL::Manual::Startup - init Script for Clydesdale
 
 =head1 VERSION
 
-VERSION 00001
+VERSION 0.00001
 
 =head2 /etc/init.d/cldl
 

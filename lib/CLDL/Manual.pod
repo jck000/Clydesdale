@@ -12,7 +12,40 @@ CLDL::Manual - An introduction to CLDL
 
 =head1 VERSION
 
+Version 0.00001
+
+=head1 DESCRIPTIOn
+
+Clydesdale: A B<workhorse>.
+
+Clydesdale is an application framework using the Dancer2 framework.  You can use it as the base for your CRUD application.  Add/Edit data to tables, create menus and manage user access.  The entire application is data driven from the database.  
+
+It's designed to be readable, maintainable, modifiable and a lot of other "I<able>" words.
+
+
+=head1 MANUAL 
+
+L<Configuring Apache for Clydesdale|CLDL::Manual::Apache>  
+L<CLDL::Manual::Database>
+L<CLDL::Manual::JSLibraries>
+L<CLDL::Manual::Starman>
+L<CLDL::Manual::Startup>
+
+=head1 See Also
+
+L<Dancer2::Plugin::Database>>
+L<Dancer2::Plugin::JWT>
+L<Dancer2::Plugin::Tail>
+
+
+
 =cut
+
+
+
+
+
+
 
 
 

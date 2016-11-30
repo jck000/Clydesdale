@@ -12,6 +12,8 @@ CLDL::Manual::JSLibaries - Javascript libraries used in Clydesdale
 
 =head1 VERSION
 
+VERSION 0.00001
+
 =cut
 
 
