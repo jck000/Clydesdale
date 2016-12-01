@@ -12,7 +12,7 @@ CLDL::Manual::Database - Configuring Database for Clydesdale
 
 =head1 VERSION
 
-VERSION 0.00001
+Version 0.00001
 
 =cut
 
