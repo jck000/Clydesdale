@@ -1,17 +1,28 @@
-requires "Config::Crontab"             => "0";
-requires "Dancer2"                     => "0";
-requires "Dancer2::Plugin::Database"   => "0";
-requires "Dancer2::Plugin::JWT"        => "0";
-requires "Dancer2::Plugin::Tail"       => "0";
-requires "Dancer2::Plugin::Cache::CHI" => "0";
-requires "Dancer2::Plugin::JWT"        => "0";
-requires "Dancer2::Session::Redis"     => "0";
-requires "Digest::MD5"                 => "0";
-requires "File::Copy"                  => "0";
-requires "File::Path"                  => "0";
-requires "Session::Token"              => "0";
-requires "String::Random"              => "0";
-requires "URL::Encode::XS"             => "0";
-requires "YAML"                        => "0";
-requires "YAML::XS"                    => "0";
+requires "Config::Crontab";
+requires "Dancer2";
+requires "Dancer2::Plugin::Database";
+requires "Dancer2::Plugin::JWT";
+requires "Dancer2::Plugin::Tail";
+requires "Dancer2::Plugin::Cache::CHI";
+requires "Dancer2::Plugin::JWT";
+requires "Dancer2::Session::Redis";
+requires "Digest::MD5";
+requires "File::Copy";
+requires "File::Path";
+requires "JSON";
+requires "JSON::XS";
+requires "Session::Token";
+requires "String::Random";
+requires "Template";
+requires "YAML";
+requires "YAML::XS";
+
+recommends "URL::Encode::XS";
+recommends "CGI::Deurl::XS";
+recommends "HTTP::Parser::XS";
+
+on "test" => sub {
+    requires "Test::More";
+    requires "HTTP::Request::Common";
+};
 
