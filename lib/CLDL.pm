@@ -22,7 +22,7 @@ use CLDL::Admin::Generic;      ### Generic
 
 use Digest::MD5 qw( md5_hex );
 
-our $VERSION = '0.00001';
+our $VERSION = '0.00002';
 
 # require class if defined
 if ( config->{cldl}->{appclass} ) {

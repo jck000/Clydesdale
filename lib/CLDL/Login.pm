@@ -132,7 +132,7 @@ post '/login/device' => sub {
 
 sub get_user {
   my $user_name = shift;
-  my $pass_word = shift;
+  my $user_pass = shift;
 
   my $sth_login = database->prepare( 
                       qq(
@@ -163,7 +163,7 @@ sub get_user {
 
   my $enc_pass = md5_hex( $user_name . $user_pass );
 
-  $sth_login->execute( params->{user_name}, $enc_pass );
+  $sth_login->execute( $user_name, $enc_pass );
   my $ret = $sth_login->fetchrow_hashref;
 
   return $ret;
