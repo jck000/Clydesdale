@@ -60,7 +60,8 @@ post '/login' => sub {
       redirect config->{cldl}->{base_url} . params->{req_path};
     } else {
       debug "Redirect to splash";
-      redirect config->{cldl}->{splash_url} ;
+      redirect config->{cldl}->{base_url}
+              . config->{cldl}->{splash_url} ;
     }
 
   } else {  # Not logged in

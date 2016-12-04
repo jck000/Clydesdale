@@ -44,20 +44,27 @@ prefix undef;
 hook 'before' => sub {
 
   debug "BEFORE: " . request->path_info;
- 
+
+  my $is_nosession = 0;
+
+  # Loop through path lists that do not need to have sessions
+  foreach my $nosession_path ( @{config->{cldl}->{nosession_paths}} ) {
+    my $regex = qr{$nosession_path};
+    if ( request->path_info =~ $regex ) {
+      $is_nosession = 1;
+      last;
+    }
+  }
+
   # If there's no company_id and it's not login, then send to login page
-  if (     ! session('company_id') 
-        && (    request->path_info !~ m{^/login} 
-             && request->path_info !~ m{^/account/register} 
-             && request->path_info !~ m{^/account/forgotpassword} 
-             && request->path_info !~ m{^/account/registration/check} 
-             && request->path_info !~ m{^/tail/display}
-             && request->path_info !~ m{^/tail/read} ) ) {
+  unless (     session('company_id') 
+            || $is_nosession ) {
 
     redirect config->{cldl}->{base_url} 
                . config->{cldl}->{login_url} 
                . '?req_path=' . request->path_info;
   }
+
 
   debug "Session ID: " . session->{id};
 
