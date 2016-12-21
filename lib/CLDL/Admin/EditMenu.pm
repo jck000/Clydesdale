@@ -56,6 +56,7 @@ get '/select' => sub {
 
   return template 'cldl/admin/editmenu.tt',
                        {
+                         title     => "Maintain Menu",
                          edit_menu => $edit_menu,
                        },
                        { layout    => 'editmenu.tt' };  
