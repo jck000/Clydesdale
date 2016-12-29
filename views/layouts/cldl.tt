@@ -7,6 +7,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- CSS Loader -->
+    <link rel="stylesheet" href="[% css_loader_url %]/load1.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load2.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load3.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load4.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load5.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load6.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load7.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load8.css" class="loader-style">
+
+
     <!-- bootstrap and jQuery -->
     <link rel="stylesheet" href="[% bs_url %]/css/bootstrap.min.css">
     <script src="[% jq_url %]/jquery.min.js"></script>
