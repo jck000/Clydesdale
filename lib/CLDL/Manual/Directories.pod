@@ -1,0 +1,142 @@
+package CLDL::Manual::Directories;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+CLDL::Manual::Directories - Directory Strcture of Clydesdale
+
+=head1 VERSION
+
+Version 0.00001
+
+=head1 DESCRIPTION
+
+The following is the directory structure of Clydesdale.
+
+  .
+  ├── app-bin
+  ├── app-conf
+  ├── backups
+  ├── bin
+  ├── data
+  ├── email_templates
+  ├── environments
+  ├── lib
+  │   └── CLDL
+  │       ├── Admin
+  │       ├── DV
+  │       ├── Helpers
+  │       └── Manual
+  ├── logs
+  ├── public
+  │   ├── css
+  │   ├── images
+  │   ├── javascripts
+  │   └── uploads
+  ├── samples
+  ├── sessions
+  ├── sql
+  ├── t
+  ├── tmp
+  └── views
+      ├── cldl
+      │   ├── account
+      │   ├── admin
+      │   └── includes
+      │       ├── buttons
+      │       └── js
+      ├── js
+      └── layouts
+  
+  33 directories
+
+=head2 TOP-LEVEL DIRECTORIES
+
+=over 4
+
+
+=item app-bin I<Optional>
+
+Location of user written scripts/programs.
+
+=item app-conf I<Optional>
+
+Location of configuration files for user written scripts/programs.
+
+=item backups I<Optional>
+
+Location of backup copies of configuration and scripts that are modified by Clydesdale.
+
+=item bin
+
+Location of Clydesdale launch scripts.
+
+=item data I<Optional>
+
+Location of user supplied data that's not stored in a database.  
+
+=item email_templates I<Optinal>
+
+Location of email templates.
+
+
+=item environments
+
+Location of Clydesdale configuration scripts for each environment.
+
+
+=item lib
+
+Location of Clydesdale Perl modules.
+
+
+=item logs I<Optional>
+
+Location of Clydesdale access, erro and debug logs.
+
+
+=item public
+
+Location of public static html/javascript/CSS files.
+
+
+=item samples
+
+Sample scripts.
+
+
+=item sessions
+
+Location of sessions if using file based sessions like YAML.
+
+
+=item sql
+
+Location of sql script to create Clydesdale database and load basic data.
+
+
+=item t
+
+Location of test scripts that are run during installation.
+
+
+=item tmp
+
+Location of tmp files.
+
+
+=item views
+
+Location of templates.
+
+=back
+
+
+
+
+=cut
