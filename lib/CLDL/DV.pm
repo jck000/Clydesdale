@@ -3,6 +3,8 @@ package CLDL::DV;
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 
+use CLDL::DVQuery;
+
 our $VERSION = '0.00001';
 
 prefix '/dv' ;
@@ -16,12 +18,16 @@ get '/select/:dv_name_id' => sub {
       @select, $key, $sort, $SQL, $sth_dv, $sth_dvf, $sth_data, @data_values) ;
 
   # Set defaults
-  my $cldl_sql_limit  = params->{limit}      ||= 'all';
-  my $cldl_sql_offset = params->{offset}     ||= 0;
-  my $cldl_sql_sort   = params->{sort}       ||= "";
-  my $cldl_sql_order  = params->{order}      ||= "ASC";
-  my $cldl_addrecord  = params->{addrecord}  ||= 0;
-  my $cldl_dv_name    = params->{dv_name_id} ||= params->{dv_name_override} ;
+  my $cldl_sql_limit   = params->{limit}       ||= 'all';
+  my $cldl_sql_offset  = params->{offset}      ||= 0;
+  my $cldl_sql_sort    = params->{sort}        ||= "";
+  my $cldl_sql_order   = params->{order}       ||= "ASC";
+  my $cldl_addrecord   = params->{addrecord}   ||= 0;
+  my $cldl_dv_name     = params->{dv_name_id}  ||= params->{dv_name_override} ;
+  
+  var generate_tt     => params->{generate_tt} ||= 0;
+
+  debug "SELECT: " . vars->{generate_tt};
 
   ### DataView
   $dv = get_dv( $cldl_dv_name, session('company_id') );
@@ -103,6 +109,7 @@ get '/select/:dv_name_id' => sub {
     $data = { company_id => session('company_id'),
               addrecord  => 1,
               dv_name_id => $cldl_dv_name } ;
+
   } else {
 
     # SQL
@@ -212,11 +219,11 @@ debug $data;
     $cldl_template = 'cldl/dv_form.tt' if ( $cldl_template eq 'dv_form' ) ;
 
     return template $cldl_template, { 
-                               cldl_dv_name_id => $cldl_dv_name,
-                               dv              => $dv, 
-                               dvf             => \@dvf_fields, 
-                               data            => $data,
-                               cldl_menu       => session('cldl_menu'),
+                               cldl_dv_name_id  => $cldl_dv_name,
+                               dv               => $dv, 
+                               dvf              => \@dvf_fields, 
+                               data             => $data,
+                               cldl_menu        => session('cldl_menu'),
                              };
 
 
@@ -225,23 +232,21 @@ debug $data;
             || $cldl_dv_type == 3 ) {
 
     my $ret_dvf_fields = undef;
-    if (    $dv->{dv_name} eq 'dv_list' 
-         || $dv->{dv_name} eq 'dvf_list' ) {
-      # $ret_dvf_fields = '[{"field":"actionmenu", "title":"Actions", "align":"center", "formatter":actionFormatter, "events":actionEvents}';
-      # $ret_dvf_fields = '[{"field":"actionmenu","title":"Actions","align":"center","formatter":actionFormatter}';
-      $ret_dvf_fields = '[';
-
-      my $cnt=0;
-      foreach my $dvf_entry ( @dvf_fields ) {
-        $ret_dvf_fields .= ',' if ( $cnt > 0 );
-        $ret_dvf_fields .= to_json( $dvf_entry );
-        $cnt++;
-      }
-      #$ret_dvf_fields .= ']';
-      $ret_dvf_fields .= ',{"field":"actionmenu","title":"Actions","align":"center","formatter":actionFormatter}]';
-    } else {
+#    if (    $dv->{dv_name} eq 'dv_list' 
+#         || $dv->{dv_name} eq 'dvf_list' ) {
+#      $ret_dvf_fields = '[';
+#
+#      my $cnt=0;
+#      foreach my $dvf_entry ( @dvf_fields ) {
+#        $ret_dvf_fields .= ',' if ( $cnt > 0 );
+#        $ret_dvf_fields .= to_json( $dvf_entry );
+#        $cnt++;
+#      }
+#      $ret_dvf_fields .= ',{"field":"actionmenu","title":"Actions","align":"center","formatter":actionmenu, "events":actionevents}';
+#      $ret_dvf_fields .= ']';
+#    } else {
       $ret_dvf_fields = to_json( \@dvf_fields ),
-    }
+#    }
 
     # Datatable is always 'dv_dt'
     return template 'cldl/dv_dt.tt', { 
@@ -271,6 +276,115 @@ post '/:action/:dv_name_id' => sub {
   }
 
   &updates_to_db;
+
+};
+
+
+get '/select/:dv_id/permissions' => sub {
+
+  my $dv_id   = params->{dv_id};
+  my $dv_name = params->{dv_name};
+
+  my $sql_select_role = undef;
+
+  if ( session('role_id') == 5 ) {
+    $sql_select_role = q( 
+          SELECT role_id,
+                 role_name
+            FROM cldl_role
+              WHERE (    company_id = ?
+                      OR company_id = 1 )
+                    AND active = 1  );
+  } else {
+    $sql_select_role = q( 
+          SELECT role_id,
+                 role_name
+            FROM cldl_role
+              WHERE     company_id = ?
+                    AND active     = 1  );
+
+  }
+
+  my $sth_select_roles = database->prepare( $sql_select_role );
+
+  my $dv_perms;
+
+  $sth_select_roles->execute( session('company_id') );
+  while ( my $ref = $sth_select_roles->fetchrow_hashref ) {
+    $dv_perms->{ $ref->{role_id} } = $ref;
+  }
+
+  my $sth_select_roles_for_dv = database->prepare(
+         'SELECT role_permission_id,
+                 role_id,
+                 dv_id
+            FROM cldl_role_permission_dv
+              WHERE dv_id = ?'
+  );
+
+  $sth_select_roles_for_dv->execute( $dv_id );
+  while ( my $ref = $sth_select_roles_for_dv->fetchrow_hashref ) {
+    $dv_perms->{ $ref->{role_id} }->{role_checked} = 1 ;
+  }
+
+  my @ret_array_perms;
+
+  foreach my $dv_key ( sort keys $dv_perms ) {
+    push( @ret_array_perms, $dv_perms->{$dv_key} );
+  }
+
+  return to_json( \@ret_array_perms );
+
+};
+
+
+
+
+# Save permissions
+get '/update/:dv_id/permissions' => sub {
+
+  my $dv_id   = params->{dv_id};
+  my $dv_name = params->{dv_name};
+
+  my $sql_delete_permissions = undef;
+  if ( session('role_id') == 5 ) {
+    $sql_delete_permissions = q(
+                DELETE FROM cldl_role_permission_dv
+                  WHERE     dv_id = ?
+                        AND role_id IN 
+                            ( SELECT role_id
+                                FROM cldl_role
+                                  WHERE (    company_id = ?
+                                          OR company_id = 1 )
+                                        AND active = 1  ));
+  } else {
+    $sql_delete_permissions = q(
+                DELETE FROM cldl_role_permission_dv
+                  WHERE     dv_id = ?
+                        AND role_id IN 
+                            ( SELECT role_id
+                                FROM cldl_role
+                                  WHERE     company_id = ?
+                                        AND active     = 1  ));
+
+  }
+  my $sth_delete_permissions = database->prepare( $sql_delete_permissions );
+
+  my $sth_insert_role_permission = database->prepare(
+    'INSERT INTO cldl_role_permission_dv ( role_id, dv_id) VALUES ( ?, ?)'
+  );
+
+  $sth_delete_permissions->execute( $dv_id, session('company_id') );
+
+  my $role_ids = params;
+
+  delete $role_ids->{dv_id};
+  foreach my $key ( keys %{$role_ids} ) {
+    $key =~ m/(\d+)_.*/;
+    $sth_insert_role_permission->execute( $1, $dv_id );
+  }
+
+  return to_json({ status => 0 });
 
 };
 
@@ -487,9 +601,4 @@ sub get_dvf {
   return $dvf;
 }
 
-
-
-
 1;
-
-

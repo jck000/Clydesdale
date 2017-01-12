@@ -2,6 +2,7 @@ package CLDL::Admin::EditMenu;
 
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
+use Dancer2::Plugin::Redis;
 
 use Data::Dumper;
 
@@ -256,6 +257,16 @@ get '/update/permissions' => sub {
 #   menu_role_perm->execute( menu_id ) 
 # 
 # }
+
+get '/update/menucache' => sub {
+
+  my $counter = redis_get('counter');  # Get the counter value from Redis.
+  redis_set( ++$counter );             # Increment counter value by 1 and save it back to Redis.
+  return $counter;
+
+};
+
+
 
 
 1;
