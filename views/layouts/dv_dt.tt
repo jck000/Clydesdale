@@ -23,6 +23,9 @@
     <script src="[% bs_url %]/js/bootstrap.min.js"></script>
     <script src="[% bs_tbl_url %]/bootstrap-table.min.js"></script>
 
+    <!-- Bootstrap-table extensions -->
+    <script src="[% bs_tbl_context_menu %]/bootstrap-table-contextmenu.js"></script>
+
     <!-- Bootbox code -->
     <script src="[% app_host_lib %]/bootbox/bootbox.min.js"></script>
 
@@ -136,11 +139,10 @@
 
     <script>
       $(document).ready( function() {
-        [%+ INCLUDE cldl/includes/js/cldl_ajax.js +%]
-
         $('[data-toggle="tooltip"]').tooltip();
-
       });
+      [%+ INCLUDE cldl/includes/js/cldl_ajax.js +%]
+
     </script>
 
   </head>
