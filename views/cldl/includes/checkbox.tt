@@ -1,3 +1,8 @@
+[% IF generate_tt == 1 %]
+<!-- cldl/includes/checkbox.tt -->
+[% END %]
+
+
                   <!-- Checkbox input-->
                   <div class="form-group">
                     <label class="col-md-4 control-label" 
