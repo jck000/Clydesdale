@@ -214,7 +214,6 @@
 
       $('.openinwindowmenu').on( 'click',  function() {
         var new_location = $(this).closest('li').attr('data-menu_link');
-
         window.open( new_location, "_blank" );
       });
 
