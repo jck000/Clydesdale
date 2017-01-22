@@ -4,8 +4,8 @@ package CLDL::Login;
 use Dancer2 appname => 'CLDL';
 
 use Dancer2::Plugin::Database;
-
-use CLDL::Menu;         ### Menus
+use CLDL::Cache;
+# use CLDL::Menu;         ### Menus
 
 use Digest::MD5 qw( md5_hex );
 
@@ -48,7 +48,9 @@ post '/login' => sub {
     session role_id          => $ret->{role_id};
     session company_defaults => eval( $ret->{company_defaults});
 
-    session cldl_menu  => CLDL::Menu::get_menu;
+    session menu_id          => 'menu-' . $ret->{company_id} . '-' . $ret->{role_id};
+
+#    session cldl_menu  => CLDL::Menu::get_menu( session('menu_id');
 
     if ( $ret->{pass_change} == 1 ) {
       debug "pass_change == 1";
@@ -104,7 +106,7 @@ post '/login/device' => sub {
     session role_id          => $ret->{role_id};
     session company_defaults => eval( $ret->{company_defaults});
 
-    session cldl_menu  => CLDL::Menu::get_menu;
+#    session cldl_menu  => &CLDL::Menu::get_menu;
 
     if ( $ret->{pass_change} == 1 ) {
       debug "pass_change == 1";

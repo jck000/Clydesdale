@@ -7,7 +7,10 @@ use Dancer2::Plugin::JWT;
 use Dancer2::Plugin::Tail;
 #use Dancer2::Plugin::EditFile;
 
+use Data::Dumper;
+
 use CLDL::Account;      ### Accounts
+use CLDL::Cache;
 use CLDL::DV;           ### DataViews
 use CLDL::Menu;         ### Menus
 use CLDL::Login;        ### Login/Logout
@@ -20,9 +23,9 @@ use CLDL::Admin::EditMenu;     ### Edit Menus
 use CLDL::Admin::DVFromtable;  ### Create DataView from table
 use CLDL::Admin::Generic;      ### Generic
 
-use Digest::MD5 qw( md5_hex );
 
-our $VERSION = '0.00002';
+our $VERSION = '0.00003';
+
 
 # require class if defined
 if ( config->{cldl}->{appclass} ) {
@@ -86,8 +89,18 @@ hook 'before_template_render' => sub {
 
   debug "IN BEFORE_TEMPLATE_RENDER:";
 
-  $tokens->{cldl_menu}           = session('cldl_menu');           # Application
-                                                                   #  menu
+#  $tokens->{cldl_menu}           = session('cldl_menu'); # Application
+  if ( session('menu_id') ) { 
+    $tokens->{cldl_menu}           = &CLDL::Cache::get_menu( session('menu_id') );           
+  }
+
+  debug "cldl_menu";
+  debug $tokens->{cldl_menu};
+
+  open( my $LOG, ">", "/tmp/cldl_menu.log");
+  print $LOG Dumper( $tokens->{cldl_menu}) ;
+  close($LOG);
+
   $tokens->{cldl_return_to_page} = session('cldl_return_to_page'); # Return 
                                                                    # to main 
                                                                    # level
@@ -96,7 +109,33 @@ hook 'before_template_render' => sub {
   $tokens->{cldl_company_defaults} 
                                  = session('company_defaults');
 
+#  $tokens->{generate_tt}         = vars->{generate_tt};
+
 };
+
+hook 'after_template_render' => sub {
+  my $ref_content = shift;
+  my $generate_tt = vars->{generate_tt};
+
+  debug "AFTER_TEMPLATE_RENDER: " . $generate_tt;
+
+  if ( $generate_tt ) { 
+    my $content     = ${$ref_content};
+
+    open(my $OUT, '>', '/tmp/rendered.out');
+    print $OUT $content;
+    close($OUT);
+  }
+
+  return $ref_content;
+};
+
+
+
+
+
+
+
 
 #
 # Show template
