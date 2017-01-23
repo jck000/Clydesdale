@@ -18,22 +18,19 @@
 
     <div class="collapse navbar-collapse" 
          id="cldlNavbar">
-      [% FOREACH main_menu_key IN cldl_menu.main_menu_keys %]
+      [% FOREACH mkey IN cldl_menu.keys %]
+      [% main_menu = cldl_menu.$mkey %]
       <ul class="nav navbar-nav">
         <li class="dropdown">
-          [% menu = cldl_menu.$main_menu_key %]
-          [% child_menu_keys = cldl_menu.child_menu_keys.$main_menu_key %]
-          [% IF child_menu_keys.size %]
+          [% IF main_menu.children %]
             <!-- Child Menu -->
             <a class="dropdown-toggle" 
                data-toggle="dropdown" 
-               href="#">[% menu.menu_label %]
+               href="#">[% main_menu.menu_label %]
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              [% FOREACH child_menu_key IN child_menu_keys %]
-                <!-- [% child_menu_key %] -->
-                [% child_menu = cldl_menu.$child_menu_key %]
+              [% FOREACH child_menu IN main_menu.children %]
                 <li> 
                   <a href="[% child_menu.menu_link %]">[% child_menu.menu_label %]</a> 
                 </li>
@@ -43,7 +40,7 @@
             <!-- No Child Menu -->
             <a class="dropdown-toggle" 
                data-toggle="dropdown" 
-               href="#">[% menu.menu_label %]
+               href="#">[% main_menu.menu_label %]
             </a>
           [% END %]
         </li>
