@@ -24,7 +24,7 @@ use CLDL::Admin::DVFromtable;  ### Create DataView from table
 use CLDL::Admin::Generic;      ### Generic
 
 
-our $VERSION = '0.00003';
+our $VERSION = '0.00004';
 
 
 # require class if defined
