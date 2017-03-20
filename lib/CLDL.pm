@@ -49,6 +49,21 @@ hook 'before' => sub {
   debug "BEFORE: " . request->path_info;
 
   my $is_nosession = 0;
+  my $is_jwt       = 0;
+  my $forward_to   = request->path_info;
+
+  # Does this require JWT based on host name?
+  if (    defined config->{cldl}->{jwt}->{host} 
+       && request->host eq config->{cldl}->{jwt}->{host} ) {
+    $is_jwt = 1;
+  }
+
+  # Does this require JWT based on path?
+  my $regex_jwt = qr{ config->{cldl}->{jwt}->{path} } if ( defined config->{cldl}->{jwt}->{path} ) ;
+  if (    defined config->{cldl}->{jwt}->{path}
+       && request->path_info =~ $regex_jwt ) {
+    $is_jwt = 1;
+  }
 
   # Loop through path lists that do not need to have sessions
   foreach my $nosession_path ( @{config->{cldl}->{nosession_paths}} ) {
@@ -59,9 +74,14 @@ hook 'before' => sub {
     }
   }
 
+#  Work In Process
+#  if ( $is_jwt ) {
+#    $forward_to =~ s/$
+#  }
+
+
   # If there's no company_id and it's not login, then send to login page
-  unless (     session('company_id') 
-            || $is_nosession ) {
+  unless (     session('company_id') || $is_nosession ) {
 
     redirect config->{cldl}->{base_url} 
                . config->{cldl}->{login_url} 
@@ -76,7 +96,6 @@ hook 'before' => sub {
     $req_path =~ s/^\///;
     session cldl_return_to_page => $req_path;
   }
-
 
 };
 
@@ -97,10 +116,6 @@ hook 'before_template_render' => sub {
   debug "cldl_menu";
   debug $tokens->{cldl_menu};
 
-  open( my $LOG, ">", "/tmp/cldl_menu.log");
-  print $LOG Dumper( $tokens->{cldl_menu}) ;
-  close($LOG);
-
   $tokens->{cldl_return_to_page} = session('cldl_return_to_page'); # Return 
                                                                    # to main 
                                                                    # level
@@ -108,8 +123,18 @@ hook 'before_template_render' => sub {
   $tokens->{cldl_logged_in}      = session('company_id');
   $tokens->{cldl_company_defaults} 
                                  = session('company_defaults');
+  $tokens->{generate_tt}         = 1 if ( vars->{generate_tt} );
+#  print '
+#<!-- TEMPLATE NAME: [% context.name %] --> 
+#
+#';
 
-#  $tokens->{generate_tt}         = vars->{generate_tt};
+
+  open( my $LOG, ">", "/tmp/tokens.log");
+  print $LOG Dumper( $tokens ) ;
+  close($LOG);
+
+
 
 };
 

@@ -179,9 +179,18 @@
               } else if($el.data("item") == "fieldsdw"){
                 alert("Fields DW: " + row.dv_name + " " + row.dv_title );
               } else if($el.data("item") == "create_template"){
-                alert("Create Template: " );
+                var new_location = window.location.pathname; 
+              
+                if ( new_location.indexOf('?') > 0 ) {
+                  new_location += '&generate_tt=1&dv_type=1';
+                } else {
+                  new_location += '?generate_tt=1&dv_type=1';
+                }
+
+                window.open(new_location, '_blank');
+
               } else if($el.data("item") == "open_in_window"){
-                alert("Open In Window: " );
+                window.open(window.location.pathname, '_blank');
               }
             },
             [% END %]
