@@ -2,7 +2,8 @@
 
 # only log warning and error messsages
 #log: "warning"
-log: "debug"
+#log: "debug"
+log: "core"
 
 # log message to a file in logs/
 #logger: "console"

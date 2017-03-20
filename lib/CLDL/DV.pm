@@ -3,6 +3,7 @@ package CLDL::DV;
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 
+use CLDL::Cache;
 use CLDL::DVQuery;
 
 our $VERSION = '0.00001';
@@ -223,7 +224,8 @@ debug $data;
                                dv               => $dv, 
                                dvf              => \@dvf_fields, 
                                data             => $data,
-                               cldl_menu        => session('cldl_menu'),
+                               cldl_menu        => CLDL::Cache::get_menu( session('company_id'), session('role_id') ),
+#                               cldl_menu        => session('cldl_menu'),
                              };
 
 
@@ -254,7 +256,8 @@ debug $data;
                                  dv              => $dv, 
 #                                 dvf             => to_json( \@dvf_fields ),
                                  dvf             => $ret_dvf_fields,
-                                 cldl_menu       => session('cldl_menu'),
+                                 cldl_menu       => CLDL::Cache::get_menu( session('company_id'), session('role_id') ),
+#                                 cldl_menu       => session('cldl_menu'),
                                  data            => $data,
                                },
                                { layout  => 'dv_dt.tt' };  # Specify layout to 
