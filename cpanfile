@@ -6,6 +6,7 @@ requires "Dancer2::Plugin::Redis";
 requires "Dancer2::Plugin::EditFile";
 requires "Dancer2::Plugin::Tail";
 requires "Dancer2::Session::Redis";
+requires "DateTime";
 requires "Digest::MD5";
 requires "File::Copy";
 requires "File::Path";
