@@ -140,7 +140,7 @@ hook 'before_template_render' => sub {
 
 hook 'after_template_render' => sub {
   my $ref_content = shift;
-  my $generate_tt = vars->{generate_tt};
+  my $generate_tt = vars->{generate_tt} || 0;
 
   debug "AFTER_TEMPLATE_RENDER: " . $generate_tt;
 
