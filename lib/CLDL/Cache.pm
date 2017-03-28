@@ -133,21 +133,25 @@ sub update_caches() {
     }      # while $role_ref end
   }        # while $company_ref end
 
+  debug "Cache Menu: " ; 
+  debug $cache_menu;
+
   # Put into Cache
   foreach my $company_id ( keys %{$cache_menu} ) {
     foreach my $role_id ( keys %{ $cache_menu->{$company_id} } ) {
       my $mkey = 'menu-' . $company_id . '-' . $role_id;
-      redis_set( $mkey, $cache_menu->{$company_id}->{$role_id}  );
+      redis_set( $mkey, to_json($cache_menu->{$company_id}->{$role_id})  );
     }
   }
 
-  # Put into Cache
-  foreach my $company_id ( keys %{$cache_routes} ) {
-    foreach my $role_id ( keys %{ $cache_routes->{$company_id} } ) {
-      my $rkey = 'route-' . $company_id . '-' . $role_id;
-      redis_set( $rkey, $cache_routes->{$company_id}->{$role_id}  );
-    }
-  }
+#  Still working on this
+#  # Put into Cache
+#  foreach my $company_id ( keys %{$cache_routes} ) {
+#    foreach my $role_id ( keys %{ $cache_routes->{$company_id} } ) {
+#      my $rkey = 'route-' . $company_id . '-' . $role_id;
+#      redis_set( $rkey, $cache_routes->{$company_id}->{$role_id}  );
+#    }
+#  }
 
 }
 
@@ -162,7 +166,7 @@ sub get_menu {
 #  print $M Dumper($x);
 #  close($M);
 
-  return redis_get( $menu_id );
+  return from_json(redis_get( $menu_id ));
 }
 
 sub get_paths {
