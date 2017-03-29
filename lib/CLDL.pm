@@ -110,7 +110,7 @@ hook 'before_template_render' => sub {
 
 #  $tokens->{cldl_menu}           = session('cldl_menu'); # Application
   if ( session('menu_id') ) { 
-    $tokens->{cldl_menu}           = &CLDL::Cache::get_menu( session('menu_id') );           
+    $tokens->{cldl_menu}           = &CLDL::Cache::get_menu( session('menu_id'), session('default_menu_id') );           
   }
 
   debug "cldl_menu";
