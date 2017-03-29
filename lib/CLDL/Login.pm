@@ -49,6 +49,7 @@ post '/login' => sub {
     session company_defaults => eval( $ret->{company_defaults});
 
     session menu_id          => 'menu-' . $ret->{company_id} . '-' . $ret->{role_id};
+    session default_menu_id  => 'menu-1-'                          . $ret->{role_id};
 
 #    session cldl_menu  => CLDL::Menu::get_menu( session('menu_id');
 
