@@ -140,17 +140,17 @@ hook 'before_template_render' => sub {
 
 hook 'after_template_render' => sub {
   my $ref_content = shift;
-  my $generate_tt = vars->{generate_tt} || 0;
-
-  debug "AFTER_TEMPLATE_RENDER: " . $generate_tt;
-
-  if ( $generate_tt ) { 
-    my $content     = ${$ref_content};
-
-    open(my $OUT, '>', '/tmp/rendered.out');
-    print $OUT $content;
-    close($OUT);
-  }
+#  my $generate_tt = vars->{generate_tt} || 0;
+#
+#  debug "AFTER_TEMPLATE_RENDER: " . $generate_tt;
+#
+#  if ( defined $generate_tt && $generate_tt ) { 
+#    my $content     = ${$ref_content};
+#
+#    open(my $OUT, '>', '/tmp/rendered.out');
+#    print $OUT $content;
+#    close($OUT);
+#  }
 
   return $ref_content;
 };

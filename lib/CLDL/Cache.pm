@@ -33,7 +33,7 @@ sub update_caches() {
 
   debug "In update_caches $company_id";
 
-  my @company_list = get_company_list($company_id);
+  my @company_list = get_company_list( $company_id );
 
 
   my $ROLE_SQL = qq(
@@ -116,7 +116,21 @@ sub get_menu {
   my $menu_id         = shift;
   my $default_menu_id = shift;
 
-  return from_json( (redis_get( $menu_id ), redis_get( $default_menu_id)) );
+  my $main_menu    = redis_get( $menu_id )         || {};
+  my $default_menu = redis_get( $default_menu_id ) || {};
+
+  debug "Main Menu: ";
+  debug $main_menu;
+  debug "Default Menu:";
+  debug $default_menu;
+
+  my $cldl_menu = { %{$main_menu}, %{$default_menu} };
+
+  debug $cldl_menu;
+
+  return $cldl_menu;
+
+#  return from_json( (redis_get( $menu_id ), redis_get( $default_menu_id)) );
 }
 
 sub get_paths {
