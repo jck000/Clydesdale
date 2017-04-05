@@ -116,8 +116,8 @@ sub get_menu {
   my $menu_id         = shift;
   my $default_menu_id = shift;
 
-  my $main_menu    = redis_get( $menu_id )         || {};
-  my $default_menu = redis_get( $default_menu_id ) || {};
+  my $main_menu    = from_json(redis_get( $menu_id ))         || {};
+  my $default_menu = from_json(redis_get( $default_menu_id )) || {};
 
   debug "Main Menu: ";
   debug $main_menu;
