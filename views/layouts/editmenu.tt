@@ -11,8 +11,8 @@
     <script src="[% jq_url %]/jquery.min.js"></script>
     <script src="[% bs_url %]/js/bootstrap.min.js"></script>
 <!-- vvv Nested Sortable vvv -->
-    <script type="text/javascript" src="[% app_host_url %]/libs/jqueryui/jquery-ui-1.11.4.custom.sortable/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="[% app_host_url %]/libs/nestedSortable/jquery.mjs.nestedSortable.js"></script>
+    <script type="text/javascript" src="[% app_host_lib %]/jqueryui/jquery-ui-1.11.4.custom.sortable/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="[% app_host_lib %]/nestedSortable/jquery.mjs.nestedSortable.js"></script>
     <!-- <script type="text/javascript" src="jquery.ui.touch-punch.js"></script> -->
 <!-- ^^^ Nested Sortable ^^^ -->
 
