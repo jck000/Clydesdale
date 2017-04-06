@@ -114,23 +114,10 @@ sub update_caches() {
 
 sub get_menu {
   my $menu_id         = shift;
-  my $default_menu_id = shift;
 
-  my $main_menu    = from_json(redis_get( $menu_id ))         || {};
-  my $default_menu = from_json(redis_get( $default_menu_id )) || {};
-
-  debug "Main Menu: ";
-  debug $main_menu;
-  debug "Default Menu:";
-  debug $default_menu;
-
-  my $cldl_menu = { %{$main_menu}, %{$default_menu} };
-
-  debug $cldl_menu;
+  my $cldl_menu    = from_json(redis_get( $menu_id ))         || {};
 
   return $cldl_menu;
-
-#  return from_json( (redis_get( $menu_id ), redis_get( $default_menu_id)) );
 }
 
 sub get_paths {

@@ -47,7 +47,6 @@ post '/login' => sub {
     session company_defaults => eval( $ret->{company_defaults}) if ( defined $ret->{company_defaults} );
 
     session menu_id          => 'menu-' . $ret->{company_id} . '-' . $ret->{role_id};
-    session default_menu_id  => 'menu-1-'                          . $ret->{role_id};
 
     if ( $ret->{pass_change} == 1 ) {
       debug "pass_change == 1";
@@ -102,8 +101,6 @@ post '/login/device' => sub {
     session full_name        => $ret->{full_name};
     session role_id          => $ret->{role_id};
     session company_defaults => eval( $ret->{company_defaults});
-
-#    session cldl_menu  => &CLDL::Menu::get_menu;
 
     if ( $ret->{pass_change} == 1 ) {
       debug "pass_change == 1";
