@@ -4,6 +4,10 @@
   <meta charset="<% settings.charset %>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>CLDL::App</title>
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="[% cldl_favicon %]">
+
   <link rel="stylesheet" href="<% request.uri_base %>/css/style.css">
 
 <!-- Grab jQuery from a CDN, fall back to local if necessary -->
