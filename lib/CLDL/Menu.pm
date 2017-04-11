@@ -2,13 +2,14 @@ package CLDL::Menu;
 
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
+use Dancer2::Plugin::Redis;
 
 our $VERSION = '0.00001';
 
 #
 # Get menu for user at login and store in session for faster access
 #
-sub get_menu {
+sub oget_menu {
 
   my $sth_menu = database->prepare(
              qq( 
@@ -87,5 +88,62 @@ sub get_menu {
   return $menu;
 
 }
-1;
 
+sub is_menu {
+  my $test_path = shift;
+  my $menu_id   = shift;
+
+  my $test_menu = &get_menu( $menu_id, 1 );
+
+  my $is_menu    = 0;
+
+  debug "IN IS MENU:";
+  debug $test_menu;
+
+  foreach my $key ( keys %{$test_menu} ) {
+    my $menu = $test_menu->{$key} ;
+    if ( $menu->{active} == 0  ) { 
+      next;
+    }
+
+    if ( $menu->{menu_link} ne '' ) {
+
+    } elsif ( defined $menu->{children} ) {
+      foreach my $cmenu ( @{$menu->{children}} ) {
+        if ( $cmenu->{active} ) {
+          my $tmp_regex  = '^/';
+          $tmp_regex    .= $cmenu->{menu_link};
+          $tmp_regex =~ s/\?.+//g;
+
+          my $regex = qr{$tmp_regex};
+debug "MENU TEST: $test_path AGAINST $regex";
+          if ( $test_path =~ $regex ) {
+            debug "THIS IS A MENU " . $test_path;
+            $is_menu = 1;
+            last;
+          }
+        }
+      }
+    }
+  }
+
+  return $is_menu;
+}
+
+sub get_menu {
+  my $menu_id = shift;
+  my $as_hash = shift || 0;
+
+  my $cldl_menu;
+  if ( $as_hash ) { 
+    # Return a hash
+    $cldl_menu = decode_json(redis_get( $menu_id )) || {};
+  } else { 
+    # Return a scalar
+    $cldl_menu = from_json(redis_get( $menu_id ))   || '';
+  }
+
+  return $cldl_menu;
+}
+
+1;

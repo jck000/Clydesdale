@@ -111,15 +111,6 @@ sub update_caches() {
 
 }
 
-
-sub get_menu {
-  my $menu_id         = shift;
-
-  my $cldl_menu    = from_json(redis_get( $menu_id ))         || {};
-
-  return $cldl_menu;
-}
-
 sub get_paths {
   my $path_id = shift;
 
@@ -161,7 +152,5 @@ sub get_company_list {
 
   return @company_list;
 }
-
-
 
 1;

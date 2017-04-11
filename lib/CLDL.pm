@@ -88,14 +88,15 @@ hook 'before' => sub {
                . '?req_path=' . request->path_info;
   }
 
+  my $is_menu    = &CLDL::Menu::is_menu( request->path, session('menu_id') ) if ( session('menu_id') ) ;
 
-  debug "Session ID: " . session->{id};
 
-  if (  defined params->{is_cldl_menu} && params->{is_cldl_menu} == 1 ) {
-    my $req_path = request->path_info;
-    $req_path =~ s/^\///;
-    session cldl_return_to_page => $req_path;
-  }
+########
+#  if (  defined params->{is_cldl_menu} && params->{is_cldl_menu} == 1 ) {
+#    my $req_path = request->path_info;
+#    $req_path =~ s/^\///;
+#    session cldl_return_to_page => $req_path;
+#  }
 
 };
 
@@ -107,8 +108,9 @@ hook 'before_template_render' => sub {
   my $tokens = shift;
 
   debug "IN BEFORE_TEMPLATE_RENDER:";
+  debug "MENU ID: " . session('menu_id') if ( session('menu_id')) ;
 
-  $tokens->{cldl_menu}           = &CLDL::Cache::get_menu( session('menu_id') ) if ( session('menu_id') ) ;
+  $tokens->{cldl_menu}           = &CLDL::Menu::get_menu( session('menu_id') ) if ( session('menu_id') ) ;
 
   debug "cldl_menu";
   debug $tokens->{cldl_menu};
