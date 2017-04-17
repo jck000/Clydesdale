@@ -4,7 +4,7 @@ use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 use Dancer2::Plugin::Redis;
 
-use CLDL::Cache;
+#use CLDL::Menu;
 
 use Data::Dumper;
 

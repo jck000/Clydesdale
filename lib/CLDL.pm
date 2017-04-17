@@ -8,6 +8,7 @@ use Dancer2::Plugin::Tail;
 #use Dancer2::Plugin::EditFile;
 
 use Data::Dumper;
+use POSIX qw(strftime);
 
 use CLDL::Account;      ### Accounts
 use CLDL::Cache;
@@ -50,6 +51,8 @@ hook 'before' => sub {
 
   my $is_nosession = 0;
   my $is_jwt       = 0;
+  my $is_menu      = 0;
+  my $is_dv        = 0;
   my $forward_to   = request->path_info;
 
   # Does this require JWT based on host name?
@@ -82,15 +85,18 @@ hook 'before' => sub {
 
   # If there's no company_id and it's not login, then send to login page
   unless (     session('company_id') || $is_nosession ) {
-
     redirect config->{cldl}->{base_url} 
                . config->{cldl}->{login_url} 
                . '?req_path=' . request->path_info;
   }
 
-  my $is_menu    = &CLDL::Menu::is_menu( request->path, session('menu_id') ) if ( session('menu_id') ) ;
+  $is_menu = &CLDL::Menu::is_menu( request->path, session('menu_id') ) if ( session('menu_id') ) ;
+#  $is_dv   = &CLDL::DV::is_dv( request->path, session('role
 
-
+  unless ( $is_menu || $is_dv ) {
+    # redirect config->{cldl}->{base_url} . config->{cldl}->{not_authorized} ;
+  }
+  
 ########
 #  if (  defined params->{is_cldl_menu} && params->{is_cldl_menu} == 1 ) {
 #    my $req_path = request->path_info;
@@ -107,13 +113,13 @@ hook 'before' => sub {
 hook 'before_template_render' => sub {
   my $tokens = shift;
 
-  debug "IN BEFORE_TEMPLATE_RENDER:";
-  debug "MENU ID: " . session('menu_id') if ( session('menu_id')) ;
+#  debug "IN BEFORE_TEMPLATE_RENDER:";
+#  debug "MENU ID: " . session('menu_id') if ( session('menu_id')) ;
 
   $tokens->{cldl_menu}           = &CLDL::Menu::get_menu( session('menu_id') ) if ( session('menu_id') ) ;
 
-  debug "cldl_menu";
-  debug $tokens->{cldl_menu};
+#  debug "cldl_menu";
+#  debug $tokens->{cldl_menu};
 
   $tokens->{cldl_return_to_page} = session('cldl_return_to_page'); # Return 
                                                                    # to main 
@@ -128,28 +134,26 @@ hook 'before_template_render' => sub {
 #
 #';
 
-
-  open( my $LOG, ">", "/tmp/tokens.log");
-  print $LOG Dumper( $tokens ) ;
-  close($LOG);
-
-
+#  open( my $LOG, ">", "/tmp/tokens.log");
+#  print $LOG Dumper( $tokens ) ;
+#  close($LOG);
 
 };
 
 hook 'after_template_render' => sub {
   my $ref_content = shift;
-#  my $generate_tt = vars->{generate_tt} || 0;
-#
+  my $generate_tt = vars->{generate_tt} || 0;
+
 #  debug "AFTER_TEMPLATE_RENDER: " . $generate_tt;
-#
-#  if ( defined $generate_tt && $generate_tt ) { 
-#    my $content     = ${$ref_content};
-#
-#    open(my $OUT, '>', '/tmp/rendered.out');
-#    print $OUT $content;
-#    close($OUT);
-#  }
+
+  if ( $generate_tt ) { 
+    my $content     = ${$ref_content};
+
+    my $filename = config->{views} . '/genrated_tt.' . strftime('%Y-%m-%d_%H-%M-%S', gmtime()); 
+    open(my $OUT, '>', $filename);
+    print $OUT $content;
+    close($OUT);
+  }
 
   return $ref_content;
 };
@@ -175,7 +179,6 @@ get '/' => sub {
 any '/splash' => sub {
   template 'cldl/splash.tt';
 };
-  
+
+
 1; # End of CLDL
-
-

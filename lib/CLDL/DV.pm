@@ -3,10 +3,10 @@ package CLDL::DV;
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 
-use CLDL::Cache;
+# use CLDL::Cache;
 use CLDL::DVQuery;
 
-our $VERSION = '0.00001';
+our $VERSION = '0.00002';
 
 prefix '/dv' ;
 
@@ -28,7 +28,7 @@ get '/select/:dv_name_id' => sub {
   
   var generate_tt     => params->{generate_tt} ||= 0;
 
-  debug "SELECT: " . vars->{generate_tt};
+#  debug "SELECT: " . vars->{generate_tt};
 
   ### DataView
   $dv = get_dv( $cldl_dv_name, session('company_id') );
@@ -42,7 +42,7 @@ get '/select/:dv_name_id' => sub {
   ### DataView Fields
   $dvf = get_dvf( $dv->{dv_id} );
 
-  debug $dvf;
+#  debug $dvf;
 
   # If Delete records is enabled, then add a checkbox
   if (    int($dv->{dt_del}) == 1 
@@ -182,7 +182,7 @@ get '/select/:dv_name_id' => sub {
              .  qq( OFFSET ) . $cldl_sql_offset;
       }
 
-      debug "\n\nDV DT SQL:\n$SQL";
+#      debug "\n\nDV DT SQL:\n$SQL";
   
       $sth_data   = database->prepare( $SQL );
       if ( @where ) {
@@ -205,10 +205,10 @@ get '/select/:dv_name_id' => sub {
 
       $data = to_json( \@data_values );
 
-debug "DATA:";
-debug @data_values;
-debug "\n";
-debug $data;
+# debug "DATA:";
+# debug @data_values;
+# debug "\n";
+# debug $data;
 
     } ### If/ELSIF cldl_dv_type
   }   ### NOT Add Record
@@ -224,8 +224,7 @@ debug $data;
                                dv               => $dv, 
                                dvf              => \@dvf_fields, 
                                data             => $data,
-                               cldl_menu        => CLDL::Cache::get_menu( session('company_id'), session('role_id') ),
-#                               cldl_menu        => session('cldl_menu'),
+#                               cldl_menu        => CLDL::Menu::get_menu( session('menu_id') ),
                              };
 
 
@@ -256,7 +255,7 @@ debug $data;
                                  dv              => $dv, 
 #                                 dvf             => to_json( \@dvf_fields ),
                                  dvf             => $ret_dvf_fields,
-                                 cldl_menu       => CLDL::Cache::get_menu( session('company_id'), session('role_id') ),
+#                                 cldl_menu       => CLDL::Cache::get_menu( session('company_id'), session('role_id') ),
 #                                 cldl_menu       => session('cldl_menu'),
                                  data            => $data,
                                },
@@ -266,14 +265,14 @@ debug $data;
 };
 
 post '/:action/:dv_name_id' => sub {
-  debug "In update-insert-delete ";
+#  debug "In update-insert-delete ";
 
-  debug "ACTION: " . params->{action};
-  debug "DV_ID:  " . params->{dv_name_id};
+#  debug "ACTION: " . params->{action};
+#  debug "DV_ID:  " . params->{dv_name_id};
 
   if ( params->{action} !~ 'update|insert|delete' ) {
 
-    debug "Return error";
+#    debug "Return error";
             status '404';
             return "The page you are trying to reach does not exist. ";
   }
@@ -393,14 +392,14 @@ get '/update/:dv_id/permissions' => sub {
 
 
 sub updates_to_db {
-  debug "IN DV UPDATES TO DB";
+#  debug "IN DV UPDATES TO DB";
 
   my ($dv, $dvf, $data, $ref, @select, $key, $SQL, $sth_data, 
       @dvf_fields, @data_values, $sth_dv, $sth_dvf, 
       @upd_db_columns, @upd_db_values, $key_column, $key_value, 
       $sth_upd_db);
 
-  debug "DV_NAME:" . params->{dv_name_id};
+#  debug "DV_NAME:" . params->{dv_name_id};
 
   my $cldl_dv_name    = params->{dv_name_id} ||= params->{dv_name_override} ;
 
@@ -476,13 +475,13 @@ sub updates_to_db {
   } 
 
 
-  debug "SQL:";
-  debug $SQL;
+#  debug "SQL:";
+#  debug $SQL;
 
   $sth_upd_db = database->prepare( $SQL );
 
-  debug "Executing:";
-  debug @upd_db_values;
+#  debug "Executing:";
+#  debug @upd_db_values;
 
   $sth_upd_db->execute( @upd_db_values );
 
