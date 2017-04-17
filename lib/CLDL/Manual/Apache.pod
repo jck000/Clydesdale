@@ -1,0 +1,135 @@
+package CLDL::Manual::Apache;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+CLDL::Manual::Apache - Configuring Apache for Clydesdale
+
+=head1 VERSION
+
+Version 0.00001
+
+=head1 Sample
+
+=head2 http
+
+Use this to for a change from http to https if necessary or duing a 
+transition period
+
+  <VirtualHost *:80> 
+    # Redirect port 80 to 443
+    ServerAdmin admin@example.com
+    ServerName  cldl.example.com
+    ServerSignature Off
+  
+    Redirect permanent / https://cldl.example.com/
+  
+    ErrorLog  "/home/cldl/apps/CLDL/logs/cldl.error.log"
+    CustomLog "/home/cldl/apps/CLDL/logs/cldl.access.log" combined
+    LogLevel warn
+  
+  </VirtualHost>
+  
+  =head2 https
+  
+  <VirtualHost *:443>
+  
+  # vvv  Virtual Host settings  vvv
+  
+    ServerName      cldl.example.com
+    ServerAdmin     admin@example.com
+    ServerSignature Off
+  
+    DocumentRoot "/home/cldl/apps/CLDL/public"
+  
+    ErrorLog    "/home/apps/CLDL/logs/cldl.ssl_error.log"
+    CustomLog   "/home/apps/CLDL/logs/cldl.ssl_access.log" combined
+    LogLevel warn
+  
+  # ^^^  Virtual Host settings  ^^^
+  
+  # vvv example back-end application vvv
+  
+      # Proxy permissions.  Allow everything through
+      <Proxy *>
+        Order allow,deny
+        Allow from all
+      </Proxy>
+  
+      # Do not proxy static files.  Let apache serve these.  Directories containing
+      #  files like css, js, etc...
+      ProxyPass /libs !
+      ProxyPass /images !
+      ProxyPass /app !
+  
+      # cldl goes to the back-end Starman on port 30027
+      ProxyPass        / http://localhost:30099/
+      ProxyPassReverse / http://localhost:30099/
+  
+  # ^^^ example back-end application ^^^
+  
+  # vvv  Directory  vvv
+  
+  
+    # local file access to CLDL
+    Alias /libs "/home/cldl/apps/CLDL/public/libs"
+    <Directory  "/home/cldl/apps/CLDL/public/libs/">
+      Options FollowSymLinks
+      AllowOverride None
+      Options None
+      Order allow,deny
+      Allow from all
+    </Directory>
+  
+    Alias /images "/home/cldl/apps/CLDL/public/images"
+    <Directory    "/home/cldl/apps/CLDL/public/images/">
+      Options FollowSymLinks
+      AllowOverride None
+      Options None
+      Order allow,deny
+      Allow from all
+    </Directory>
+  
+  
+  
+    # local file access to cldl
+    Alias /libs "/home/cldl/apps/CLDL/public/libs"
+    <Directory  "/home/cldl/apps/CLDL/public/libs/">
+      Options FollowSymLinks
+      AllowOverride None
+      Options None
+      Order allow,deny
+      Allow from all
+    </Directory>
+  
+    Alias /images "/home/cldl/apps/CLDL/public/images"
+    <Directory    "/home/cldl/apps/CLDL/public/images/">
+      Options FollowSymLinks
+      AllowOverride None
+      Options None
+      Order allow,deny
+      Allow from all
+    </Directory>
+  
+  # ^^^  Directory  ^^^
+  
+  # vvv  SSL settings  vvv
+  
+    SSLEngine on
+  
+    SSLCertificateFile    "/etc/httpd/conf/ssl/cldl_example_com.crt"
+    SSLCertificateKeyFile "/etc/httpd/conf/ssl/cldl_example_com.key"
+    SSLCACertificateFile  "/etc/httpd/conf/ssl/CAbundle.crt"
+  
+  # ^^^  SSL settings  ^^^
+  
+  </VirtualHost>
+
+
+=cut
+

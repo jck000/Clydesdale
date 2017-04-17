@@ -1,0 +1,20 @@
+package CLDL::Manual::Database;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+CLDL::Manual::Database - Configuring Database for Clydesdale
+
+=head1 VERSION
+
+Version 0.00001
+
+=cut
+
+
+

@@ -1,11 +1,9 @@
 package CLDL::Login;
 
-# Dancer2
 use Dancer2 appname => 'CLDL';
 
 use Dancer2::Plugin::Database;
-
-use CLDL::Menu;         ### Menus
+use CLDL::Cache;
 
 use Digest::MD5 qw( md5_hex );
 
@@ -32,6 +30,107 @@ get '/login' => sub {
 #
 post '/login' => sub {
 
+  my $ret = get_user( params->{user_name}, params->{user_pass} );
+
+  # Logged in if company exists
+  if ( $ret->{company_id} && $ret->{company_id} > 0 ) {
+
+    debug "GOT A COMPANY ID";
+
+    session company_id       => $ret->{company_id};
+    session language         => $ret->{language};
+    session user_type        => $ret->{user_type};
+    session user_id          => $ret->{user_id};
+    session user_name        => $ret->{user_name};
+    session full_name        => $ret->{full_name};
+    session role_id          => $ret->{role_id};
+    session company_defaults => eval( $ret->{company_defaults}) if ( defined $ret->{company_defaults} );
+
+    session menu_id          => 'menu-' . $ret->{company_id} . '-' . $ret->{role_id};
+
+    if ( $ret->{pass_change} == 1 ) {
+      debug "pass_change == 1";
+      redirect config->{cldl}->{base_url} . '/changepass'
+               . '?req_path='  . params->{req_path}
+               . '&user_name=' . session('user_name')  ;
+    } elsif ( params->{req_path} ne '' ) {
+      debug "Redirect to req_path";
+      redirect config->{cldl}->{base_url} . params->{req_path};
+    } else {
+      debug "Redirect to splash";
+      redirect config->{cldl}->{base_url}
+              . config->{cldl}->{splash_url} ;
+    }
+
+  } else {  # Not logged in
+    debug "User does not exist or Password is incorrect";
+    ## Record failed logins for fail2ban
+
+    template 'cldl/login.tt', { 
+         'title'         => 'Login', 
+         'error_message' => 'Login ID does not exist and/or password is incorrect'};
+
+  }
+
+};
+
+#
+# Logout
+#
+get '/logout' => sub {
+  app->destroy_session;
+  redirect config->{cldl}->{base_url} . '/splash';
+  # redirect config->{cldl}->{base_url} . config->{cldl}->{login_url};
+};
+
+
+post '/login/device' => sub {
+
+  my $ret = get_user( params->{user_name}, params->{user_pass} );
+
+  # Logged in if company exists
+  if ( $ret->{company_id} && $ret->{company_id} > 0 ) {
+
+    debug "GOT A COMPANY ID";
+
+    session company_id       => $ret->{company_id};
+    session language         => $ret->{language};
+    session user_type        => $ret->{user_type};
+    session user_id          => $ret->{user_id};
+    session user_name        => $ret->{user_name};
+    session full_name        => $ret->{full_name};
+    session role_id          => $ret->{role_id};
+    session company_defaults => eval( $ret->{company_defaults});
+
+    if ( $ret->{pass_change} == 1 ) {
+      debug "pass_change == 1";
+      redirect config->{cldl}->{base_url} . '/changepass'
+               . '?req_path='  . params->{req_path}
+               . '&user_name=' . session('user_name')  ;
+    } elsif ( params->{req_path} ne '' ) {
+      debug "Redirect to req_path";
+      redirect config->{cldl}->{base_url} . params->{req_path};
+    } else {
+      debug "Redirect to splash";
+      redirect config->{cldl}->{splash_url} ;
+    }
+
+  } else {  # Not logged in
+    debug "User does not exist or Password is incorrect";
+    ## Record failed logins for fail2ban
+
+    template 'cldl/login.tt', { 
+         'title'         => 'Login', 
+         'error_message' => 'Login ID does not exist and/or password is incorrect'};
+
+  }
+
+};
+
+sub get_user {
+  my $user_name = shift;
+  my $user_pass = shift;
+
   my $sth_login = database->prepare( 
                       qq(
                          SELECT u.company_id, 
@@ -40,7 +139,8 @@ post '/login' => sub {
                                 u.language, 
                                 CONCAT(u.first_name, " ", u.last_name) AS full_name,
                                 u.pass_change,
-                                rm.role_id
+                                rm.role_id,
+                                c.company_default_values AS company_defaults
                            FROM cldl_user u,
                                 cldl_company c,
                                 cldl_role_members rm,
@@ -58,59 +158,14 @@ post '/login' => sub {
                                    AND r.active     = 1 )
                       );
 
-  my $enc_pass = md5_hex( params->{user_name} . params->{user_pass} );
+  my $enc_pass = md5_hex( $user_name . $user_pass );
 
-  $sth_login->execute( params->{user_name}, $enc_pass );
+  $sth_login->execute( $user_name, $enc_pass );
   my $ret = $sth_login->fetchrow_hashref;
 
-  if (    $ret->{company_id} 
-       && $ret->{company_id} > 0 ) {
+  return $ret;
+}
 
-    debug "GOT A COMPANY ID";
-
-    session company_id => $ret->{company_id};
-    session language   => $ret->{language};
-    session user_type  => $ret->{user_type};
-    session user_id    => $ret->{user_id};
-    session user_name  => $ret->{user_name};
-    session full_name  => $ret->{full_name};
-    session role_id    => $ret->{role_id};
-
-    session cldl_menu  => CLDL::Menu::get_menu;
-
-    if ( $ret->{pass_change} == 1 ) {
-      debug "pass_change == 1";
-      redirect config->{cldl}->{base_url} . '/changepass'
-               . '?req_path='  . params->{req_path}
-               . '&user_name=' . session('user_name')  ;
-    } elsif ( params->{req_path} ne '' ) {
-      debug "Redirect to req_path";
-      redirect config->{cldl}->{base_url} . params->{req_path};
-    } else {
-      debug "Redirect to splash";
-      redirect config->{cldl}->{base_url} . '/splash';
-    }
-
-  } else {
-    debug "User does not exist or Password is incorrect";
-    ## Record failed logins for fail2ban
-
-    template 'cldl/login.tt', { 
-         'title'         => 'Login', 
-         'error_message' => 'Login ID does not exist and/or password is incorrect'};
-
-  }
-
-};
-
-#
-# Logout
-#
-get '/logout' => sub {
-  context->destroy_session;
-  redirect config->{cldl}->{base_url} . '/splash';
-  # redirect config->{cldl}->{base_url} . config->{cldl}->{login_url};
-};
 
 1; 
 

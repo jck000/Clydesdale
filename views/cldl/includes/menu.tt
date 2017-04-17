@@ -1,3 +1,4 @@
+<!-- MENU ORIENTATION: [%+ cldl_menu_orientation +%] -->
 [% IF cldl_menu_orientation == 'horizontal' %]
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -11,6 +12,79 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#">
+      [%+ INCLUDE cldl/logo.tt +%]
+      </a>
+    </div>  <!-- navbar-header -->
+
+    <div class="collapse navbar-collapse" 
+         id="cldlNavbar">
+      [% FOREACH mkey IN cldl_menu.keys %]
+      [% main_menu = cldl_menu.$mkey %]
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          [% IF main_menu.children %]
+            <!-- Child Menu -->
+            <a class="dropdown-toggle" 
+               data-toggle="dropdown" 
+               href="#">[% main_menu.menu_label %]
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              [% FOREACH child_menu IN main_menu.children %]
+                <li> 
+                  <a href="[% child_menu.menu_link %]">[% child_menu.menu_label %]</a> 
+                </li>
+              [% END %]
+            </ul>
+          [% ELSE %]
+            <!-- No Child Menu -->
+            <a class="dropdown-toggle" 
+               data-toggle="dropdown" 
+               href="#">[% main_menu.menu_label %]
+            </a>
+          [% END %]
+        </li>
+      </ul>
+      [% END %]
+
+
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+<!--
+          <a href="[% app_host_url %]/cldl/account/register">
+            <span class="glyphicon glyphicon-user"></span> Register
+          </a>
+        </li>
+-->
+        <li>
+<!--          <a href="[% app_host_url %]/cldl/account/changepassword"> -->
+          <a href="cldl/account/changepassword">
+            <span class="glyphicon glyphicon-user"> </span> My Account
+          </a>
+        </li>
+        <li>
+<!--          <a href="[% app_host_url %]/logout"> -->
+          <a href="logout">
+            <span class="glyphicon glyphicon-log-in"> </span> Logout
+          </a>
+        </li>
+      </ul>
+    </div>  <!-- collapse navbar-collapse -->
+  </div>    <!-- container-fluid -->
+</nav>
+[% ELSIF cldl_menu_orientation == 'vertical' %]
+<nav class="navbar navbar-inverse navbar-fixed-left">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" 
+              class="navbar-toggle" 
+              data-toggle="collapse" 
+              data-target="#cldlNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#" style="height: 100px;">
       [%+ INCLUDE cldl/logo.tt +%]
       </a>
     </div>  <!-- navbar-header -->
@@ -52,20 +126,11 @@
 
       <ul class="nav navbar-nav navbar-right">
         <li>
-<!--
-          <a href="[% app_host_url %]/cldl/account/register">
-            <span class="glyphicon glyphicon-user"></span> Register
-          </a>
-        </li>
--->
-        <li>
-<!--          <a href="[% app_host_url %]/cldl/account/changepassword"> -->
-          <a href="cldl/account/changepassword">
+          <a href="account/view">
             <span class="glyphicon glyphicon-user"> </span> My Account
           </a>
         </li>
         <li>
-<!--          <a href="[% app_host_url %]/logout"> -->
           <a href="logout">
             <span class="glyphicon glyphicon-log-in"> </span> Logout
           </a>
@@ -74,7 +139,5 @@
     </div>  <!-- collapse navbar-collapse -->
   </div>    <!-- container-fluid -->
 </nav>
-[% ELSIF cldl_menu_orientation == 'vertical' %]
-  <!-- to do -->
 [% END %]
 

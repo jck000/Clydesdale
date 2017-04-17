@@ -4,6 +4,9 @@
 [%#  *color, *date *datetime, *datetime-local *email *month *number     #%]
 [%#  *range *search *tel *time url week                                 #%]
 [%# *=Future                                                            #%]
+[% IF generate_tt == 1 %]
+<!-- cldl/includes/buttons/dt_buttons.tt -->
+[% END %]
 
 
       <div class="row">
@@ -26,19 +29,19 @@
                 [% data_col_name = ff.dvf_name %]
 
                 [% IF ff.dvf_type == 0 %]
-                  [% INCLUDE "cldl/includes/text.tt" %]
+                  [%+ INCLUDE "cldl/includes/text.tt" +%]
                 [% ELSIF ff.dvf_type == 1 %]
-                  [% INCLUDE "cldl/includes/textarea.tt" %]
+                  [%+ INCLUDE "cldl/includes/textarea.tt" +%]
                 [% ELSIF ff.dvf_type == 2 %]
-                  [% INCLUDE "cldl/includes/password.tt" %]
+                  [%+ INCLUDE "cldl/includes/password.tt" +%]
                 [% ELSIF ff.dvf_type == 3 %]
-                  [% INCLUDE "cldl/includes/hidden.tt" %]
+                  [%+ INCLUDE "cldl/includes/hidden.tt" +%]
                 [% ELSIF ff.dvf_type == 4 %]
-                  [% INCLUDE "cldl/includes/checkbox.tt" %]
+                  [%+ INCLUDE "cldl/includes/checkbox.tt" +%]
                 [% ELSIF ff.dvf_type == 5 %]
-                  [% INCLUDE "cldl/includes/radio.tt" %]
+                  [%+ INCLUDE "cldl/includes/radio.tt" +%]
                 [% ELSIF ff.dvf_type == 6 %]
-                  [% INCLUDE "cldl/includes/select.tt" %]
+                  [%+ INCLUDE "cldl/includes/select.tt" +%]
                 [% END %]
               [% END %]
             </form>
@@ -57,7 +60,7 @@
         $('.savebutton').click( function() {
           var data = $('#cldl_form').serializeArray();
 
-          cldl_ajax('/cldl/dv/[% IF data.addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]',
+          cldl_ajax('dv/[% IF data.addrecord == 1 %]insert[% ELSE %]update[% END %]/[% cldl_dv_name_id %]',
                     data,
                     'post',
                     function(json) {

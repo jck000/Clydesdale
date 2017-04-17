@@ -1,8 +1,0 @@
-
-      <div class="row">
-        <div class="col-sm-12">
-          <br>
-          <br>
-          [% INCLUDE logo_large.tt %]
-        </div>
-      </div>

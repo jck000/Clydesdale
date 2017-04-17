@@ -2,12 +2,15 @@ package CLDL::Admin::EditMenu;
 
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
+use Dancer2::Plugin::Redis;
+
+#use CLDL::Menu;
 
 use Data::Dumper;
 
-our $VERSION = '0.00001';
+our $VERSION = '0.002';
 
-prefix '/cldl/admin/editmenu';
+prefix '/admin/editmenu';
 
 get '/select' => sub {
 
@@ -19,8 +22,7 @@ get '/select' => sub {
                        m.menu_label,
                        m.menu_link,
                        m.active
-                  FROM cldl_menu m,
-                       cldl_role_permission_menu rpm
+                  FROM cldl_menu m
                     WHERE (    m.company_id = ?
                             OR m.company_id = 1 )
                           AND m.pmenu_id    = m.menu_id
@@ -33,8 +35,7 @@ get '/select' => sub {
                        m.menu_label,
                        m.menu_link,
                        m.active
-                  FROM cldl_menu m,
-                       cldl_role_permission_menu rpm
+                  FROM cldl_menu m
                     WHERE (    m.company_id = ?
                             OR m.company_id = 1 )
                           AND m.pmenu_id   != m.menu_id
@@ -56,6 +57,7 @@ get '/select' => sub {
 
   return template 'cldl/admin/editmenu.tt',
                        {
+                         title     => "Maintain Menu",
                          edit_menu => $edit_menu,
                        },
                        { layout    => 'editmenu.tt' };  
@@ -106,6 +108,8 @@ get '/update/order' => sub {
 
     $ordr++;
   }
+
+  &CLDL::Cache::update_cachecaches( session('company_id') );
 
   return to_json({ status => 0 });
 };
@@ -210,7 +214,9 @@ get '/update/permissions' => sub {
     $sth_insert_role_permission->execute( $1, $menu_id );
   }
 
-  return to_json({ status => 0 });
+  &CLDL::Cache::update_caches( session('company_id') );
+
+  return to_json( { status => 0 } );
 
 };
 
@@ -255,6 +261,13 @@ get '/update/permissions' => sub {
 #   menu_role_perm->execute( menu_id ) 
 # 
 # }
+
+get '/update/menucache' => sub {
+
+  &CLDL::Cache::update_caches( session('company_id') );
+  return to_json( { status => 0 } );
+
+};
 
 
 1;

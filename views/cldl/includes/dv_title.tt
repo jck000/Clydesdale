@@ -1,8 +1,11 @@
+[% IF generate_tt == 1 %]
+<!-- cldl/includes/dv_title.tt -->
+[% END %]
 
 
       <div class="row">
         <div class="col-sm-1"></div> 
         <div class="col-sm-10">
-          <h3>[% dv.dv_title %]</h3> 
+          <h3>[% IF title %][% title %][% ELSIF dv.dv_title %][% dv.dv_title %][% END %]</h3> 
         </div>
       </div>

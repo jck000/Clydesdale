@@ -1,10 +1,5 @@
 
-      <div class="row">
-        <div class="col-sm-1"></div> 
-        <div class="col-sm-10">
-          <h3>[% dv.dv_title %]</h3> 
-        </div>
-      </div>
+      [% INCLUDE cldl/includes/dv_title.tt %]
 
       <div class="row">
         <div class="col-sm-1"> </div>
@@ -50,7 +45,7 @@
                       </button>
                       <span class="dropdown-menu">
                         <div class="permissionmenu"   style="cursor: pointer;"><i class="glyphicon glyphicon-list"></i>&nbsp;&nbsp;Permissions</div>
-                        <div class="openinwindowmenu" style="cursor: pointer;"><i class="glyphicon glyphicon-new-window"></i>&nbsp;&nbsp;Open In Window</div>
+                        <!-- <div class="openinwindowmenu" style="cursor: pointer;"><i class="glyphicon glyphicon-new-window"></i>&nbsp;&nbsp;Open In Window</div> -->
                       </span>
                     </span>
                     [% em.menu_label %]
@@ -62,6 +57,7 @@
           		      <li id="item_[% emc.menu_id %]" 
                         data-menu_id="[% emc.menu_id %]" 
                         data-menu_label="[% emc.menu_label %]" 
+                        data-menu_link="[% emc.menu_link %]"
                         data-pmenu_id="[% emc.pmenu_id %]" 
                         data-item_type="child"
                         class="menu_item [% IF emc.company_id == 1 %] company1 [% END %] [% IF emc.active == 0 %] inactivemenu [% END %]" >
@@ -192,7 +188,7 @@
          */
         $('.addbutton').click( function() {
 
-          var new_location = 'cldl/dv/select/menu?addrecord=1&dv_type=1';
+          var new_location = 'dv/select/menu?addrecord=1&dv_type=1';
 
           window.location.replace( new_location );
         });
@@ -200,7 +196,7 @@
 
         $('.main_menu_item .menu_item').on( 'dblclick' , function () {
 
-          var new_location = 'cldl/dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
+          var new_location = 'dv/select/menu?id=' + $(this).attr('data-menu_id') + '&dv_type=1';
 
           if ( new_location.indexOf('?') > 0 ) {
             new_location += '&menu_id=' + $(this).attr('data-menu_id');
@@ -217,9 +213,8 @@
 
 
       $('.openinwindowmenu').on( 'click',  function() {
-        var new_location = 'cldl/admin/editmenu/permissions?menu_id=' + $(this).closest('li').attr('data-menu_id') + '&dv_type=1';
-
-        window.location.replace( new_location );
+        var new_location = $(this).closest('li').attr('data-menu_link');
+        window.open( new_location, "_blank" );
       });
 
 
@@ -230,7 +225,7 @@
         $("#permissions_menu_id").val(menu_id);
         $("#modal_menu_label").text(menu_label);
 
-        cldl_ajax('cldl/admin/editmenu/select/permissions',
+        cldl_ajax('admin/editmenu/select/permissions',
                   data,
                   'get',
                   function(json) {
@@ -272,7 +267,7 @@
       $('.savebutton').click( function() {
         var data = $('ol.sortable').nestedSortable('serialize');
 
-        cldl_ajax('cldl/admin/editmenu/update/order',
+        cldl_ajax('admin/editmenu/update/order',
                   data,
                   'get',
                   function(json) {
@@ -299,7 +294,7 @@
       $('.savemodalbutton').click( function() {
         var data = $( "#menu_permissions_form" ).serialize();
 
-        cldl_ajax('cldl/admin/editmenu/update/permissions',
+        cldl_ajax('admin/editmenu/update/permissions',
                   data,
                   'get',
                   function(json) {

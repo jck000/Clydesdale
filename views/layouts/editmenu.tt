@@ -6,37 +6,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
+    <link rel="shortcut icon" type="image/x-icon" href="[% cldl_favicon %]">
+
     <!-- bootstrap and jQuery -->
     <link rel="stylesheet" href="[% bs_url %]/css/bootstrap.min.css">
     <script src="[% jq_url %]/jquery.min.js"></script>
     <script src="[% bs_url %]/js/bootstrap.min.js"></script>
 <!-- vvv Nested Sortable vvv -->
-    <script type="text/javascript" src="[% app_host_url %]/libs/jqueryui/jquery-ui-1.11.4.custom.sortable/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="[% app_host_url %]/libs/nestedSortable/jquery.mjs.nestedSortable.js"></script>
+    <script type="text/javascript" src="[% app_host_lib %]/jqueryui/jquery-ui-1.11.4.custom.sortable/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="[% app_host_lib %]/nestedSortable/jquery.mjs.nestedSortable.js"></script>
     <!-- <script type="text/javascript" src="jquery.ui.touch-punch.js"></script> -->
 <!-- ^^^ Nested Sortable ^^^ -->
 
     <!-- bootbox code -->
     <script src="[% app_host_lib %]/bootbox/bootbox.min.js"></script>
+
+    <!-- Mustache -->
+    <!-- <script type="text/javascript" src="libs/jqmustache/jquery.mustache.js"></script> -->
+ 
+    <!-- jquery Mustache  -->
+    <script type="text/javascript" src="[% mustache_url %]/mustache.min.js"></script>
+
     
-
-
-    
-<!-- Nested Sortable  -->
-<!--
-	<script>
-		(function(){
-			if (!/*@cc_on!@*/0) return;
-			var e = ("abbr article aside audio canvas command datalist details figure figcaption footer "+
-				"header hgroup mark meter nav output progress section summary time video").split(' '),
-			i=e.length;
-			while (i--) {
-			document.createElement(e[i])
-			}
-		})(document.documentElement,'className');
-	</script>
--->
-
 <!--     Nested Sortable -->
     <script>
       $(document).ready(function(){
@@ -63,12 +55,13 @@
 			    $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
 		    });
 
-        [%+ INCLUDE cldl/includes/js/cldl_ajax.js +%] 
-        [%+ INCLUDE cldl/includes/js/cldl_messages.js +%]
-        $('[data-toggle="tooltip"]').tooltip(); 
+        //$('[data-toggle="tooltip"]').tooltip(); 
 
 
 	    });
+
+      [%+ INCLUDE cldl/includes/js/cldl_ajax.js +%] 
+      [%+ INCLUDE cldl/includes/js/cldl_messages.js +%]
 
     </script>
 
@@ -259,11 +252,12 @@
   			margin-bottom: 1.5em;
   		}
   
+/*
   		h3 {
   			font-size: 1em;
   			margin: 1em 0 .3em;;
   		}
-  
+*/
   		p, ol, ul, pre, form {
   			margin-top: 0;
   			margin-bottom: 1em;
@@ -298,6 +292,10 @@
       .inactivemenu {
         /* color: #A9A9A9; */
         color: #808080;
+      }
+
+  		.sortable li.mjs-nestedSortable-branch > div > .permissionmenu {
+        cursor: pointer;
       }
   
   	</style>

@@ -2,19 +2,38 @@
 <html lang="en">
   <head>
     <base href="[% app_host_url %]">
+
     <!-- cldl.tt -->
     <title>[% title %]</title>
+
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="[% cldl_favicon %]">
+
+    <!-- CSS Loader -->
+    <link rel="stylesheet" href="[% css_loader_url %]/load1.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load2.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load3.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load4.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load5.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load6.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load7.css" class="loader-style">
+    <link rel="stylesheet" href="[% css_loader_url %]/load8.css" class="loader-style">
+
 
     <!-- bootstrap and jQuery -->
     <link rel="stylesheet" href="[% bs_url %]/css/bootstrap.min.css">
     <script src="[% jq_url %]/jquery.min.js"></script>
     <script src="[% bs_url %]/js/bootstrap.min.js"></script>
 
+
     <!-- bootbox code -->
     <script src="[% app_host_lib %]/bootbox/bootbox.min.js"></script>
     
+
     <style>
 
       img.displayed {
@@ -47,6 +66,98 @@
 
       .stackedpillsmenu .nav-stacked > li > a:hover {
         background-color: #ff0000;
+      }
+
+      .navbar-fixed-left {
+        width: 140px;
+        position: fixed;
+        border-radius: 0;
+        height: 100%;
+      }
+      
+      .navbar-fixed-left .navbar-nav > li {
+        float: none;  /* Cancel default li float: left */
+        width: 139px;
+      }
+      
+      .navbar-fixed-left + .container {
+        padding-left: 160px;
+      }
+      
+      /* On using dropdown menu (To right shift popuped) */
+      .navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+        margin-top: -50px;
+        margin-left: 140px;
+      }
+
+
+      /* CSS Loader */
+      .loader,
+      .loader:before,
+      .loader:after {
+        border-radius: 50%;
+      }
+      .loader {
+        color: #0000ff;
+        font-size: 11px;
+        text-indent: -99999em;
+        margin: 55px auto;
+        position: relative;
+        width: 10em;
+        height: 10em;
+        box-shadow: inset 0 0 0 1em;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+      }
+      .loader:before,
+      .loader:after {
+        position: absolute;
+        content: '';
+      }
+      .loader:before {
+        width: 5.2em;
+        height: 10.2em;
+        background: #0000ff;
+        border-radius: 10.2em 0 0 10.2em;
+        top: -0.1em;
+        left: -0.1em;
+        -webkit-transform-origin: 5.2em 5.1em;
+        transform-origin: 5.2em 5.1em;
+        -webkit-animation: load2 2s infinite ease 1.5s;
+        animation: load2 2s infinite ease 1.5s;
+      }
+      .loader:after {
+        width: 5.2em;
+        height: 10.2em;
+        background: #0000ff;
+        border-radius: 0 10.2em 10.2em 0;
+        top: -0.1em;
+        left: 5.1em;
+        -webkit-transform-origin: 0px 5.1em;
+        transform-origin: 0px 5.1em;
+        -webkit-animation: load2 2s infinite ease;
+        animation: load2 2s infinite ease;
+      }
+      @-webkit-keyframes load2 {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes load2 {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
       }
 
     </style>

@@ -3,7 +3,9 @@ package CLDL::Admin::DVFromtable;
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 
-my $DV = { data_attributes => qq(buttonAlign: 'left', cache: true, cardView: false, contentType: 'json', iconPrefix: 'fa', icons:{ refresh: 'glyphicon-refresh icon-refresh', toggle: 'glyphicon-list-alt icon-list-alt', columns: 'glyphicon-th icon-th' }, maintainSelected: true, method: 'get', countColumns: 1, pagination: true, pageList: [ 50, 100, 250, 500], pageSize: 50, showHeader: true, showColumns: false, showRefresh: false, showToggle: false, sidePagination: 'client', singleSelect: false, smartDisplay: true, striped: true, search: true')};
+use CLDL::DVFValues;
+
+my $DV = { data_attributes => qq(buttonAlign: 'left', cache: true, cardView: false, contentType: 'json', iconPrefix: 'fa', icons:{ refresh: 'glyphicon-refresh icon-refresh', toggle: 'glyphicon-list-alt icon-list-alt', columns: 'glyphicon-th icon-th' }, maintainSelected: true, method: 'get', countColumns: 1, pagination: true, pageList: [ 50, 100, 250, 500], pageSize: 50, showHeader: true, showColumns: false, showRefresh: false, showToggle: false, sidePagination: 'client', singleSelect: false, smartDisplay: true, striped: true, search: true)};
 my $DVF = {
             global => qq(
                           'dvf_db_column' => '',
@@ -39,7 +41,7 @@ use base qw( CLDL::Base );
 
 our $VERSION = '0.00001';
 
-prefix '/cldl/admin/dvfromtable';
+prefix '/admin/dvfromtable';
 
 get '/select' => sub {
   debug "IN DVFromtable";

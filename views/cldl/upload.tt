@@ -1,15 +1,17 @@
-<div class="row">
+
+      [% INCLUDE cldl/includes/dv_title.tt %]
+
+      <div class="row">
+        <div class="col-sm-1"> </div>
+        <div class="col-sm-10">
+
   <form id="upload_form" 
         class="form-horizontal" 
         method="post" 
-<!--        action="[% app_host_url %]/cldl/upload/file"  -->
-        action="cldl/upload/file" 
+        action="upload/file" 
         enctype="multipart/form-data">
   
     <fieldset>
-  
-      <!-- Form Name -->
-      <legend>Upload File</legend>
   
       <!-- File Button --> 
       <div class="form-group">

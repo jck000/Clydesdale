@@ -28,11 +28,173 @@
         </div>
         <div class="col-sm-1"> </div>
       </div>        <!-- row -->
+
+      <br /><br />
+
+                    
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="dv_permissions_modal" role="dialog">
+        <div class="modal-dialog">   <!-- modal-dialog -->
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Permission for DV <em>'<span id="modal_dv_label"></span>'</em>: </h4>
+            </div>
+            <div class="modal-body">
+              <p>
+                The following is a list of the available user types.  The user types checked have access to this dv.
+              </p>
+            </div>
+            <div class="form-content">  <!-- form-content -->
+              <form class="form" role="form" id="dv_permissions_form">
+                <input type="hidden" name="dv_id" id="permissions_dv_id" value="">
+                <div id="dv_permissions_form_body">
+     
+    
+    
+                </div>                 <!-- dv_permissions_form_body -->
+              </form>
+            </div>                     <!-- form-content -->
+            <div class="modal-footer">
+            
+              <button class="btn btn-default" data-dismiss="modal">
+                <i class="glyphicon glyphicoe-remove-sign"></i>
+                Close
+              </button>
+              
+              <button class="btn btn-danger savemodalbutton">
+                <i class="glyphicon glyphicon-save"></i>
+                Save
+              </button>
+    
+            </div>
+          </div>  <!-- modem-content -->
+        </div>    <!-- modal-dialog -->
+      </div>      <!-- dv_permissions_modal -->
+
+
+      <!-- vvv Template vvv -->
+      <div style="display: none;">
+      
+          <div id="dv_permissions_form_checkox">
+            <div style="margin-left: 20px;">
+              <div clas="checkbox">
+                <label for="{{cbx_id}}">
+                  <input type="checkbox" name="{{cbx_id}}" id="{{cbx_id}}" value="1"> {{cbx_label}}
+                </label>
+              </div>
+            </div>
+          </div>
+      
+          <div id="dv_permissions_form_checkox_checked">
+            <div style="margin-left: 20px;">
+              <div clas="checkbox">
+                <label for="{{cbx_id}}">
+                  <input type="checkbox" name="{{cbx_id}}" id="{{cbx_id}}" value="1" checked> {{cbx_label}}
+                </label>
+              </div>
+            </div>
+          </div>
+      
+      </div>
+      <!-- ^^^ Template ^^^ -->
+
+      <!-- Context Menu -->
+      <ul id="dv_dt-context-menu" class="dropdown-menu">
+          <li data-item="permissionsdw">
+            <span style="cursor: pointer;">
+              <i class="glyphicon glyphicon-list"></i>&nbsp;&nbsp;<a>Permissions</a>
+            </span>
+          </li>
+          <li data-item="fieldsdw">
+            <span style="cursor: pointer;">
+              <i class="glyphicon glyphicon-align-justify"></i>&nbsp;&nbsp;<a>Field List</a>
+            </span>
+          </li>
+          <li data-item="create_template">
+            <span style="cursor: pointer;">
+              <i class="glyphicon glyphicon-file"></i>&nbsp;&nbsp;<a>Create Template</a>
+            </span>
+          </li>
+          <li data-item="open_in_window">
+            <span style="cursor: pointer;">
+              <i class="glyphicon glyphicon-new-window"></i>&nbsp;&nbsp;<a>Open In Window</a>
+            </span>
+          </li>
+      </ul>
+
       <script>
         $( function () {
           /* Initialize the table with column definitions and data */
           $('#cldl_table').bootstrapTable({
-            [% dv.dv_data_attributes %],
+
+            [% IF cldl_dv_name_id == 'dv_list' %]
+            contextMenu: '#dv_dt-context-menu',
+            onContextMenuItem: function(row, $el){
+              if($el.data("item") == "permissionsdw"){
+                var perm_path  = 'dv/select/' + row.dv_id + '/permissions';
+                var data       = 'dv_name=' + row.dv_name;
+                $("#permissions_dv_name").val(row.dv_name);
+                $("#permissions_dv_id").val(row.dv_id);
+                $("#modal_dv_label").text(row.dv_title);
+
+                cldl_ajax(perm_path,
+                          data,
+                          'get',
+                          function(json) {
+                    $('#dv_permissions_form_body').html('');  // Empty
+                    $.each( json, function( key, value ) {
+                      var field_name = value.role_id + '_role_id';
+                      var tmpl_data = {
+                                        cbx_name:    field_name,
+                                        cbx_id:      field_name,
+                                        cbx_label:   value.role_name
+                                      };
+                      var new_cbx = '';
+                      if ( typeof value.role_checked != "undefined") { 
+                        if ( value.role_checked == "1" ) {
+                          field_checked = ' checked ';
+                          new_cbx = Mustache.render( $('#dv_permissions_form_checkox_checked').html(), tmpl_data); 
+                        }
+                      } else {
+                        new_cbx = Mustache.render( $('#dv_permissions_form_checkox').html(), tmpl_data); 
+                        field_checked = '';
+                      }
+                      $('#dv_permissions_form_body').append( new_cbx ); 
+
+                    }); // each
+
+                    $('#dv_permissions_modal').modal("show");
+
+                  },
+                  function() {
+                    bootbox.alert("Failed to contact server.", 
+                      function() {
+                        //
+                      });
+                  }
+                ); // cldl_ajax
+              } else if($el.data("item") == "fieldsdw"){
+                alert("Fields DW: " + row.dv_name + " " + row.dv_title );
+              } else if($el.data("item") == "create_template"){
+                var new_location = window.location.pathname; 
+              
+                if ( new_location.indexOf('?') > 0 ) {
+                  new_location += '&generate_tt=1&dv_type=1';
+                } else {
+                  new_location += '?generate_tt=1&dv_type=1';
+                }
+
+                window.open(new_location, '_blank');
+
+              } else if($el.data("item") == "open_in_window"){
+                window.open(window.location.pathname, '_blank');
+              }
+            },
+            [% END %]
+            [%+ dv.dv_data_attributes +%],
             [%+ IF dv.dt_del == 1 +%]
               checkboxHeader: true,
               clickToSelect: true,
@@ -42,14 +204,10 @@
           });       
   
           [%+ IF dv.dt_edit > 0 && dv.idField %]
-            /* Edit Button 
-             *   Open window with a record ID.  A record ID is used to 
-             *   retrieve and present an existing record.
-             */
             $('#cldl_table').on('[% IF dv.dt_edit == 1 %]click[% ELSIF dv.dt_edit == 2 %]dbl-click[% END %]-row.bs.table', function (e, row, $element) {
          
               var id = row['[% dv.idField %]'];
-              var new_location = '[% app_rt.this_page %]';
+              var new_location = window.location.pathname; 
   
               if ( new_location.indexOf('?') > 0 ) {
                 new_location += '&id=' + id;
@@ -71,7 +229,7 @@
           [%+ IF dv.dt_del == 1 %]
             /* Delete Button */
             $('#delButton').click( function() {
-              //var new_location = '[% app_rt.this_page %]'
+              // var new_location = window.location.pathname; 
               //                 + '?addrecord=1';
   
             });
@@ -83,7 +241,7 @@
              *   blank window with defaults.
              */
             $('#addButton').click( function() {
-              var new_location = '[% app_rt.this_page %]'
+              var new_location = window.location.pathname
                                + '?addrecord=1';
   
             [%+ IF dv.dv_name_add != '' +%]
@@ -102,24 +260,35 @@
   
         });         
 
-/*
-   window.operateEvents = {
-        'click .like': function (e, value, row, index) {
-            alert('You click like action, row: ' + JSON.stringify(row));
-        },
-        'click .remove': function (e, value, row, index) {
-            $table.bootstrapTable('remove', {
-                field: 'id',
-                values: [row.id]
-            });
-        }
-    };
-*/
-    function actionFormatter(value, row, index) {
-      return '[% INCLUDE cldl/includes/action_menu.tt %]';
-    }
 
 
+        $('.savemodalbutton').click( function() {
+          var perm_path  = 'dv/update/' + $('#permissions_dv_id').val() + '/permissions';
+          var data = $( "#dv_permissions_form" ).serialize();
   
+          cldl_ajax(perm_path,
+                    data,
+                    'get',
+                    function(json) {
+                      if ( json['status'] == 0 ) {
+                        bootbox.alert("Permissions have been saved.", function() {
+                          $('#dv_permissions_modal').modal("hide");
+                        });
+                      } else {
+                        bootbox.alert("There was an error while saving your changes.", 
+                          function() {
+                          // Do nothing
+                        });
+                      }
+                    },
+                    function() {
+                      bootbox.alert("Failed to contact server.", 
+                        function() {
+                          //
+                        });
+                    }
+            ); // cldl_ajax
+          });  // click
+
       </script>
 

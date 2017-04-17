@@ -7,7 +7,7 @@ WriteMakefile(
     NAME             => 'Clydesdale',
     AUTHOR           => q{Hagop "Jack" Bilemjian <jck000@gmail.com>},
     VERSION_FROM     => 'lib/CLDL.pm',
-    ABSTRACT_FROM    => 'lib/CLDL.pod',
+#    ABSTRACT_FROM    => 'lib/CLDL.pod',
     LICENSE          => 'artistic_2',
     PL_FILES         => {},
     MIN_PERL_VERSION => 5.006,

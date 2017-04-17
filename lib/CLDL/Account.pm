@@ -10,7 +10,17 @@ use Digest::MD5 qw( md5_hex );
 
 my $random = String::Random->new;
 
-prefix '/cldl/account';
+prefix '/account';
+
+get '/view' => sub {
+  debug "In Account Maintenance";
+
+  # redirect config->{base_url} 
+  #            . '/dv/select/edit_account?id=' 
+  #           . session('user_id');
+  redirect '/dv/select/edit_account?id=' 
+             . session('user_id');
+};
 
 # 
 # Preset register user form
