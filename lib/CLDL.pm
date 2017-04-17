@@ -180,5 +180,4 @@ any '/splash' => sub {
   template 'cldl/splash.tt';
 };
 
-
 1; # End of CLDL
