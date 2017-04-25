@@ -13,6 +13,7 @@ requires "File::Copy";
 requires "File::Path";
 requires "JSON";
 requires "JSON::XS";
+requires "POSIX";
 requires "Session::Token";
 requires "String::Random";
 requires "Template";
