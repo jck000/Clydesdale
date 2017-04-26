@@ -149,7 +149,9 @@ hook 'after_template_render' => sub {
   if ( $generate_tt ) { 
     my $content     = ${$ref_content};
 
-    my $filename = config->{views} . '/genrated_tt.' . strftime('%Y-%m-%d_%H-%M-%S', gmtime()); 
+    my $filename = config->{cldl}->{generated_templates} . '/generated_tt.' 
+                       . strftime('%Y-%m-%d_%H-%M-%S', gmtime()); 
+
     open(my $OUT, '>', $filename);
     print $OUT $content;
     close($OUT);
