@@ -6,6 +6,7 @@ use Dancer2::Plugin::Database;
 use CLDL::DVFValues;
 
 my $DV = { data_attributes => qq(buttonAlign: 'left', cache: true, cardView: false, contentType: 'json', iconPrefix: 'fa', icons:{ refresh: 'glyphicon-refresh icon-refresh', toggle: 'glyphicon-list-alt icon-list-alt', columns: 'glyphicon-th icon-th' }, maintainSelected: true, method: 'get', countColumns: 1, pagination: true, pageList: [ 50, 100, 250, 500], pageSize: 50, showHeader: true, showColumns: false, showRefresh: false, showToggle: false, sidePagination: 'client', singleSelect: false, smartDisplay: true, striped: true, search: true)};
+
 my $DVF = {
             global => qq(
                           'dvf_db_column' => '',
@@ -18,22 +19,27 @@ my $DVF = {
                         ),
            active => { 
                        dvf_type          => '5',
-                       dvf_values        => qq( { 0 => 'Inactive', 1 => 'Active' } ),
+                       dvf_values        => qq( { 0 => 'Inactive', 
+                                                  1 => 'Active' } ),
                        dvf_default_value => '1'
                      },
            dv_type => { 
                         dvf_type          => '5',
-                        dvf_values        => qq( { 0 => 'DataTable', 1 => 'Form' } ),
+                        dvf_values        => qq( { 0 => 'DataTable', 
+                                                   1 => 'Form' } ),
                         dvf_default_value => '0'
                       },
            dt_del  => { 
                         dvf_type          => '5',
-                        dvf_values        => qq( { 0 => 'No', 1 => 'Yes' } ),
+                        dvf_values        => qq( { 0 => 'No', 
+                                                   1 => 'Yes' } ),
                         dvf_default_value => '1'
                       },
            dt_edit => { 
                         dvf_type          => '5',
-                        dvf_values        => qq( { 0 => 'Not Editable', 1 => '1-Click', 2 => '2-Clicks' } ),
+                        dvf_values        => qq( { 0 => 'Not Editable', 
+                                                   1 => '1-Click', 
+                                                   2 => '2-Clicks' } ),
                         dvf_default_value => '2'},
           }; 
 
@@ -140,7 +146,13 @@ post '/insert' => sub {
                       );
   }
 
-  redirect '/dv/select/' .  params->{dv_name};
+  my $sth_insert_role_permission = database->prepare(
+    'INSERT INTO cldl_role_permission_dv ( role_id, dv_id) VALUES ( ?, ?)'
+  );
+
+  $sth_insert_role_permission->execute( session('role_id'), $dv->{id} );
+
+  redirect '/cldl/dv/select/' .  params->{dv_name};
 
 };
 

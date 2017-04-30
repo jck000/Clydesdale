@@ -1,15 +1,17 @@
 package CLDL;
 
-# Dancer2
+# Dancer2 packages
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 use Dancer2::Plugin::JWT;
 use Dancer2::Plugin::Tail;
 #use Dancer2::Plugin::EditFile;
 
+# Generic CPAN modules
 use Data::Dumper;
 use POSIX qw(strftime);
 
+# Clydesdale packages
 use CLDL::Account;      ### Accounts
 use CLDL::Cache;
 use CLDL::DV;           ### DataViews
@@ -24,9 +26,7 @@ use CLDL::Admin::EditMenu;     ### Edit Menus
 use CLDL::Admin::DVFromtable;  ### Create DataView from table
 use CLDL::Admin::Generic;      ### Generic
 
-
 our $VERSION = '0.00004';
-
 
 # require class if defined
 if ( config->{cldl}->{appclass} ) {
@@ -37,7 +37,6 @@ if ( config->{cldl}->{appclass} ) {
   $package      .= '.pm';
   require $package;
 }
-
 
 # Every request runs through here
 prefix undef;
@@ -108,18 +107,13 @@ hook 'before' => sub {
 
 
 #
-# Add some data to template
+# Add extra data to template
 #
 hook 'before_template_render' => sub {
   my $tokens = shift;
 
-#  debug "IN BEFORE_TEMPLATE_RENDER:";
-#  debug "MENU ID: " . session('menu_id') if ( session('menu_id')) ;
-
+  # User's menu comes from cache.  
   $tokens->{cldl_menu}           = &CLDL::Menu::get_menu( session('menu_id') ) if ( session('menu_id') ) ;
-
-#  debug "cldl_menu";
-#  debug $tokens->{cldl_menu};
 
   $tokens->{cldl_return_to_page} = session('cldl_return_to_page'); # Return 
                                                                    # to main 

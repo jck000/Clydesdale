@@ -15,11 +15,7 @@ prefix '/account';
 get '/view' => sub {
   debug "In Account Maintenance";
 
-  # redirect config->{base_url} 
-  #            . '/dv/select/edit_account?id=' 
-  #           . session('user_id');
-  redirect '/dv/select/edit_account?id=' 
-             . session('user_id');
+  redirect '/dv/select/my_account?id=' . session('user_id');
 };
 
 # 
