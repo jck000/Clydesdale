@@ -1,0 +1,155 @@
+<!-- cldl/includes/buttons/dt_buttons.tt -->  <div class="row">
+        <div class="col-sm-1"></div> 
+        <div class="col-sm-11">
+          <fieldset>
+            
+            <!-- Form Name -->
+            <legend>My Account</legend>
+
+              
+            <div class="form-group">
+              <div class="form-group">  <button class="btn btn-default resetbutton">
+                  <i class="glyphicon glyphicon-refresh"></i> 
+                  Reset
+                </button>
+
+                <button class="btn btn-danger savebutton">
+                  <i class="glyphicon glyphicon-save"></i>
+                  Save
+                </button>
+              </div>
+            </div>
+            <form class="form-horizontal" 
+                  id="cldl_form" 
+                  method="post"
+                  action="dv/update/my_account">    <!-- cldl/includes/text.tt -->  <!-- Text input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" 
+                           for="user_id"> User Id </label>  
+                    <div class="col-md-4">
+                      <input type="text" 
+                             id="user_id" 
+                             name="user_id" 
+                             class="form-control input-md"  
+                             value="[% data.user_id %]" READONLY>
+                    </div>    <!-- col-md-4 -->
+                  </div>      <!-- form-group -->     <!-- cldl/includes/text.tt -->  <!-- Text input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" 
+                           for="created"> Account Created </label>  
+                    <div class="col-md-4">
+                      <input type="text" 
+                             id="created" 
+                             name="created" 
+                             class="form-control input-md"  
+                             value="[% data.created %]" READONLY>
+                    </div>    <!-- col-md-4 -->
+                  </div>      <!-- form-group -->     <!-- cldl/includes/text.tt -->  <!-- Text input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" 
+                           for="updated"> Account Updated </label>  
+                    <div class="col-md-4">
+                      <input type="text" 
+                             id="updated" 
+                             name="updated" 
+                             class="form-control input-md"  
+                             value="[% data.updated %]" READONLY>
+                    </div>    <!-- col-md-4 -->
+                  </div>      <!-- form-group -->     <!-- cldl/includes/text.tt -->  <!-- Text input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" 
+                           for="user_name"> User Name </label>  
+                    <div class="col-md-4">
+                      <input type="text" 
+                             id="user_name" 
+                             name="user_name" 
+                             class="form-control input-md"  
+                             value="[% data.user_name %]" READONLY>
+                    </div>    <!-- col-md-4 -->
+                  </div>      <!-- form-group -->     <!-- cldl/includes/text.tt -->  <!-- Text input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" 
+                           for="first_name"> First Name </label>  
+                    <div class="col-md-4">
+                      <input type="text" 
+                             id="first_name" 
+                             name="first_name" 
+                             class="form-control input-md"  
+                             value="[% data.first_name %]" >
+                    </div>    <!-- col-md-4 -->
+                  </div>      <!-- form-group -->     <!-- cldl/includes/text.tt -->  <!-- Text input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" 
+                           for="last_name"> Last Name </label>  
+                    <div class="col-md-4">
+                      <input type="text" 
+                             id="last_name" 
+                             name="last_name" 
+                             class="form-control input-md"  
+                             value="[% data.last_name %]" >
+                    </div>    <!-- col-md-4 -->
+                  </div>      <!-- form-group -->     <!-- cldl/includes/text.tt -->  <!-- Text input-->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" 
+                           for="user_email"> User Email </label>  
+                    <div class="col-md-4">
+                      <input type="text" 
+                             id="user_email" 
+                             name="user_email" 
+                             class="form-control input-md"  
+                             value="[% data.user_email %]" >
+                    </div>    <!-- col-md-4 -->
+                  </div>      <!-- form-group -->   </form>
+            <div class="form-group">
+              <div class="form-group">  <button class="btn btn-default resetbutton">
+                  <i class="glyphicon glyphicon-refresh"></i> 
+                  Reset
+                </button>
+
+                <button class="btn btn-danger savebutton">
+                  <i class="glyphicon glyphicon-save"></i>
+                  Save
+                </button>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      <br><br><br>
+
+      <script>
+        $('.returnbutton').click( function() {
+//        window.location.assign("");
+        window.location.assign("");
+      });
+        $('.resetbutton').click( function() {
+//        window.location.assign("");
+        window.location.assign("");
+      });
+
+        $('.savebutton').click( function() {
+          var data = $('#cldl_form').serializeArray();
+
+          cldl_ajax('dv/update/my_account',
+                    data,
+                    'post',
+                    function(json) {
+                      if ( json['status'] == 0 ) {
+                        bootbox.alert("Your changes have been saved.", function() {
+                          window.location.assign(json['cldl_next_page']);
+                        });
+                      } else {
+                        bootbox.alert("There was an error while saving your changes.", 
+                          function() {
+                          // Do nothing
+                        });
+                      }
+                    },
+                    function() {
+                      bootbox.alert("Failed to contact server.", function() {
+                        //
+                      });
+                    }
+          ); // cldl_ajax
+        });
+      </script>
