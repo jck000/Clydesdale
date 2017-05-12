@@ -1,15 +1,77 @@
+<style>
+    .loader,
+    .loader:before,
+    .loader:after {
+      border-radius: 50%;
+      width: 2.5em;
+      height: 2.5em;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+      -webkit-animation: load7 1.8s infinite ease-in-out;
+      animation: load7 1.8s infinite ease-in-out;
+    }
+    .loader {
+      color: #ffffff;
+      font-size: 10px;
+      margin: 80px auto;
+      position: relative;
+      text-indent: -9999em;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+    }
+    .loader:before,
+    .loader:after {
+      content: '';
+      position: absolute;
+      top: 0;
+    }
+    .loader:before {
+      left: -3.5em;
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+    .loader:after {
+      left: 3.5em;
+    }
+    @-webkit-keyframes load7 {
+      0%,
+      80%,
+      100% {
+        box-shadow: 0 2.5em 0 -1.3em;
+      }
+      40% {
+        box-shadow: 0 2.5em 0 0;
+      }
+    }
+    @keyframes load7 {
+      0%,
+      80%,
+      100% {
+        box-shadow: 0 2.5em 0 -1.3em;
+      }
+      40% {
+        box-shadow: 0 2.5em 0 0;
+      }
+    }
+
+</style>
+
 <div class="row">
 
   <form class="form-horizontal">
     <fieldset>
     
       <!-- Form Name -->
-        <legend>[% title %]</legend>
+        <legend>[% heading %]</legend>
         
         <div id="ajax_error"></div>
         [% IF error != "" %]
         <div  class="alert alert-danger">
-           <strong>[% error %]</div>
+           <strong>[% error %]
+        </div>
         [% END %]
         
         <style>
@@ -36,19 +98,21 @@
           overflow: auto;
         
         }
-      </style>
+        </style>
 
-      <pre id="stats"> </pre>
+        <pre id="stats"> </pre>
       
-      <div class="form-group">
-        <div class="col-md-8">
-          <button id="closebutton" name="closebutton" class="btn btn-primary">Close Window</button>
+        <div class="form-group">
+          <div class="col-md-8">
+            <button id="closebutton" name="closebutton" class="btn btn-primary">Close Window</button>
+          </div>
+
+          <div class="loader">Loading...</div>
         </div>
-      </div>
       
-      <input type="hidden" id="title"     name="title"    value="[% title %]">
-      <input type="hidden" id="file_id"   name="file_id"  value="[% id %]">
-      <input type="hidden" id="curr_pos"  name="curr_pos" value="0">
+        <input type="hidden" id="heading"  name="heading"  value="[% heading %]">
+        <input type="hidden" id="id"       name="id"       value="[% id %]">
+        <input type="hidden" id="curr_pos" name="curr_pos" value="0">
     
     </fieldset>
   </form>
@@ -72,9 +136,9 @@
 
   function gettail( ) {
     var curr_pos = $('#curr_pos').val();
-    var file_id  = $('#file_id').val();
+    var id       = $('#id').val();
 
-    var full_url = '[% app_host_url %][% data_url %]?id=' + file_id + '&curr_pos=' + curr_pos ;
+    var full_url = '[% app_host_url %][% data_url %]?id=' + id + '&curr_pos=' + curr_pos ;
 
     $.ajax({
       url :         full_url,

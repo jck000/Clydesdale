@@ -2,7 +2,7 @@ package CLDL::Account;
 
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
-#use Dancer2::Plugin::Email;
+use Dancer2::Plugin::Email;
 
 use String::Random;
 
@@ -12,10 +12,13 @@ my $random = String::Random->new;
 
 prefix '/account';
 
+#
+# Redirect from menu to DV.  Cleanup needed???
+#
 get '/view' => sub {
   debug "In Account Maintenance";
 
-  redirect '/dv/select/my_account?id=' . session('user_id');
+  redirect config->{cldl}->{base_url} . '/dv/select/my_account?id=' . session('user_id');
 };
 
 # 
@@ -27,6 +30,9 @@ get '/register/user' => sub {
 
 };
 
+#
+# Save User information and send an email to verify email
+#
 post '/register/user' => sub {
  
   debug "IN REGISTER POST ";
@@ -51,9 +57,9 @@ post '/register/user' => sub {
     params->{email}
   );
 
-  my $sender  = 
-  my $from    = 
-  my $subject = 
+  my $sender  = config->{cldl}->{registration_email}->{sender};
+  my $from    = config->{cldl}->{registration_email}->{from};
+  my $subject = config->{cldl}->{registration_email}->{subject};
   my $body    = 
 
   email {
