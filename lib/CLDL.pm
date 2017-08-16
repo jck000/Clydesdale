@@ -155,12 +155,6 @@ hook 'after_template_render' => sub {
 };
 
 
-
-
-
-
-
-
 #
 # Show template
 #
@@ -175,5 +169,7 @@ get '/' => sub {
 any '/splash' => sub {
   template 'cldl/splash.tt';
 };
+
+
 
 1; # End of CLDL      
