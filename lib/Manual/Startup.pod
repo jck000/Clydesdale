@@ -1,0 +1,198 @@
+package DDNS2::Manual::Startup;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+DDNS2::Manual::Startup - Startup scripts
+
+=head1 VERSION
+
+Version 0.00001
+
+=head1 Description
+
+Startup scripts for 
+
+In the event that intalling an init script is not possible, use crontab to launch your own script.  This is a modified version of the init script that you should place into the application bin directory.  There is a sample script, configuration and crontab entry in this manual.
+
+=head1 crontab
+
+=head2 /etc/init.d/ddns2
+
+  #!/bin/sh
+  #
+  # ddns2 - this script starts and stops ddns2
+  #
+  # chkconfig:   2345 85 15
+  # description:  ddns2.example.com 
+  
+  # pidfile:     /var/run/plackup.ddns2.pid
+  
+  PID=/var/run/plackup.ddns2.pid
+  
+  # Source function library.
+  . /etc/rc.d/init.d/functions
+  
+  # Source networking configuration.
+  . /etc/sysconfig/network
+  
+  # Check that networking is up.
+  [ "$NETWORKING" = "no" ] && exit 0
+  
+  APPLICATION="DDNS2"
+  PORT=30011
+  WORKERS=10
+  DANCER_DIR="/home/ddns2/apps/DDNS2"
+  DANCER_APP="$DANCER_DIR/bin/app.pl"
+  
+  plackup="/usr/local/bin/plackup"
+  plackup_args="-E DDNS2 -p $PORT -s Starman --pid=$PID --workers $WORKERS -D"
+  
+  lockfile=/var/lock/subsys/plackup.ddns2
+  
+  start() {
+      [ -x $plackup ] || exit 5
+      [ -f $DANCER_APP ] || exit 6
+      echo -n $"Starting $APPLICATION on port $PORT: "
+      $plackup $plackup_args -a $DANCER_APP 2>&1 > /dev/null
+      retval=$?
+      if [ $retval -eq 0 ]; then
+          success $"$APPLICATION started"
+          touch $lockfile
+      else
+          failure $"Unable to start"
+      fi
+      echo
+      return $retval
+  }
+  
+  stop() {
+      echo -n $"Stopping $APPLICATION on port $PORT: "
+      if [ -f $PID ]; then
+          kill `cat $PID` 2>&1> /dev/null
+          retval=$?
+          [ $retval -eq 0 ] && success && rm -f $lockfile
+          echo
+          return $retval
+      fi
+      failure $"pid $PID not found"
+      echo
+      return 1
+  }
+  
+  restart() {
+      stop
+      start
+  }
+  
+  case "$1" in
+      start)
+          $1
+          ;;
+      stop)
+          $1
+          ;;
+      restart)
+          $1
+          ;;
+      *)
+          echo $"Usage: $0 {start|stop|restart}"
+          exit 2
+  esac
+
+
+@reboot /home/fasv/apps/DDNS2/bin/ddns2_svc.sh start
+
+=head1 script
+
+
+#!/bin/sh
+  
+  #
+  # ddns2 - this script starts and stops DDNS2
+  #
+  
+  # Source function library.
+  . /etc/rc.d/init.d/functions
+  
+  # Source networking configuration.
+  . /etc/sysconfig/network
+  
+  # Check that networking is up.
+  [ "$NETWORKING" = "no" ] && exit 0
+  
+  # Dancer Application Configuration
+  . /home/ddns/apps/DDNS2/bin/ddns2_svc.cfg
+  
+  start() {
+      [ -x $plackup ] || exit 5
+      [ -f $DANCER_APP ] || exit 6
+      echo -n $"Starting $APPLICATION on port $PORT: "
+      $plackup $plackup_args -a $DANCER_APP 2>&1 > /dev/null
+      retval=$?
+      if [ $retval -eq 0 ]; then
+          success $"$APPLICATION started"
+          touch $lockfile
+      else
+          failure $"Unable to start"
+      fi
+      echo
+      return $retval
+  }
+  
+  stop() {
+      echo -n $"Stopping $APPLICATION on port $PORT: "
+      if [ -f $PID ]; then
+          kill `cat $PID` 2>&1> /dev/null
+          retval=$?
+          [ $retval -eq 0 ] && success && rm -f $lockfile
+          echo
+          return $retval
+      fi
+      failure $"pid $PID not found"
+      echo
+      return 1
+  }
+  
+  restart() {
+      stop
+      start
+  }
+  
+  case "$1" in
+      start)
+          $1
+          ;;
+      stop)
+          $1
+          ;;
+      restart)
+          $1
+          ;;
+      *)
+          echo $"Usage: $0 {start|stop|restart}"
+          exit 2
+  esac
+
+=head1 configuration
+
+  APPLICATION="DDNS2"
+  PORT=30011
+  WORKERS=15
+  DANCER_DIR="/home/ddns/apps/DDNS2"
+  DANCER_APP="$DANCER_DIR/bin/app.pl"
+  PID=$DANCER_DIR/tmp/plackup.ddns.pid
+  DANCER_APP_CFG="DDNS"
+  plackup="/usr/local/bin/plackup"   # Adjust this to match location of plackup
+  
+  plackup_args="-E $DANCER_APP_CFG -p $PORT -s Starman --pid=$PID --workers $WORKERS -D"
+  
+  lockfile=$DANCER_DIR/tmp/plackup.ddns2
+
+=cut
+

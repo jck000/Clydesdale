@@ -1,0 +1,73 @@
+package DDNS2::Manual::Client;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+DDNS2::Manual::Client - Client scripts
+
+=head1 VERSION
+
+Version 0.00001
+
+=head1 DESCRIPTION
+
+Use a simple shell script to trigger an update to the DDNS2 server.  In this configuration, the script is triggered through crontab every 20 minutes to update the server.  In my environment, that's sufficient. of course, you can use any client.  The api to the server is very simple.  
+
+=head1 SAMPLE CLIENT
+
+=head2 /usr/local/bin/ddns_client
+
+A sample client script that contacts ther server.
+
+  #!/bin/sh
+  
+  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;export PATH
+  
+  DEV='eth0'
+  MYNAME=`hostname`
+  MYID=`ifconfig $DEV | grep HWaddr | awk '{ print $NF}' | sed 's/://g'`
+  
+  URLPATH=`echo "myname=$MYNAME&myid=$MYID" | sha256sum`
+  
+  URL="https://ddns2.example.com/ddns2/$URLPATH"
+  
+  if [ "$1" = "show" ]; then
+    echo "
+    myname: $MYNAME
+    myid:   $MYID
+    URL:    $URLPATH
+  "
+  else
+    curl "$URL"
+  #  wget -q "$URL"
+  fi
+  echo "
+  
+  "
+
+=head2 OBTAIN CLIENT ID
+
+Run this script atthe command line with "show" as an argument.  Use the URL entry as your id on the server.
+
+ $ ddns_client show
+
+  myname: exzmple.com
+  myid:   fa1fab932a5e
+  URL:    94f812542f46e1077e89d062fa373c2242c5896abf6909d9668caec156484a4f
+
+
+=head1 CRONTAB
+
+Trigger an update to the server on reboot and every 20 minutes.
+
+  @reboot /usr/local/bin/ddns_client 2>&1 /dev/null
+  2,22,42 * * * * /usr/local/bin/ddns_client 2>&1 /dev/null
+
+
+=cut
+

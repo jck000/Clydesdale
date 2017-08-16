@@ -1,0 +1,43 @@
+package DDNS2::Manual::Database;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+DDNS2::Manual::Database - Configuring Database for Clydesdale
+
+=head1 VERSION
+
+Version 0.00001
+
+=head1 DESCRIPTION
+
+DDNS2 uses a table to store information about remote devices connecting to it.  In addition to authenticating incoming API connections, it stores whether the device is active, it's DNS entry is active, it's hostname and the domain it belongs to.  
+
+Notice that you can maintain devices on multiple domains.  On our system, we host multiple client domains with client specific domains for their remote devices.
+
+=head1 SCHEMA
+
+The application requires a single table.  Insert a single record for each device.  The id column is the encrypted id provided by the device.  Use the client tool to get that value.
+
+=head2 MySQL
+
+
+  CREATE TABLE IF NOT EXISTS ddns (
+    id varchar(64) NOT NULL,
+    active tinyint(1) unsigned NOT NULL COMMENT '0 = inactive; 1 = active',
+    active_ddns tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = Inactive DNS entry, no ping from client; 1 = active DNS entry',
+    hostname varchar(64) NOT NULL,
+    domain varchar(50) NOT NULL,
+    MAC_addr varbinary(17) NOT NULL,
+    updated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY active_ddns (active_ddns,updated)
+  );
+  
+
+=cut

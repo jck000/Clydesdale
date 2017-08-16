@@ -1,0 +1,82 @@
+package DDNS2::Manual::Apache;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+DDNS2::Manual::Apache - Configuring Apache for DDNS2
+
+=head1 VERSION
+
+Version 0.00001
+
+=head1 SAMPLE Apache configuration script
+
+Rather than exposing the DDNS2 application directly to the internet, I prefer to use an Apache front-end.  I use Apache on several other applications so it's just easier for me to use it.  You can use any front-end.  On my servers, I have security features, rewrite rules and redirects for this application.
+
+=head2 http
+
+  # Use this to for a change from http to https if necessary or duing a 
+  #  transition period
+  <VirtualHost *:80> 
+    # Redirect port 80 to 443
+    ServerAdmin admin@example.com
+    ServerName  ddns2.example.com
+    ServerSignature Off
+  
+    Redirect permanent / https://ddns2.example.com/
+  
+    ErrorLog  "/home/ddns2/apps/DDNS2/logs/ddns2.error.log"
+    CustomLog "/home/ddns2/apps/DDNS2/logs/ddns2.access.log" combined
+    LogLevel warn
+  
+  </VirtualHost>
+
+=head2 https
+
+  <VirtualHost *:443>
+  
+  # vvv  Virtual Host settings  vvv
+  
+    ServerName      ddns2.example.com
+    ServerAdmin     admin@example.com
+    ServerSignature Off
+  
+    DocumentRoot "/home/ddns2/apps/DDNS2/public"
+  
+    ErrorLog    "/home/ddns2/apps/DDNS2/logs/ddns2.ssl_error.log"
+    CustomLog   "/home/ddns2/apps/DDNS2/logs/ddns2.ssl_access.log" combined
+    LogLevel warn
+  
+  # ^^^  Virtual Host settings  ^^^
+  
+  # vvv example back-end application vvv
+  
+      <Proxy *>
+        Order allow,deny
+        Allow from all
+      </Proxy>
+  
+      # ddns2 goes to the back-end Starman on port 30027
+      ProxyPass        / http://localhost:30011/DDNS2
+      ProxyPassReverse / http://localhost:30011/
+  
+  # vvv  SSL settings  vvv
+  
+    SSLEngine on
+  
+    SSLCertificateFile    "/etc/httpd/conf/ssl/ddns2_example_com.crt"
+    SSLCertificateKeyFile "/etc/httpd/conf/ssl/ddns2_example_com.key"
+    SSLCACertificateFile  "/etc/httpd/conf/ssl/CAbundle.crt"
+  
+  # ^^^  SSL settings  ^^^
+  
+  </VirtualHost>
+
+
+=cut
+

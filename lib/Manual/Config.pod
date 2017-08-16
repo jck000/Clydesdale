@@ -1,0 +1,48 @@
+package DDNS2::Manual::Config;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+CLDL2::Manual::Config - Configuring Dancer2 
+
+=head1 VERSION
+
+Version 0.00001
+
+=head1 DESCRIPTION
+
+There are a minimum number of settings that must be set for Dancer2 to function.  This includes a configuration for the database plugin.  Finally, your client token to Digital Ocean's API can be saved here.
+
+=head2 config.yml
+
+  appname: "DDNS2"
+  charset: "UTF-8"
+  behind_proxy: true
+  serializer: JSON
+  
+  plugins:
+    Database:
+      driver:        'mysql'
+      database:      'ddns2'
+      host:          'localhost'
+      port:          3306
+      username:      'ddns'
+      password:      'ddnspass'
+      dbi_params:
+        RaiseError:         1
+        PrintError:         0
+        PrintWarn:          0
+        ShowErrorStatement: 1
+        AutoCommit:         1
+  
+      log_queries:   1
+  
+  ddns:
+    token: 'TokenToDigitalOcean'
+
+=cut
