@@ -1,0 +1,27 @@
+package CLDL::Manual::Templates;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+CLDL::Manual::Templates - Documentation about templates
+
+=head1 VERSION
+
+Version 0.00001
+
+=head1 Organizationa and Components
+
+=head1 Directory Structure
+
+=head1 Menu
+
+=head1 Buttons
+
+=head1 Body
+
+=cut
