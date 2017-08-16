@@ -32,7 +32,7 @@
             <ul class="dropdown-menu">
               [% FOREACH child_menu IN main_menu.children %]
                 <li> 
-                  <a href="[% child_menu.menu_link %]">[% child_menu.menu_label %]</a> 
+                  <a href="[% child_menu.menu_link %]" class="menuitem">[% child_menu.menu_label %]</a> 
                 </li>
               [% END %]
             </ul>
@@ -50,20 +50,11 @@
 
       <ul class="nav navbar-nav navbar-right">
         <li>
-<!--
-          <a href="[% app_host_url %]/cldl/account/register">
-            <span class="glyphicon glyphicon-user"></span> Register
-          </a>
-        </li>
--->
-        <li>
-<!--          <a href="[% app_host_url %]/cldl/account/changepassword"> -->
-          <a href="cldl/account/changepassword">
+          <a href="account/view">
             <span class="glyphicon glyphicon-user"> </span> My Account
           </a>
         </li>
         <li>
-<!--          <a href="[% app_host_url %]/logout"> -->
           <a href="logout">
             <span class="glyphicon glyphicon-log-in"> </span> Logout
           </a>

@@ -4,6 +4,8 @@ use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 use Dancer2::Plugin::Redis;
 
+use CLDL::Permissions;
+
 #use CLDL::Menu;
 
 use Data::Dumper;
@@ -208,9 +210,7 @@ get '/update/permissions' => sub {
 
   delete $role_ids->{menu_id};
   foreach my $key ( keys %{$role_ids} ) {
-#    debug $key;
     $key =~ m/(\d+)_.*/;
-#    debug $1;
     $sth_insert_role_permission->execute( $1, $menu_id );
   }
 

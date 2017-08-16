@@ -1,6 +1,7 @@
 requires "Config::Crontab";
 requires "Dancer2";
 requires "Dancer2::Plugin::Database";
+requires "Dancer2::Plugin::Email";
 requires "Dancer2::Plugin::JWT";
 requires "Dancer2::Plugin::Redis";
 requires "Dancer2::Plugin::EditFile";
@@ -13,6 +14,7 @@ requires "File::Copy";
 requires "File::Path";
 requires "JSON";
 requires "JSON::XS";
+requires "POSIX";
 requires "Session::Token";
 requires "String::Random";
 requires "Template";
