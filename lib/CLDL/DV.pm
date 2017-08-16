@@ -3,7 +3,6 @@ package CLDL::DV;
 use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 
-# use CLDL::Cache;
 use CLDL::DVQuery;
 
 our $VERSION = '0.00002';

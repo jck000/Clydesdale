@@ -14,10 +14,6 @@ sub is_menu {
 
   my $is_menu    = 0;
 
-  debug "IN IS MENU:";
-  debug $test_menu;
-
-
   foreach my $key ( keys \%{$test_menu} ) {
     my $menu = $test_menu->{$key} ;
     if ( $menu->{active} == 0  ) { 
@@ -34,9 +30,7 @@ sub is_menu {
           $tmp_regex =~ s/\?.+//g;
 
           my $regex = qr{$tmp_regex};
- debug "MENU TEST: $test_path AGAINST $regex";
           if ( $test_path =~ $regex ) {
-            debug "THIS IS A MENU " . $test_path;
             $is_menu = 1;
             last;
           }

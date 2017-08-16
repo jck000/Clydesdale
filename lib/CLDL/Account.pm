@@ -4,10 +4,16 @@ use Dancer2 appname => 'CLDL';
 use Dancer2::Plugin::Database;
 use Dancer2::Plugin::Email;
 
+=head1 CLDL::Account
+
+=head1 Description
+
+This module handles everything having to do with registering and activating  users and devices.  It will validate user-id to make sure it is available.  
+
+=cut
+
 use String::Random;
-
 use Digest::MD5 qw( md5_hex );
-
 my $random = String::Random->new;
 
 prefix '/account';
@@ -15,6 +21,12 @@ prefix '/account';
 #
 # Redirect from menu to DV.  Cleanup needed???
 #
+
+=head2 /view
+
+  Redirect to DV my_account 
+
+=cut
 get '/view' => sub {
   debug "In Account Maintenance";
 

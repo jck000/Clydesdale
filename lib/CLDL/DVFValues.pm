@@ -3,9 +3,13 @@ package DVFValues;
 sub dvf_values {
 
   my $cldl_values = { 
-                'status'    => { 0 => 'Inactive',     1 => 'Active'},
-                'dv_type'   => { 0 => 'DataTable',    1 => 'Form'},
-                'dt_type'   => { 0 => 'Not Editable', 1 => '1-Click', 2 => '2-Clicks'},
+                'status'    => { 0 => 'Inactive',     
+                                 1 => 'Active'},
+                'dv_type'   => { 0 => 'DataTable',    
+                                 1 => 'Form'},
+                'dt_type'   => { 0 => 'Not Editable', 
+                                 1 => '1-Click', 
+                                 2 => '2-Clicks'},
                 'dvf_type'  => { 
                                   0 => 'text', 
                                   1 => 'textarea', 

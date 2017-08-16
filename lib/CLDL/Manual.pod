@@ -28,8 +28,10 @@ It's designed to be readable, maintainable, modifiable and a lot of other "I<abl
 L<Configuring Apache for Clydesdale|CLDL::Manual::Apache>  
 L<CLDL::Manual::Database>
 L<CLDL::Manual::JSLibraries>
+L<CLDL::Manual::Redis>
 L<CLDL::Manual::Starman>
 L<CLDL::Manual::Startup>
+L<CLDL::Manual::Templates>
 
 =head1 See Also
 
