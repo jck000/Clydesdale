@@ -32,7 +32,7 @@
             <ul class="dropdown-menu">
               [% FOREACH child_menu IN main_menu.children %]
                 <li> 
-                  <a href="[% child_menu.menu_link %]">[% child_menu.menu_label %]</a> 
+                  <a href="[% child_menu.menu_link %]" class="menuitem">[% child_menu.menu_label %]</a> 
                 </li>
               [% END %]
             </ul>
